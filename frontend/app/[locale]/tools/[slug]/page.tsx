@@ -1,10 +1,12 @@
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { getTools } from '@/lib/api';
 import {
   getCalculatorComponent,
   isCalculatorSlug,
 } from '@/components/calculators';
+import { createPageMetadata } from '@/lib/metadata';
 
 export function generateStaticParams() {
   return [
@@ -29,6 +31,24 @@ const fallbackTools: { name: string; slug: string }[] = [
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
+
+export async function generateMetadata({ params }: Props) {
+  const { locale, slug } = await params;
+  if (!isCalculatorSlug(slug)) return {};
+  const apiTools = await getTools().catch(() => []);
+  const tool =
+    apiTools.find((t) => t.slug === slug) ??
+    fallbackTools.find((t) => t.slug === slug);
+  const toolName = tool?.name ?? slug;
+  const t = await getTranslations({ locale, namespace: 'seo' });
+  const baseDesc = t('toolsDescription');
+  return createPageMetadata({
+    locale,
+    title: toolName,
+    description: `${toolName}. ${baseDesc}`,
+    path: `/tools/${slug}`,
+  });
+}
 
 export default async function CalculatorPage({ params }: Props) {
   const { locale, slug } = await params;

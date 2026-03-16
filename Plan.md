@@ -166,20 +166,20 @@
 - [x] **Welding Parameter Calculator**
 
 ### 2.11 Страница Welding Knowledge (/knowledge)
-- [ ] Структура базы знаний:
+- [x] Структура базы знаний:
   - MIG/MAG welding
   - TIG welding
   - Shielding gases
   - Gas cutting
   - Welding metallurgy
   - Welding defects
-- [ ] Каждый раздел — список статей из блога по категории
+- [x] Каждый раздел — список статей из блога по категории
 
 ### 2.12 Страница Blog (/blog)
-- [ ] Список статей с пагинацией
-- [ ] Фильтрация по категориям
-- [ ] Карточки статей: cover_image, title, excerpt, date, category
-- [ ] Страница статьи /blog/[slug]: title, author, date, category, cover, content, images, tags, related posts
+- [x] Список статей с пагинацией
+- [x] Фильтрация по категориям
+- [x] Карточки статей: cover_image, title, excerpt, date, category
+- [x] Страница статьи /blog/[slug]: title, author, date, category, cover, content, images, tags, related posts
 
 ### 2.13 Страница Contact (/contact)
 - [ ] Email
@@ -192,12 +192,12 @@
 ## Фаза 3: SEO и производительность
 
 ### 3.1 SEO
-- [ ] Meta title и meta description для каждой страницы
-- [ ] Open Graph и Twitter Card
-- [ ] Alt-текст для всех изображений
-- [ ] Генерация sitemap.xml
-- [ ] Файл robots.txt
-- [ ] Структурированные данные (JSON-LD) для статей
+- [x] Meta title и meta description для каждой страницы
+- [x] Open Graph и Twitter Card
+- [x] Alt-текст для всех изображений
+- [x] Генерация sitemap.xml
+- [x] Файл robots.txt
+- [x] Структурированные данные (JSON-LD) для статей
 
 ### 3.2 Производительность
 - [ ] Lazy loading изображений (next/image)

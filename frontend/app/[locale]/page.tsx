@@ -12,6 +12,7 @@ import {
   getTools,
 } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
+import { createPageMetadata } from '@/lib/metadata';
 
 const competencies = [
   'competency1',
@@ -29,6 +30,23 @@ function langFromLocale(locale: string): Lang {
   return locale === 'en' || locale === 'ru' || locale === 'lv'
     ? (locale as Lang)
     : 'en';
+}
+
+function getImageSrc(url: string | null): string {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, '') || '';
+  return base ? `${base}${url.startsWith('/') ? '' : '/'}${url}` : url;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: 'homeTitle',
+    descriptionKey: 'homeDescription',
+    path: '',
+  });
 }
 
 export default async function HomePage({ params }: Props) {
@@ -197,8 +215,8 @@ export default async function HomePage({ params }: Props) {
                   {post.cover_image && (
                     <div className="relative aspect-video">
                       <Image
-                        src={post.cover_image}
-                        alt=""
+                        src={getImageSrc(post.cover_image) || post.cover_image}
+                        alt={post.title}
                         fill
                         className="object-cover transition-transform group-hover:scale-105"
                         sizes="(max-width: 640px) 100vw, 33vw"

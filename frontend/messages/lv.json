@@ -1,4 +1,24 @@
 {
+  "seo": {
+    "defaultTitle": "Olegs Suvorovs | Metināšanas inženieris",
+    "defaultDescription": "Metināšanas inženiera portfolio, tehniskā bloga un inženiertehnikas kalkulatori. MIG/MAG, TIG metināšana. Aizsarggāzes. Grāmatas \"MAG/MIG metināšana\" autors.",
+    "homeTitle": "Olegs Suvorovs | Metināšanas inženieris",
+    "homeDescription": "Metināšanas inženieris ar pieredzi MIG/MAG, TIG un MMA. Eksperts aizsarggāzēs. Grāmatas \"MAG/MIG metināšana\" autors. Inženiertehnikas kalkulatori.",
+    "aboutTitle": "Par mani | Olegs Suvorovs — metināšanas inženieris",
+    "aboutDescription": "Biogrāfija, izglītība un kvalifikācijas metināšanas inženiera Oļega Suvorova. MMA/MAG, TIG sertifikāti.",
+    "experienceTitle": "Profesionālā pieredze | Olegs Suvorovs",
+    "experienceDescription": "Karjera: Elme Messer Gaas, BUTS apmācības centrs. Metināšanas inženiera un instruktora pieredze.",
+    "bookTitle": "Grāmata \"MAG/MIG metināšana\" | Olegs Suvorovs",
+    "bookDescription": "Vadība par MAG/MIG metināšanu: iekārtu izvēle, aizsarggāze, metināšanas metodes. 2024. Kontakts iegādei.",
+    "toolsTitle": "Inženiertehnikas kalkulatori | Metināšanas rīki",
+    "toolsDescription": "Profesionāli kalkulatori: siltuma ievade, gāzes plūsma, aizsarggāze, gāzu griešana, metināšanas izmaksas, metināšanas parametri.",
+    "knowledgeTitle": "Metināšanas zināšanu bāze | Raksti",
+    "knowledgeDescription": "Strukturēta zināšanu bāze: MIG/MAG, TIG, aizsarggāzes, gāzu griešana, metināšanas metalurģija, metināšanas defekti.",
+    "blogTitle": "Tehniskais blogs | Metināšanas raksti",
+    "blogDescription": "Tehniskie raksti par metināšanu, aizsarggāzēm, iekārtām un procesiem. Ekspertu materiāli no metināšanas inženiera.",
+    "contactTitle": "Kontakti | Olegs Suvorovs",
+    "contactDescription": "Sazināties ar metināšanas inženieri Olegu Suvorovu. Email, LinkedIn, YouTube."
+  },
   "footer": {
     "tagline": "Metināšanas inženieris | Eksperts MIG/MAG, TIG, aizsarggāzes",
     "contact": "Kontakts",
@@ -9,6 +29,7 @@
     "experience": "Pieredze",
     "book": "Grāmata",
     "tools": "Inženiertehnikas kalkulatori",
+    "knowledge": "Zināšanu bāze",
     "blog": "Blogs",
     "contactLink": "Kontakti",
     "rights": "Visas tiesības aizsargātas."
@@ -19,6 +40,7 @@
     "experience": "Pieredze",
     "book": "Grāmata",
     "tools": "Inženiertehnikas kalkulatori",
+    "knowledge": "Zināšanu bāze",
     "blog": "Blogs",
     "contact": "Kontakti"
   },
@@ -48,6 +70,8 @@
   },
   "about": {
     "title": "Par mani",
+    "photoAlt": "Olegs Suvorovs, metināšanas inženieris",
+    "workPhotoAlt": "Fotogrāfija no darba",
     "bio": "Biogrāfija",
     "education": "Izglītība",
     "qualifications": "Profesionālās kvalifikācijas",
@@ -141,6 +165,30 @@
       "voltage": "Spriegums",
       "travelSpeed": "Metināšanas ātrums"
     }
+  },
+  "knowledge": {
+    "title": "Metināšanas zināšanu bāze",
+    "description": "Strukturēta zināšanu bāze: raksti par MIG/MAG, TIG, aizsarggāzēm, gāzu griešanu, metināšanas metalurģiju un defektiem.",
+    "migMagWelding": "MIG/MAG metināšana",
+    "tigWelding": "TIG metināšana",
+    "shieldingGases": "Aizsarggāzes",
+    "gasCutting": "Gāzu griešana",
+    "weldingMetallurgy": "Metināšanas metalurģija",
+    "weldingDefects": "Metināšanas defekti",
+    "noArticles": "Šajā sadaļā vēl nav rakstu.",
+    "viewAllInCategory": "Visus rakstus sadaļā"
+  },
+  "blog": {
+    "title": "Blogs",
+    "description": "Tehniskie raksti par metināšanu, aizsarggāzēm, iekārtām un procesiem.",
+    "allCategories": "Visi",
+    "noArticles": "Rakstu vēl nav.",
+    "pagination": "Lapdales navigācija",
+    "previous": "Atpakaļ",
+    "next": "Tālāk",
+    "pageOf": "Lapa {current} no {total}",
+    "backToBlog": "Atpakaļ uz blogu",
+    "relatedPosts": "Līdzīgi raksti"
   },
   "book": {
     "title": "MAG/MIG metināšana",

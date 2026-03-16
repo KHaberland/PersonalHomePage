@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getTools } from '@/lib/api';
 import type { Calculator } from '@/lib/api-types';
+import { createPageMetadata } from '@/lib/metadata';
 
 const fallbackTools: Omit<Calculator, 'id' | 'created_at'>[] = [
   {
@@ -40,6 +41,16 @@ const fallbackTools: Omit<Calculator, 'id' | 'created_at'>[] = [
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: 'toolsTitle',
+    descriptionKey: 'toolsDescription',
+    path: '/tools',
+  });
+}
 
 export default async function ToolsPage({ params }: Props) {
   const { locale } = await params;

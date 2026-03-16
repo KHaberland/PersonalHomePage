@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getBook } from '@/lib/api';
+import { createPageMetadata } from '@/lib/metadata';
 
 const defaultCover = '/images/photos/DSC_0222_optimized.jpg';
 
@@ -12,6 +13,16 @@ type Props = {
 
 function langFromLocale(locale: string): 'en' | 'ru' | 'lv' {
   return locale === 'en' || locale === 'ru' || locale === 'lv' ? locale : 'en';
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: 'bookTitle',
+    descriptionKey: 'bookDescription',
+    path: '/book',
+  });
 }
 
 export default async function BookPage({ params }: Props) {

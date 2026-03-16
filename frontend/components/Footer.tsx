@@ -104,6 +104,12 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
             {t('tools')}
           </Link>
           <Link
+            href="/knowledge"
+            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
+          >
+            {t('knowledge')}
+          </Link>
+          <Link
             href="/blog"
             className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
           >

@@ -1,10 +1,22 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { getBaseUrl, SITE_NAME } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Oleg Suvorov | Welding Engineer',
+  metadataBase: new URL(getBaseUrl()),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
   description:
-    'Professional welding engineer portfolio, technical blog, and engineering calculators',
+    'Professional welding engineer portfolio, technical blog, and engineering calculators. MIG/MAG, TIG welding. Shielding gases.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default function RootLayout({

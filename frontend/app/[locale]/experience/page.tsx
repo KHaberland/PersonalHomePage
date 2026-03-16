@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import { createPageMetadata } from '@/lib/metadata';
 
 const experiences = [
   { key: 'elme', order: 1 },
@@ -17,6 +18,16 @@ const experiencePhotos = [
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: 'experienceTitle',
+    descriptionKey: 'experienceDescription',
+    path: '/experience',
+  });
+}
 
 export default async function ExperiencePage({ params }: Props) {
   const { locale } = await params;
@@ -71,7 +82,7 @@ export default async function ExperiencePage({ params }: Props) {
             >
               <Image
                 src={`/images/photos/${name}`}
-                alt=""
+                alt={t('photosTitle')}
                 fill
                 className="object-cover"
                 sizes="(max-width: 640px) 100vw, 50vw"

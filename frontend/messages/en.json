@@ -1,4 +1,24 @@
 {
+  "seo": {
+    "defaultTitle": "Oleg Suvorov | Welding Engineer",
+    "defaultDescription": "Professional welding engineer portfolio, technical blog, and engineering calculators. MIG/MAG, TIG welding. Shielding gases. Author of MAG/MIG welding book.",
+    "homeTitle": "Oleg Suvorov | Welding Engineer",
+    "homeDescription": "Welding engineer with extensive experience in MIG/MAG, TIG, and MMA. Expert in shielding gases. Author of MAG/MIG welding book. Engineering calculators.",
+    "aboutTitle": "About Oleg Suvorov | Welding Engineer",
+    "aboutDescription": "Biography, education and professional qualifications of welding engineer Oleg Suvorov. MMA/MAG, TIG certifications.",
+    "experienceTitle": "Professional Experience | Oleg Suvorov",
+    "experienceDescription": "Career timeline: Elme Messer Gaas, BUTS training center. Welding engineer and instructor experience.",
+    "bookTitle": "MAG/MIG Welding Book | Oleg Suvorov",
+    "bookDescription": "Comprehensive guide to MAG/MIG welding: equipment selection, shielding gas, welding methods. 2024. Contact for purchase.",
+    "toolsTitle": "Engineering Calculators | Welding Tools",
+    "toolsDescription": "Professional welding calculators: heat input, gas flow, shielding gas, gas cutting, welding cost, welding parameters.",
+    "knowledgeTitle": "Welding Knowledge Base | Articles",
+    "knowledgeDescription": "Structured knowledge base: MIG/MAG, TIG, shielding gases, gas cutting, welding metallurgy, welding defects.",
+    "blogTitle": "Technical Blog | Welding Articles",
+    "blogDescription": "Technical articles on welding, shielding gases, equipment and processes. Expert insights from welding engineer.",
+    "contactTitle": "Contact | Oleg Suvorov",
+    "contactDescription": "Contact welding engineer Oleg Suvorov. Email, LinkedIn, YouTube."
+  },
   "footer": {
     "tagline": "Welding Engineer | Expert in MIG/MAG, TIG, Shielding Gases",
     "contact": "Contact",
@@ -9,6 +29,7 @@
     "experience": "Experience",
     "book": "Book",
     "tools": "Engineering Tools",
+    "knowledge": "Welding Knowledge",
     "blog": "Blog",
     "contactLink": "Contact",
     "rights": "All rights reserved."
@@ -19,6 +40,7 @@
     "experience": "Experience",
     "book": "Book",
     "tools": "Engineering Tools",
+    "knowledge": "Welding Knowledge",
     "blog": "Blog",
     "contact": "Contact"
   },
@@ -48,6 +70,8 @@
   },
   "about": {
     "title": "About Me",
+    "photoAlt": "Oleg Suvorov, welding engineer",
+    "workPhotoAlt": "Work photo",
     "bio": "Biography",
     "education": "Education",
     "qualifications": "Professional Qualifications",
@@ -141,6 +165,30 @@
       "voltage": "Voltage",
       "travelSpeed": "Travel speed"
     }
+  },
+  "knowledge": {
+    "title": "Welding Knowledge Base",
+    "description": "Structured knowledge base: articles on MIG/MAG, TIG, shielding gases, gas cutting, welding metallurgy and defects.",
+    "migMagWelding": "MIG/MAG welding",
+    "tigWelding": "TIG welding",
+    "shieldingGases": "Shielding gases",
+    "gasCutting": "Gas cutting",
+    "weldingMetallurgy": "Welding metallurgy",
+    "weldingDefects": "Welding defects",
+    "noArticles": "No articles in this section yet.",
+    "viewAllInCategory": "View all in category"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Technical articles on welding, shielding gases, equipment and processes.",
+    "allCategories": "All",
+    "noArticles": "No articles yet.",
+    "pagination": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {current} of {total}",
+    "backToBlog": "Back to blog",
+    "relatedPosts": "Related articles"
   },
   "book": {
     "title": "MAG/MIG welding",

@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getAbout } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
+import { createPageMetadata } from '@/lib/metadata';
 
 const diplomas = [
   { file: 'Bakalaura_diploms01.pdf', labelKey: 'bachelor' },
@@ -30,6 +31,16 @@ function langFromLocale(locale: string): Lang {
     : 'en';
 }
 
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: 'aboutTitle',
+    descriptionKey: 'aboutDescription',
+    path: '/about',
+  });
+}
+
 export default async function AboutPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -54,7 +65,7 @@ export default async function AboutPage({ params }: Props) {
         <div className="relative aspect-square overflow-hidden rounded-lg border border-[#30363d]">
           <Image
             src={photo}
-            alt="Oleg Suvorov"
+            alt={t('photoAlt')}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -134,7 +145,7 @@ export default async function AboutPage({ params }: Props) {
           >
             <Image
               src={`/images/photos/${name}`}
-              alt=""
+              alt={t('workPhotoAlt')}
               fill
               className="object-cover"
               sizes="(max-width: 640px) 50vw, 25vw"
