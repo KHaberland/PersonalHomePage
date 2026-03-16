@@ -1,0 +1,152 @@
+{
+  "footer": {
+    "tagline": "Welding Engineer | Expert in MIG/MAG, TIG, Shielding Gases",
+    "contact": "Contact",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "book": "Book",
+    "tools": "Engineering Tools",
+    "blog": "Blog",
+    "contactLink": "Contact",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "book": "Book",
+    "tools": "Engineering Tools",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Oleg Suvorov",
+    "subtitle": "Welding Engineer",
+    "heroTitle": "Welding Engineer & Expert",
+    "heroSubtitle": "MIG/MAG, TIG welding. Shielding gases. Author of \"MAG/MIG welding\" book.",
+    "aboutTitle": "About the Specialist",
+    "aboutText": "Welding engineer with extensive experience in MIG/MAG, TIG, and MMA processes. Expert in shielding gases and welding equipment.",
+    "competenciesTitle": "Key Competencies",
+    "competency1": "MIG/MAG welding technology",
+    "competency2": "Shielding gases selection",
+    "competency3": "Welding equipment",
+    "competency4": "Gas cutting",
+    "competency5": "Welding metallurgy",
+    "experienceTitle": "Professional Experience",
+    "bookTitle": "Book: MAG/MIG welding",
+    "bookDescription": "From equipment selection to shielding gas and welding methods. 2024.",
+    "bookCta": "Learn more",
+    "toolsTitle": "Engineering Calculators",
+    "toolsDescription": "Professional calculators for welding engineers",
+    "toolsCta": "View all tools",
+    "blogTitle": "Latest Articles",
+    "blogCta": "Read blog",
+    "contactTitle": "Contact"
+  },
+  "about": {
+    "title": "About Me",
+    "bio": "Biography",
+    "education": "Education",
+    "qualifications": "Professional Qualifications",
+    "diplomas": "Diplomas & Certifications",
+    "bachelor": "Bachelor's degree",
+    "master": "Master's degree (RTU)",
+    "mma_mag": "MMA/MAG Welding",
+    "tig": "TIG Welding"
+  },
+  "experience": {
+    "title": "Professional Experience",
+    "photosTitle": "Photos from work",
+    "elme": {
+      "company": "Elme Messer Gaas",
+      "role": "Welding Engineer",
+      "period": "2015 — present"
+    },
+    "buts": {
+      "company": "BUTS training center",
+      "role": "Welding instructor",
+      "period": "2013 — 2015"
+    },
+    "production": {
+      "company": "Production experience",
+      "role": "Welder",
+      "period": "Until 2013"
+    }
+  },
+  "calculators": {
+    "calculate": "Calculate",
+    "calculating": "Calculating…",
+    "errorInvalid": "Enter valid numbers.",
+    "errorSpeedPositive": "Travel speed must be > 0.",
+    "errorFlowPositive": "Flow rate must be > 0.",
+    "errorWireDiameter": "Enter valid wire diameter.",
+    "errorPlateThickness": "Enter valid plate thickness.",
+    "errorCylinderVolume": "Cylinder volume must be > 0.",
+    "errorCalculationFailed": "Calculation failed",
+    "heatInput": {
+      "title": "Heat Input Calculator",
+      "voltage": "Voltage (V)",
+      "current": "Current (A)",
+      "travelSpeed": "Travel speed (mm/min)",
+      "result": "Heat input"
+    },
+    "gasFlow": {
+      "title": "Gas Flow Calculator",
+      "flowRate": "Flow rate (L/min)",
+      "weldingTime": "Welding time (min)",
+      "cylinderVolume": "Cylinder volume (L)",
+      "consumption": "Gas consumption",
+      "cylinderDuration": "Cylinder duration"
+    },
+    "shieldingGas": {
+      "title": "Shielding Gas Calculator",
+      "wireDiameter": "Wire diameter (mm)",
+      "material": "Material",
+      "process": "Process",
+      "flowRange": "Recommended flow",
+      "typical": "Typical"
+    },
+    "gasCutting": {
+      "title": "Gas Cutting Calculator",
+      "plateThickness": "Plate thickness (mm)",
+      "gasType": "Gas type",
+      "cuttingSpeed": "Cutting speed (m/min, optional)",
+      "cuttingSpeedPlaceholder": "Optional",
+      "o2Pressure": "O₂ pressure",
+      "fuelFlow": "Fuel flow"
+    },
+    "weldingCost": {
+      "title": "Welding Cost Calculator",
+      "wirePrice": "Wire price (per kg)",
+      "gasPrice": "Gas price (per cylinder)",
+      "cylinderVolume": "Cylinder volume (L)",
+      "depositionRate": "Deposition rate (kg/h)",
+      "weldingTime": "Welding time (h)",
+      "wireConsumption": "Wire consumption",
+      "gasConsumption": "Gas consumption",
+      "cylindersUsed": "Cylinders used",
+      "wireCost": "Wire cost",
+      "gasCost": "Gas cost",
+      "totalCost": "Total cost"
+    },
+    "weldingParameters": {
+      "title": "Welding Parameters Calculator",
+      "plateThickness": "Plate thickness (mm)",
+      "jointType": "Joint type",
+      "wireDiameter": "Wire diameter (mm)",
+      "current": "Current",
+      "voltage": "Voltage",
+      "travelSpeed": "Travel speed"
+    }
+  },
+  "book": {
+    "title": "MAG/MIG welding",
+    "subtitle": "From equipment selection to shielding gas and welding methods",
+    "year": "2024",
+    "description": "A comprehensive guide to MAG/MIG welding: from choosing the right equipment and shielding gas to mastering welding techniques. Written by a practicing welding engineer with years of experience.",
+    "cta": "Contact for purchase"
+  }
+}

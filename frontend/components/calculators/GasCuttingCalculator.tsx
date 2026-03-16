@@ -1,0 +1,109 @@
+'use client';
+
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { calculateGasCutting } from '@/lib/api';
+
+export function GasCuttingCalculator() {
+  const t = useTranslations('calculators');
+  const [plateThickness, setPlateThickness] = useState('');
+  const [gasType, setGasType] = useState('acetylene');
+  const [cuttingSpeed, setCuttingSpeed] = useState('');
+  const [result, setResult] = useState<{
+    o2_pressure_bar: number;
+    fuel_flow_l_h: number;
+    cutting_speed_m_min?: number | null;
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setResult(null);
+    const pt = parseFloat(plateThickness);
+    if (isNaN(pt) || pt <= 0) {
+      setError(t('errorPlateThickness'));
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await calculateGasCutting({
+        plate_thickness_mm: pt,
+        gas_type: gasType,
+        cutting_speed_m_min: cuttingSpeed
+          ? parseFloat(cuttingSpeed)
+          : undefined,
+      });
+      setResult(res);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : t('errorCalculationFailed')
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label className="block text-sm font-medium text-[#e6edf3]">
+          {t('gasCutting.plateThickness')}
+        </label>
+        <input
+          type="number"
+          step="0.1"
+          value={plateThickness}
+          onChange={(e) => setPlateThickness(e.target.value)}
+          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-[#e6edf3]">
+          {t('gasCutting.gasType')}
+        </label>
+        <select
+          value={gasType}
+          onChange={(e) => setGasType(e.target.value)}
+          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+        >
+          <option value="acetylene">Acetylene</option>
+          <option value="propane">Propane</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-[#e6edf3]">
+          {t('gasCutting.cuttingSpeed')}
+        </label>
+        <input
+          type="number"
+          step="0.1"
+          value={cuttingSpeed}
+          onChange={(e) => setCuttingSpeed(e.target.value)}
+          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          placeholder={t('gasCutting.cuttingSpeedPlaceholder')}
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="rounded bg-[#f97316] px-4 py-2 font-medium text-white hover:bg-[#ea580c] disabled:opacity-50"
+      >
+        {loading ? t('calculating') : t('calculate')}
+      </button>
+      {error && <p className="text-red-400">{error}</p>}
+      {result && (
+        <div className="space-y-2 rounded-lg border border-[#30363d] bg-[#161b22] p-4">
+          <p className="text-[#f97316]">
+            {t('gasCutting.o2Pressure')}: {result.o2_pressure_bar} bar
+          </p>
+          <p className="text-[#f97316]">
+            {t('gasCutting.fuelFlow')}: {result.fuel_flow_l_h} L/h
+          </p>
+        </div>
+      )}
+    </form>
+  );
+}

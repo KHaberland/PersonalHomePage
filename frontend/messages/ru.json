@@ -1,0 +1,152 @@
+{
+  "footer": {
+    "tagline": "Инженер по сварке | Эксперт MIG/MAG, TIG, защитные газы",
+    "contact": "Контакт",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "home": "Главная",
+    "about": "Обо мне",
+    "experience": "Опыт",
+    "book": "Книга",
+    "tools": "Инженерные калькуляторы",
+    "blog": "Блог",
+    "contactLink": "Контакты",
+    "rights": "Все права защищены."
+  },
+  "common": {
+    "home": "Главная",
+    "about": "Обо мне",
+    "experience": "Опыт",
+    "book": "Книга",
+    "tools": "Инженерные калькуляторы",
+    "blog": "Блог",
+    "contact": "Контакты"
+  },
+  "home": {
+    "title": "Олег Суворов",
+    "subtitle": "Инженер по сварке",
+    "heroTitle": "Инженер по сварке и эксперт",
+    "heroSubtitle": "Сварка MIG/MAG, TIG. Защитные газы. Автор книги «Сварка MAG/MIG».",
+    "aboutTitle": "О специалисте",
+    "aboutText": "Инженер по сварке с большим опытом в процессах MIG/MAG, TIG и MMA. Эксперт по защитным газам и сварочному оборудованию.",
+    "competenciesTitle": "Ключевые компетенции",
+    "competency1": "Технология сварки MIG/MAG",
+    "competency2": "Подбор защитных газов",
+    "competency3": "Сварочное оборудование",
+    "competency4": "Газовая резка",
+    "competency5": "Сварочная металлургия",
+    "experienceTitle": "Профессиональный опыт",
+    "bookTitle": "Книга: Сварка MAG/MIG",
+    "bookDescription": "От выбора аппарата до защитного газа и методов сварки. 2024.",
+    "bookCta": "Подробнее",
+    "toolsTitle": "Инженерные калькуляторы",
+    "toolsDescription": "Профессиональные калькуляторы для инженеров по сварке",
+    "toolsCta": "Все калькуляторы",
+    "blogTitle": "Последние статьи",
+    "blogCta": "Читать блог",
+    "contactTitle": "Контакты"
+  },
+  "about": {
+    "title": "Обо мне",
+    "bio": "Биография",
+    "education": "Образование",
+    "qualifications": "Профессиональные квалификации",
+    "diplomas": "Дипломы и сертификаты",
+    "bachelor": "Бакалавр",
+    "master": "Магистр (РТУ)",
+    "mma_mag": "Сварка MMA/MAG",
+    "tig": "Сварка TIG"
+  },
+  "experience": {
+    "title": "Профессиональный опыт",
+    "photosTitle": "Фотографии с работы",
+    "elme": {
+      "company": "Elme Messer Gaas",
+      "role": "Инженер по сварке",
+      "period": "2015 — настоящее время"
+    },
+    "buts": {
+      "company": "Учебный центр BUTS",
+      "role": "Инструктор по сварке",
+      "period": "2013 — 2015"
+    },
+    "production": {
+      "company": "Производственный опыт",
+      "role": "Сварщик",
+      "period": "До 2013"
+    }
+  },
+  "calculators": {
+    "calculate": "Рассчитать",
+    "calculating": "Расчёт…",
+    "errorInvalid": "Введите корректные числа.",
+    "errorSpeedPositive": "Скорость сварки должна быть > 0.",
+    "errorFlowPositive": "Расход газа должен быть > 0.",
+    "errorWireDiameter": "Введите корректный диаметр проволоки.",
+    "errorPlateThickness": "Введите корректную толщину листа.",
+    "errorCylinderVolume": "Объём баллона должен быть > 0.",
+    "errorCalculationFailed": "Ошибка расчёта",
+    "heatInput": {
+      "title": "Калькулятор тепловложения",
+      "voltage": "Напряжение (В)",
+      "current": "Ток (А)",
+      "travelSpeed": "Скорость сварки (мм/мин)",
+      "result": "Тепловложение"
+    },
+    "gasFlow": {
+      "title": "Калькулятор расхода газа",
+      "flowRate": "Расход газа (л/мин)",
+      "weldingTime": "Время сварки (мин)",
+      "cylinderVolume": "Объём баллона (л)",
+      "consumption": "Расход газа",
+      "cylinderDuration": "Время работы баллона"
+    },
+    "shieldingGas": {
+      "title": "Калькулятор защитного газа",
+      "wireDiameter": "Диаметр проволоки (мм)",
+      "material": "Материал",
+      "process": "Процесс",
+      "flowRange": "Рекомендуемый расход",
+      "typical": "Типичный"
+    },
+    "gasCutting": {
+      "title": "Калькулятор газовой резки",
+      "plateThickness": "Толщина листа (мм)",
+      "gasType": "Тип газа",
+      "cuttingSpeed": "Скорость резки (м/мин, опционально)",
+      "cuttingSpeedPlaceholder": "Опционально",
+      "o2Pressure": "Давление O₂",
+      "fuelFlow": "Расход топлива"
+    },
+    "weldingCost": {
+      "title": "Калькулятор стоимости сварки",
+      "wirePrice": "Цена проволоки (за кг)",
+      "gasPrice": "Цена газа (за баллон)",
+      "cylinderVolume": "Объём баллона (л)",
+      "depositionRate": "Скорость наплавки (кг/ч)",
+      "weldingTime": "Время сварки (ч)",
+      "wireConsumption": "Расход проволоки",
+      "gasConsumption": "Расход газа",
+      "cylindersUsed": "Баллонов использовано",
+      "wireCost": "Стоимость проволоки",
+      "gasCost": "Стоимость газа",
+      "totalCost": "Общая стоимость"
+    },
+    "weldingParameters": {
+      "title": "Калькулятор параметров сварки",
+      "plateThickness": "Толщина листа (мм)",
+      "jointType": "Тип соединения",
+      "wireDiameter": "Диаметр проволоки (мм)",
+      "current": "Ток",
+      "voltage": "Напряжение",
+      "travelSpeed": "Скорость сварки"
+    }
+  },
+  "book": {
+    "title": "Сварка MAG/MIG",
+    "subtitle": "От выбора аппарата до защитного газа и методов сварки",
+    "year": "2024",
+    "description": "Подробное руководство по сварке MAG/MIG: от выбора оборудования и защитного газа до освоения методов сварки. Написано практикующим инженером по сварке с многолетним опытом.",
+    "cta": "Связаться для приобретения"
+  }
+}

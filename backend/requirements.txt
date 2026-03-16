@@ -1,0 +1,16 @@
+# Django и зависимости
+Django>=5.0,<6.0
+djangorestframework>=3.14,<4.0
+django-cors-headers>=4.3,<5.0
+psycopg2-binary>=2.9,<3.0
+Pillow>=11.0
+django-storages[s3]>=1.14,<2.0
+django-filter>=23.5,<24.0
+djangorestframework-simplejwt>=5.3,<6.0
+django-ckeditor-5>=0.2.0
+python-dotenv>=1.0,<2.0
+dj-database-url>=2.1,<3.0
+
+# Линтеры и форматирование
+black>=24.0.0
+flake8>=7.0.0
