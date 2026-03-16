@@ -3,10 +3,37 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getTools } from '@/lib/api';
 import {
-  getCalculatorComponent,
   isCalculatorSlug,
+  type CalculatorSlug,
 } from '@/components/calculators';
 import { createPageMetadata } from '@/lib/metadata';
+
+/** Динамическая загрузка калькуляторов для code splitting */
+async function loadCalculator(slug: CalculatorSlug) {
+  switch (slug) {
+    case 'heat-input':
+      return (await import('@/components/calculators/HeatInputCalculator'))
+        .HeatInputCalculator;
+    case 'gas-flow':
+      return (await import('@/components/calculators/GasFlowCalculator'))
+        .GasFlowCalculator;
+    case 'shielding-gas':
+      return (await import('@/components/calculators/ShieldingGasCalculator'))
+        .ShieldingGasCalculator;
+    case 'gas-cutting':
+      return (await import('@/components/calculators/GasCuttingCalculator'))
+        .GasCuttingCalculator;
+    case 'welding-cost':
+      return (await import('@/components/calculators/WeldingCostCalculator'))
+        .WeldingCostCalculator;
+    case 'welding-parameters':
+      return (
+        await import('@/components/calculators/WeldingParametersCalculator')
+      ).WeldingParametersCalculator;
+    default:
+      return null;
+  }
+}
 
 export function generateStaticParams() {
   return [
@@ -63,7 +90,8 @@ export default async function CalculatorPage({ params }: Props) {
     apiTools.find((t) => t.slug === slug) ??
     fallbackTools.find((t) => t.slug === slug);
 
-  const CalculatorComponent = getCalculatorComponent(slug);
+  const CalculatorComponent = await loadCalculator(slug);
+  if (!CalculatorComponent) notFound();
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">

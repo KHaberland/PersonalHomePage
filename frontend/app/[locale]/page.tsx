@@ -141,6 +141,8 @@ export default async function HomePage({ params }: Props) {
                   fill
                   className="object-cover"
                   sizes="144px"
+                  loading="lazy"
+                  fetchPriority="low"
                   unoptimized={book.cover_image.startsWith('http')}
                 />
               </div>
@@ -220,6 +222,8 @@ export default async function HomePage({ params }: Props) {
                         fill
                         className="object-cover transition-transform group-hover:scale-105"
                         sizes="(max-width: 640px) 100vw, 33vw"
+                        loading="lazy"
+                        fetchPriority="low"
                         unoptimized={post.cover_image.startsWith('http')}
                       />
                     </div>

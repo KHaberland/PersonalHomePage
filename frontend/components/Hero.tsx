@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 const HERO_VIDEO_URL = process.env.NEXT_PUBLIC_HERO_VIDEO_URL;
 const HERO_VIDEO_POSTER = process.env.NEXT_PUBLIC_HERO_VIDEO_POSTER;
+const HERO_VIDEO_WEBM = process.env.NEXT_PUBLIC_HERO_VIDEO_WEBM;
 
 export function Hero() {
   const t = useTranslations('home');
@@ -18,9 +19,13 @@ export function Hero() {
             muted
             loop
             playsInline
+            preload="metadata"
             poster={HERO_VIDEO_POSTER || undefined}
             className="absolute inset-0 h-full w-full object-cover"
           >
+            {HERO_VIDEO_WEBM && (
+              <source src={HERO_VIDEO_WEBM} type="video/webm" />
+            )}
             <source src={HERO_VIDEO_URL} type="video/mp4" />
           </video>
         ) : (
