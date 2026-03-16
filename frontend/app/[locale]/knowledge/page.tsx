@@ -73,9 +73,9 @@ export default async function KnowledgePage({ params }: Props) {
   const categoryMap = new Map(categories.map((c) => [c.slug, c]));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="mb-4 text-3xl font-bold text-[#f97316]">{t('title')}</h1>
-      <p className="mb-12 text-[#e6edf3]/80">{t('description')}</p>
+    <div className="container-wide section">
+      <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
+      <p className="mb-12 text-foreground/80">{t('description')}</p>
 
       <div className="space-y-16">
         {KNOWLEDGE_SECTIONS.map(({ slug, translationKey }, idx) => {
@@ -84,8 +84,8 @@ export default async function KnowledgePage({ params }: Props) {
           const sectionTitle = t(translationKey);
 
           return (
-            <section key={slug} className="border-t border-[#30363d] pt-8">
-              <h2 className="mb-6 text-2xl font-bold text-[#f97316]">
+            <section key={slug} className="border-t border-border pt-8">
+              <h2 className="heading-2 mb-6 text-accent-orange">
                 {sectionTitle}
               </h2>
               {posts.length > 0 ? (
@@ -94,7 +94,7 @@ export default async function KnowledgePage({ params }: Props) {
                     <Link
                       key={post.id}
                       href={`/blog/${post.slug}`}
-                      className="group block overflow-hidden rounded-lg border border-[#30363d] bg-[#161b22] transition-colors hover:border-[#f97316]"
+                      className="card group block overflow-hidden"
                     >
                       {post.cover_image && (
                         <div className="relative aspect-video">
@@ -111,20 +111,20 @@ export default async function KnowledgePage({ params }: Props) {
                         </div>
                       )}
                       <div className="p-4">
-                        <h3 className="font-semibold text-[#e6edf3] group-hover:text-[#f97316]">
+                        <h3 className="heading-3 text-foreground group-hover:text-accent-orange">
                           {post.title}
                         </h3>
-                        <p className="mt-1 line-clamp-2 text-sm text-[#e6edf3]/70">
+                        <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
                           {post.excerpt}
                         </p>
-                        <p className="mt-2 text-xs text-[#e6edf3]/50">
+                        <p className="mt-2 text-xs text-foreground/50">
                           {post.published_at
                             ? new Date(post.published_at).toLocaleDateString(
                                 locale
                               )
                             : ''}
                           {category && (
-                            <span className="ml-2 text-[#f97316]">
+                            <span className="ml-2 text-accent-orange">
                               · {getCategoryName(category, lang)}
                             </span>
                           )}
@@ -134,13 +134,13 @@ export default async function KnowledgePage({ params }: Props) {
                   ))}
                 </div>
               ) : (
-                <p className="rounded-lg border border-[#30363d] bg-[#161b22] px-4 py-6 text-[#e6edf3]/60">
+                <p className="card px-4 py-6 text-foreground/60">
                   {t('noArticles')}
                 </p>
               )}
               <Link
                 href={`/blog?category_slug=${slug}`}
-                className="mt-4 inline-block text-sm text-[#f97316] hover:underline"
+                className="link-accent mt-4 inline-block text-sm hover:underline"
               >
                 {t('viewAllInCategory')} →
               </Link>

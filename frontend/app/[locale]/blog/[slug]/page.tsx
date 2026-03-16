@@ -115,7 +115,7 @@ export default async function BlogPostPage({ params }: Props) {
   const coverSrc = getImageSrc(post.cover_image);
 
   return (
-    <article className="mx-auto max-w-4xl px-4 py-12">
+    <article className="container-narrow section">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -124,22 +124,20 @@ export default async function BlogPostPage({ params }: Props) {
       <header className="mb-8">
         <IntlLink
           href="/blog"
-          className="mb-4 inline-block text-sm text-[#f97316] hover:underline"
+          className="link-accent mb-4 inline-block text-sm hover:underline"
         >
           ← {t('backToBlog')}
         </IntlLink>
         {post.category && (
           <IntlLink
             href={`/blog?category_slug=${post.category.slug}`}
-            className="inline-block rounded-full bg-[#f97316]/20 px-3 py-1 text-sm text-[#f97316]"
+            className="inline-block rounded-full bg-accent-orange/20 px-3 py-1 text-sm text-accent-orange"
           >
             {getCategoryName(post.category, lang)}
           </IntlLink>
         )}
-        <h1 className="mt-4 text-3xl font-bold text-[#e6edf3] md:text-4xl">
-          {post.title}
-        </h1>
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#e6edf3]/70">
+        <h1 className="heading-1 mt-4 text-foreground">{post.title}</h1>
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-foreground/70">
           {post.author && <span>{post.author.name}</span>}
           {(post.published_at || post.created_at) && (
             <time dateTime={post.published_at || post.created_at}>
@@ -172,7 +170,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Контент */}
       <div
-        className="blog-content [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[#e6edf3] [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-[#e6edf3] [&_p]:mt-4 [&_p]:text-[#e6edf3]/90 [&_p]:leading-relaxed [&_a]:text-[#f97316] [&_a]:underline [&_a]:hover:no-underline [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mt-1 [&_img]:mt-4 [&_img]:rounded-lg [&_img]:max-w-full"
+        className="blog-content [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_p]:mt-4 [&_p]:text-foreground/90 [&_p]:leading-relaxed [&_a]:text-accent-orange [&_a]:underline [&_a]:hover:no-underline [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mt-1 [&_img]:mt-4 [&_img]:rounded-lg [&_img]:max-w-full"
         dangerouslySetInnerHTML={{ __html: post.content || '' }}
       />
 
@@ -196,7 +194,7 @@ export default async function BlogPostPage({ params }: Props) {
                   />
                 </div>
                 {img.caption && (
-                  <figcaption className="mt-2 text-center text-sm text-[#e6edf3]/60">
+                  <figcaption className="mt-2 text-center text-sm text-foreground/60">
                     {img.caption}
                   </figcaption>
                 )}
@@ -212,7 +210,7 @@ export default async function BlogPostPage({ params }: Props) {
           {post.tags.map((tag) => (
             <span
               key={tag.id}
-              className="rounded border border-[#30363d] bg-[#161b22] px-3 py-1 text-sm text-[#e6edf3]/80"
+              className="card inline-block px-3 py-1 text-sm text-foreground/80"
             >
               {tag.name}
             </span>
@@ -222,8 +220,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Похожие статьи */}
       {relatedPosts.length > 0 && (
-        <section className="mt-16 border-t border-[#30363d] pt-8">
-          <h2 className="mb-6 text-xl font-bold text-[#f97316]">
+        <section className="mt-16 border-t border-border pt-8">
+          <h2 className="heading-2 mb-6 text-accent-orange">
             {t('relatedPosts')}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -231,7 +229,7 @@ export default async function BlogPostPage({ params }: Props) {
               <IntlLink
                 key={related.id}
                 href={`/blog/${related.slug}`}
-                className="group block overflow-hidden rounded-lg border border-[#30363d] bg-[#161b22] transition-colors hover:border-[#f97316]"
+                className="card group block overflow-hidden"
               >
                 {related.cover_image && (
                   <div className="relative aspect-video">
@@ -248,10 +246,10 @@ export default async function BlogPostPage({ params }: Props) {
                   </div>
                 )}
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#e6edf3] group-hover:text-[#f97316]">
+                  <h3 className="heading-3 text-foreground group-hover:text-accent-orange">
                     {related.title}
                   </h3>
-                  <p className="mt-1 line-clamp-2 text-sm text-[#e6edf3]/70">
+                  <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
                     {related.excerpt}
                   </p>
                 </div>

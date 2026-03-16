@@ -71,24 +71,20 @@ export default async function ToolsPage({ params }: Props) {
         }));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="mb-4 text-3xl font-bold text-[#f97316]">
-        {t('toolsTitle')}
-      </h1>
-      <p className="mb-12 text-[#e6edf3]/80">{t('toolsDescription')}</p>
+    <div className="container-wide section">
+      <h1 className="heading-1 mb-4 text-accent-orange">{t('toolsTitle')}</h1>
+      <p className="mb-12 text-foreground/80">{t('toolsDescription')}</p>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {tools.map((tool) => (
           <Link
             key={tool.id}
             href={`/tools/${tool.slug}`}
-            className="block rounded-lg border border-[#30363d] bg-[#161b22] p-6 transition-colors hover:border-[#f97316]"
+            className="card block p-6"
           >
-            <h2 className="text-xl font-semibold text-[#e6edf3]">
-              {tool.name}
-            </h2>
-            <p className="mt-2 text-[#e6edf3]/70">{tool.description}</p>
-            <span className="mt-4 inline-block text-sm text-[#f97316]">
+            <h2 className="heading-3 text-foreground">{tool.name}</h2>
+            <p className="mt-2 text-foreground/70">{tool.description}</p>
+            <span className="link-accent mt-4 inline-block text-sm">
               {t('toolsCta')} →
             </span>
           </Link>

@@ -57,12 +57,12 @@ export default async function AboutPage({ params }: Props) {
   const qualifications = about?.qualifications ?? fallbackQualifications;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="mb-12 text-3xl font-bold text-[#f97316]">{t('title')}</h1>
+    <div className="container-narrow section">
+      <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
 
       <div className="grid gap-12 md:grid-cols-2">
         {/* Фотография */}
-        <div className="relative aspect-square overflow-hidden rounded-lg border border-[#30363d]">
+        <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
           <Image
             src={photo}
             alt={t('photoAlt')}
@@ -76,23 +76,21 @@ export default async function AboutPage({ params }: Props) {
         <div className="space-y-6">
           {/* Биография */}
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-[#e6edf3]">
-              {t('bio')}
-            </h2>
-            <p className="text-[#e6edf3]/80 whitespace-pre-line">{bio}</p>
+            <h2 className="heading-3 mb-3 text-foreground">{t('bio')}</h2>
+            <p className="whitespace-pre-line text-foreground/80">{bio}</p>
           </section>
 
           {/* Образование */}
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-[#e6edf3]">
-              {t('education')}
-            </h2>
-            <p className="text-[#e6edf3]/80 whitespace-pre-line">{education}</p>
+            <h2 className="heading-3 mb-3 text-foreground">{t('education')}</h2>
+            <p className="whitespace-pre-line text-foreground/80">
+              {education}
+            </p>
           </section>
 
           {/* Профессиональные квалификации */}
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-[#e6edf3]">
+            <h2 className="heading-3 mb-3 text-foreground">
               {t('qualifications')}
             </h2>
             <p className="text-[#e6edf3]/80 whitespace-pre-line">
@@ -104,9 +102,7 @@ export default async function AboutPage({ params }: Props) {
 
       {/* Дипломы и сертификаты */}
       <section className="mt-16">
-        <h2 className="mb-6 text-2xl font-semibold text-[#e6edf3]">
-          {t('diplomas')}
-        </h2>
+        <h2 className="heading-2 mb-6 text-foreground">{t('diplomas')}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {diplomas.map(({ file, labelKey }) => (
             <a
@@ -114,16 +110,16 @@ export default async function AboutPage({ params }: Props) {
               href={`/diplomas/${file}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 rounded-lg border border-[#30363d] bg-[#161b22] p-4 transition-colors hover:border-[#f97316] hover:bg-[#161b22]/80"
+              className="card flex flex-col items-center gap-2 p-4"
             >
               <svg
-                className="h-12 w-12 text-[#f97316]"
+                className="h-12 w-12 text-accent-orange"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" />
               </svg>
-              <span className="text-center text-sm text-[#e6edf3]">
+              <span className="text-center text-sm text-foreground">
                 {t(labelKey)}
               </span>
             </a>
@@ -141,7 +137,7 @@ export default async function AboutPage({ params }: Props) {
         ].map((name) => (
           <div
             key={name}
-            className="relative aspect-square overflow-hidden rounded-lg border border-[#30363d]"
+            className="relative aspect-square overflow-hidden rounded-lg border border-border"
           >
             <Image
               src={`/images/photos/${name}`}

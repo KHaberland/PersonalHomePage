@@ -1,13 +1,42 @@
 @import 'tailwindcss';
 
-/* Индустриальный дизайн, тёмный фон — персональный сайт инженера по сварке */
+/* ============================================
+   4.1 Визуальный стиль — индустриальный дизайн
+   Тёмный фон, сварочные акценты (оранжевый, синий)
+   Минимализм, крупная типографика, mobile-first
+   ============================================ */
+
 :root {
-  --background: #0d1117;
+  /* Основные цвета */
+  --background: #0a0c0f;
   --foreground: #e6edf3;
+  --foreground-muted: #8b949e;
+
+  /* Сварочные акценты */
   --accent-orange: #f97316;
+  --accent-orange-hover: #ea580c;
+  --accent-orange-glow: rgba(249, 115, 22, 0.25);
   --accent-blue: #3b82f6;
+  --accent-blue-hover: #2563eb;
+  --accent-blue-glow: rgba(59, 130, 246, 0.2);
+
+  /* Поверхности */
   --surface: #161b22;
+  --surface-elevated: #21262d;
   --border: #30363d;
+  --border-subtle: #21262d;
+
+  /* Типографика — крупные заголовки */
+  --text-h1: clamp(2rem, 5vw, 3.5rem);
+  --text-h2: clamp(1.5rem, 4vw, 2.5rem);
+  --text-h3: clamp(1.25rem, 3vw, 1.75rem);
+  --text-body: clamp(0.9375rem, 1.5vw, 1.125rem);
+  --text-small: 0.875rem;
+
+  /* Отступы секций (mobile-first) */
+  --section-padding-y: clamp(3rem, 8vw, 5rem);
+  --section-padding-x: clamp(1rem, 4vw, 1.5rem);
+  --container-max: 72rem;
 }
 
 @theme inline {
@@ -22,5 +51,135 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  /* Шрифт задаётся через next/font в layout.tsx (Inter) */
+  font-size: var(--text-body);
+  line-height: 1.6;
+}
+
+/* Крупные заголовки — индустриальный стиль */
+.heading-1 {
+  font-size: var(--text-h1);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.heading-2 {
+  font-size: var(--text-h2);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.heading-3 {
+  font-size: var(--text-h3);
+  font-weight: 600;
+}
+
+/* Секции — единообразные отступы */
+.section {
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+  padding-left: var(--section-padding-x);
+  padding-right: var(--section-padding-x);
+}
+
+.container-narrow {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-wide {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Карточки — минималистичный индустриальный стиль */
+.card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 0.5rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 1px var(--accent-orange-glow);
+}
+
+/* Кнопки */
+.btn-primary {
+  background: var(--accent-orange);
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--accent-orange-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--accent-blue-glow);
+  color: var(--foreground);
+}
+
+/* Поля ввода — тёмный индустриальный стиль */
+.input-industrial {
+  background: var(--background);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s;
+}
+
+.input-industrial:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 2px var(--accent-orange-glow);
+}
+
+/* Ссылки с акцентом */
+.link-accent {
+  color: var(--accent-orange);
+  transition: color 0.2s;
+}
+
+.link-accent:hover {
+  color: var(--accent-orange-hover);
+}
+
+/* Градиент для Hero — сварочные цвета */
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    var(--surface) 40%,
+    var(--background) 100%
+  );
+}
+
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 12, 15, 0.6) 0%,
+    rgba(10, 12, 15, 0.85) 100%
+  );
 }

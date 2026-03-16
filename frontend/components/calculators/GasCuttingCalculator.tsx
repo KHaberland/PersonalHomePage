@@ -48,7 +48,7 @@ export function GasCuttingCalculator() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('gasCutting.plateThickness')}
         </label>
         <input
@@ -56,25 +56,25 @@ export function GasCuttingCalculator() {
           step="0.1"
           value={plateThickness}
           onChange={(e) => setPlateThickness(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('gasCutting.gasType')}
         </label>
         <select
           value={gasType}
           onChange={(e) => setGasType(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
         >
           <option value="acetylene">Acetylene</option>
           <option value="propane">Propane</option>
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('gasCutting.cuttingSpeed')}
         </label>
         <input
@@ -82,24 +82,24 @@ export function GasCuttingCalculator() {
           step="0.1"
           value={cuttingSpeed}
           onChange={(e) => setCuttingSpeed(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
           placeholder={t('gasCutting.cuttingSpeedPlaceholder')}
         />
       </div>
       <button
         type="submit"
         disabled={loading}
-        className="rounded bg-[#f97316] px-4 py-2 font-medium text-white hover:bg-[#ea580c] disabled:opacity-50"
+        className="btn-primary disabled:opacity-50"
       >
         {loading ? t('calculating') : t('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
-        <div className="space-y-2 rounded-lg border border-[#30363d] bg-[#161b22] p-4">
-          <p className="text-[#f97316]">
+        <div className="card space-y-2 p-4">
+          <p className="text-accent-orange">
             {t('gasCutting.o2Pressure')}: {result.o2_pressure_bar} bar
           </p>
-          <p className="text-[#f97316]">
+          <p className="text-accent-orange">
             {t('gasCutting.fuelFlow')}: {result.fuel_flow_l_h} L/h
           </p>
         </div>

@@ -47,7 +47,7 @@ export function WeldingParametersCalculator() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('weldingParameters.plateThickness')}
         </label>
         <input
@@ -55,18 +55,18 @@ export function WeldingParametersCalculator() {
           step="0.1"
           value={plateThickness}
           onChange={(e) => setPlateThickness(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('weldingParameters.jointType')}
         </label>
         <select
           value={jointType}
           onChange={(e) => setJointType(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
         >
           <option value="butt">Butt</option>
           <option value="fillet">Fillet</option>
@@ -75,13 +75,13 @@ export function WeldingParametersCalculator() {
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('weldingParameters.wireDiameter')}
         </label>
         <select
           value={wireDiameter}
           onChange={(e) => setWireDiameter(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
         >
           <option value="0.8">0.8</option>
           <option value="1.0">1.0</option>
@@ -98,14 +98,14 @@ export function WeldingParametersCalculator() {
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
-        <div className="space-y-2 rounded-lg border border-[#30363d] bg-[#161b22] p-4">
-          <p className="text-[#f97316]">
+        <div className="card space-y-2 p-4">
+          <p className="text-accent-orange">
             {t('weldingParameters.current')}: {result.current_a} A
           </p>
-          <p className="text-[#f97316]">
+          <p className="text-accent-orange">
             {t('weldingParameters.voltage')}: {result.voltage_v} V
           </p>
-          <p className="text-[#f97316]">
+          <p className="text-accent-orange">
             {t('weldingParameters.travelSpeed')}: {result.travel_speed_mm_min}{' '}
             mm/min
           </p>

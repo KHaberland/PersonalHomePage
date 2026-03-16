@@ -73,31 +73,28 @@ export default async function HomePage({ params }: Props) {
       <Hero />
 
       {/* Краткая информация о специалисте */}
-      <section className="border-t border-[#30363d] bg-[#161b22] px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-6 text-2xl font-bold text-[#f97316]">
+      <section className="section border-t border-border bg-surface">
+        <div className="container-wide">
+          <h2 className="heading-2 mb-6 text-accent-orange">
             {t('aboutTitle')}
           </h2>
-          <p className="max-w-3xl text-lg text-[#e6edf3]/90">
+          <p className="max-w-3xl text-foreground/90">
             {about?.bio ?? t('aboutText')}
           </p>
         </div>
       </section>
 
       {/* Блок ключевых компетенций */}
-      <section className="border-t border-[#30363d] px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 text-2xl font-bold text-[#f97316]">
+      <section className="section border-t border-border">
+        <div className="container-wide">
+          <h2 className="heading-2 mb-8 text-accent-orange">
             {t('competenciesTitle')}
           </h2>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {competencies.map((key) => (
-              <li
-                key={key}
-                className="flex items-center gap-3 rounded-lg border border-[#30363d] bg-[#161b22] px-4 py-3"
-              >
-                <span className="h-2 w-2 shrink-0 rounded-full bg-[#f97316]" />
-                <span className="text-[#e6edf3]">{t(key)}</span>
+              <li key={key} className="card flex items-center gap-3 px-4 py-3">
+                <span className="h-2 w-2 shrink-0 rounded-full bg-accent-orange" />
+                <span className="text-foreground">{t(key)}</span>
               </li>
             ))}
           </ul>
@@ -106,20 +103,20 @@ export default async function HomePage({ params }: Props) {
 
       {/* Краткий опыт (timeline) */}
       {experience.length > 0 && (
-        <section className="border-t border-[#30363d] bg-[#161b22] px-4 py-16">
-          <div className="mx-auto max-w-6xl">
-            <h2 className="mb-8 text-2xl font-bold text-[#f97316]">
+        <section className="section border-t border-border bg-surface">
+          <div className="container-wide">
+            <h2 className="heading-2 mb-8 text-accent-orange">
               {t('experienceTitle')}
             </h2>
             <div className="space-y-4">
               {experience.slice(0, 3).map((exp) => (
                 <div
                   key={exp.id}
-                  className="flex flex-col gap-1 border-l-2 border-[#f97316] pl-4"
+                  className="flex flex-col gap-1 border-l-2 border-accent-orange pl-4"
                 >
-                  <h3 className="font-semibold text-[#e6edf3]">{exp.title}</h3>
-                  <p className="text-[#f97316]">{exp.company}</p>
-                  <p className="text-sm text-[#e6edf3]/70">
+                  <h3 className="heading-3 text-foreground">{exp.title}</h3>
+                  <p className="text-accent-orange">{exp.company}</p>
+                  <p className="text-sm text-foreground/70">
                     {exp.start_year} — {exp.end_year ?? 'present'}
                   </p>
                 </div>
@@ -130,9 +127,9 @@ export default async function HomePage({ params }: Props) {
       )}
 
       {/* Карточка книги */}
-      <section className="border-t border-[#30363d] px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-6 rounded-lg border border-[#30363d] bg-[#161b22] p-6 md:flex-row md:items-center">
+      <section className="section border-t border-border">
+        <div className="container-wide">
+          <div className="card flex flex-col gap-6 p-6 md:flex-row md:items-center">
             {book?.cover_image && (
               <div className="relative h-48 w-36 shrink-0 overflow-hidden rounded">
                 <Image
@@ -148,19 +145,14 @@ export default async function HomePage({ params }: Props) {
               </div>
             )}
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-[#f97316]">
-                {t('bookTitle')}
-              </h2>
-              <p className="mt-2 text-[#e6edf3]/90">
+              <h2 className="heading-3 text-accent-orange">{t('bookTitle')}</h2>
+              <p className="mt-2 text-foreground/90">
                 {book?.description ?? t('bookDescription')}
               </p>
-              <p className="mt-1 text-sm text-[#e6edf3]/70">
+              <p className="mt-1 text-sm text-foreground/70">
                 {book?.year ?? '2024'}
               </p>
-              <Link
-                href="/book"
-                className="mt-4 inline-block rounded bg-[#f97316] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#ea580c]"
-              >
+              <Link href="/book" className="btn-primary mt-4 inline-block">
                 {t('bookCta')}
               </Link>
             </div>
@@ -169,22 +161,22 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Карточки инженерных калькуляторов */}
-      <section className="border-t border-[#30363d] bg-[#161b22] px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-2 text-2xl font-bold text-[#f97316]">
+      <section className="section border-t border-border bg-surface">
+        <div className="container-wide">
+          <h2 className="heading-2 mb-2 text-accent-orange">
             {t('toolsTitle')}
           </h2>
-          <p className="mb-8 text-[#e6edf3]/80">{t('toolsDescription')}</p>
+          <p className="mb-8 text-foreground/80">{t('toolsDescription')}</p>
           {tools.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {tools.slice(0, 6).map((tool) => (
                 <Link
                   key={tool.id}
                   href={`/tools/${tool.slug}`}
-                  className="block rounded-lg border border-[#30363d] bg-[#0d1117] p-4 transition-colors hover:border-[#f97316]"
+                  className="card block p-4"
                 >
-                  <h3 className="font-semibold text-[#e6edf3]">{tool.name}</h3>
-                  <p className="mt-1 line-clamp-2 text-sm text-[#e6edf3]/70">
+                  <h3 className="heading-3 text-foreground">{tool.name}</h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
                     {tool.description}
                   </p>
                 </Link>
@@ -193,7 +185,7 @@ export default async function HomePage({ params }: Props) {
           ) : null}
           <Link
             href="/tools"
-            className="mt-6 inline-block text-[#f97316] hover:underline"
+            className="link-accent mt-6 inline-block hover:underline"
           >
             {t('toolsCta')} →
           </Link>
@@ -201,9 +193,9 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Последние статьи блога */}
-      <section className="border-t border-[#30363d] px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 text-2xl font-bold text-[#f97316]">
+      <section className="section border-t border-border">
+        <div className="container-wide">
+          <h2 className="heading-2 mb-8 text-accent-orange">
             {t('blogTitle')}
           </h2>
           {latestPosts.length > 0 ? (
@@ -212,7 +204,7 @@ export default async function HomePage({ params }: Props) {
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="group block overflow-hidden rounded-lg border border-[#30363d] bg-[#161b22] transition-colors hover:border-[#f97316]"
+                  className="card group block overflow-hidden"
                 >
                   {post.cover_image && (
                     <div className="relative aspect-video">
@@ -229,13 +221,13 @@ export default async function HomePage({ params }: Props) {
                     </div>
                   )}
                   <div className="p-4">
-                    <h3 className="font-semibold text-[#e6edf3] group-hover:text-[#f97316]">
+                    <h3 className="heading-3 text-foreground group-hover:text-accent-orange">
                       {post.title}
                     </h3>
-                    <p className="mt-1 line-clamp-2 text-sm text-[#e6edf3]/70">
+                    <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
                       {post.excerpt}
                     </p>
-                    <p className="mt-2 text-xs text-[#e6edf3]/50">
+                    <p className="mt-2 text-xs text-foreground/50">
                       {post.published_at
                         ? new Date(post.published_at).toLocaleDateString(locale)
                         : ''}
@@ -247,7 +239,7 @@ export default async function HomePage({ params }: Props) {
           ) : null}
           <Link
             href="/blog"
-            className="mt-6 inline-block text-[#f97316] hover:underline"
+            className="link-accent mt-6 inline-block hover:underline"
           >
             {t('blogCta')} →
           </Link>
@@ -255,18 +247,15 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Контакты */}
-      <section className="border-t border-[#30363d] bg-[#161b22] px-4 py-16">
-        <div className="mx-auto max-w-6xl text-center">
-          <h2 className="mb-6 text-2xl font-bold text-[#f97316]">
+      <section className="section border-t border-border bg-surface">
+        <div className="container-wide text-center">
+          <h2 className="heading-2 mb-6 text-accent-orange">
             {t('contactTitle')}
           </h2>
           {contact && (
             <div className="flex flex-wrap justify-center gap-6">
               {contact.email && (
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="text-[#e6edf3] hover:text-[#f97316]"
-                >
+                <a href={`mailto:${contact.email}`} className="link-accent">
                   {contact.email}
                 </a>
               )}
@@ -275,7 +264,7 @@ export default async function HomePage({ params }: Props) {
                   href={contact.linkedin_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#e6edf3] hover:text-[#f97316]"
+                  className="link-accent"
                 >
                   LinkedIn
                 </a>
@@ -285,17 +274,14 @@ export default async function HomePage({ params }: Props) {
                   href={contact.youtube_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#e6edf3] hover:text-[#f97316]"
+                  className="link-accent"
                 >
                   YouTube
                 </a>
               )}
             </div>
           )}
-          <Link
-            href="/contact"
-            className="mt-6 inline-block rounded bg-[#f97316] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#ea580c]"
-          >
+          <Link href="/contact" className="btn-primary mt-6 inline-block">
             {t('contactTitle')}
           </Link>
         </div>

@@ -94,11 +94,11 @@ export default async function CalculatorPage({ params }: Props) {
   if (!CalculatorComponent) notFound();
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold text-[#f97316]">
+    <div className="container-narrow section">
+      <h1 className="heading-1 mb-8 text-accent-orange">
         {tool?.name ?? slug}
       </h1>
-      <div className="rounded-lg border border-[#30363d] bg-[#161b22] p-6">
+      <div className="card p-6">
         <CalculatorComponent />
       </div>
     </div>

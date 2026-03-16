@@ -30,25 +30,27 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
     youtubeUrl && { href: youtubeUrl, key: 'youtube' as const },
   ].filter(Boolean) as { href: string; key: 'linkedin' | 'youtube' }[];
 
+  const linkClass =
+    'text-sm text-foreground/80 transition-colors hover:text-accent-orange';
+
   return (
-    <footer className="border-t border-[#30363d] bg-[#161b22]">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+    <footer className="border-t border-border bg-surface">
+      <div className="container-wide px-4 py-12 md:px-6">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-lg font-semibold text-[#f97316]">Oleg Suvorov</p>
-            <p className="mt-1 text-sm text-[#e6edf3]/80">{t('tagline')}</p>
+            <p className="text-lg font-semibold text-accent-orange">
+              Oleg Suvorov
+            </p>
+            <p className="mt-1 text-sm text-foreground/80">{t('tagline')}</p>
           </div>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
             {email && (
               <div>
-                <p className="text-sm font-medium text-[#e6edf3]">
+                <p className="text-sm font-medium text-foreground">
                   {t('contact')}
                 </p>
-                <a
-                  href={`mailto:${email}`}
-                  className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-                >
+                <a href={`mailto:${email}`} className={linkClass}>
                   {email}
                 </a>
               </div>
@@ -61,7 +63,7 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
+                    className={linkClass}
                     aria-label={t(key)}
                   >
                     {socialLinkIcons[key]}
@@ -72,58 +74,34 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
           </div>
         </div>
 
-        <nav className="mt-8 flex flex-wrap gap-6 border-t border-[#30363d] pt-8">
-          <Link
-            href="/"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+        <nav className="mt-8 flex flex-wrap gap-6 border-t border-border pt-8">
+          <Link href="/" className={linkClass}>
             {t('home')}
           </Link>
-          <Link
-            href="/about"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/about" className={linkClass}>
             {t('about')}
           </Link>
-          <Link
-            href="/experience"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/experience" className={linkClass}>
             {t('experience')}
           </Link>
-          <Link
-            href="/book"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/book" className={linkClass}>
             {t('book')}
           </Link>
-          <Link
-            href="/tools"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/tools" className={linkClass}>
             {t('tools')}
           </Link>
-          <Link
-            href="/knowledge"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/knowledge" className={linkClass}>
             {t('knowledge')}
           </Link>
-          <Link
-            href="/blog"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/blog" className={linkClass}>
             {t('blog')}
           </Link>
-          <Link
-            href="/contact"
-            className="text-sm text-[#e6edf3]/80 hover:text-[#f97316] transition-colors"
-          >
+          <Link href="/contact" className={linkClass}>
             {t('contact')}
           </Link>
         </nav>
 
-        <p className="mt-8 text-center text-xs text-[#e6edf3]/50">
+        <p className="mt-8 text-center text-xs text-foreground/50">
           © {new Date().getFullYear()} Oleg Suvorov. {t('rights')}
         </p>
       </div>

@@ -47,7 +47,7 @@ export function GasFlowCalculator() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('gasFlow.flowRate')}
         </label>
         <input
@@ -55,12 +55,12 @@ export function GasFlowCalculator() {
           step="0.1"
           value={flowRate}
           onChange={(e) => setFlowRate(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('gasFlow.weldingTime')}
         </label>
         <input
@@ -68,12 +68,12 @@ export function GasFlowCalculator() {
           step="0.1"
           value={weldingTime}
           onChange={(e) => setWeldingTime(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-[#e6edf3]">
+        <label className="block text-sm font-medium text-foreground">
           {t('gasFlow.cylinderVolume')}
         </label>
         <input
@@ -81,24 +81,24 @@ export function GasFlowCalculator() {
           step="1"
           value={cylinderVolume}
           onChange={(e) => setCylinderVolume(e.target.value)}
-          className="mt-1 w-full rounded border border-[#30363d] bg-[#0d1117] px-3 py-2 text-[#e6edf3]"
+          className="input-industrial mt-1 w-full"
           required
         />
       </div>
       <button
         type="submit"
         disabled={loading}
-        className="rounded bg-[#f97316] px-4 py-2 font-medium text-white hover:bg-[#ea580c] disabled:opacity-50"
+        className="btn-primary disabled:opacity-50"
       >
         {loading ? t('calculating') : t('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
-        <div className="space-y-2 rounded-lg border border-[#30363d] bg-[#161b22] p-4">
-          <p className="text-[#f97316]">
+        <div className="card space-y-2 p-4">
+          <p className="text-accent-orange">
             {t('gasFlow.consumption')}: {result.consumption_l} L
           </p>
-          <p className="text-[#f97316]">
+          <p className="text-accent-orange">
             {t('gasFlow.cylinderDuration')}: {result.cylinder_duration_min} min
           </p>
         </div>

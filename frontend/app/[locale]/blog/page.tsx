@@ -68,9 +68,9 @@ export default async function BlogPage({ params, searchParams }: Props) {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="mb-4 text-3xl font-bold text-[#f97316]">{t('title')}</h1>
-      <p className="mb-8 text-[#e6edf3]/80">{t('description')}</p>
+    <div className="container-wide section">
+      <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
+      <p className="mb-8 text-foreground/80">{t('description')}</p>
 
       {/* Фильтр по категориям */}
       <div className="mb-8 flex flex-wrap gap-2">
@@ -78,8 +78,8 @@ export default async function BlogPage({ params, searchParams }: Props) {
           href="/blog"
           className={`rounded-full px-4 py-2 text-sm transition-colors ${
             !categorySlug
-              ? 'bg-[#f97316] text-white'
-              : 'border border-[#30363d] bg-[#161b22] text-[#e6edf3]/80 hover:border-[#f97316]'
+              ? 'bg-accent-orange text-white'
+              : 'card text-foreground/80 hover:border-accent-orange'
           }`}
         >
           {t('allCategories')}
@@ -90,8 +90,8 @@ export default async function BlogPage({ params, searchParams }: Props) {
             href={`/blog?category_slug=${cat.slug}`}
             className={`rounded-full px-4 py-2 text-sm transition-colors ${
               categorySlug === cat.slug
-                ? 'bg-[#f97316] text-white'
-                : 'border border-[#30363d] bg-[#161b22] text-[#e6edf3]/80 hover:border-[#f97316]'
+                ? 'bg-accent-orange text-white'
+                : 'card text-foreground/80 hover:border-accent-orange'
             }`}
           >
             {getCategoryName(cat, lang)}
@@ -133,7 +133,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                   ← {t('previous')}
                 </Link>
               )}
-              <span className="px-4 py-2 text-sm text-[#e6edf3]/70">
+              <span className="px-4 py-2 text-sm text-foreground/70">
                 {t('pageOf', { current: pageNum, total: totalPages })}
               </span>
               {hasNext && (
@@ -143,7 +143,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                       ? `/blog?category_slug=${categorySlug}&page=${pageNum + 1}`
                       : `/blog?page=${pageNum + 1}`
                   }
-                  className="rounded border border-[#30363d] bg-[#161b22] px-4 py-2 text-sm text-[#e6edf3] hover:border-[#f97316]"
+                  className="card px-4 py-2 text-sm text-foreground hover:border-accent-orange"
                 >
                   {t('next')} →
                 </Link>
@@ -152,7 +152,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
           )}
         </>
       ) : (
-        <div className="rounded-lg border border-[#30363d] bg-[#161b22] px-6 py-12 text-center text-[#e6edf3]/60">
+        <div className="card px-6 py-12 text-center text-foreground/60">
           {t('noArticles')}
         </div>
       )}
@@ -177,7 +177,7 @@ function BlogCard({
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block overflow-hidden rounded-lg border border-[#30363d] bg-[#161b22] transition-colors hover:border-[#f97316]"
+      className="card group block overflow-hidden"
     >
       {post.cover_image && (
         <div className="relative aspect-video">
@@ -192,18 +192,18 @@ function BlogCard({
         </div>
       )}
       <div className="p-4">
-        <h2 className="font-semibold text-[#e6edf3] group-hover:text-[#f97316]">
+        <h2 className="heading-3 text-foreground group-hover:text-accent-orange">
           {post.title}
         </h2>
-        <p className="mt-1 line-clamp-2 text-sm text-[#e6edf3]/70">
+        <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
           {post.excerpt}
         </p>
-        <p className="mt-2 text-xs text-[#e6edf3]/50">
+        <p className="mt-2 text-xs text-foreground/50">
           {post.published_at
             ? new Date(post.published_at).toLocaleDateString(locale)
             : ''}
           {post.category && (
-            <span className="ml-2 text-[#f97316]">
+            <span className="ml-2 text-accent-orange">
               · {getCategoryName(post.category, lang)}
             </span>
           )}

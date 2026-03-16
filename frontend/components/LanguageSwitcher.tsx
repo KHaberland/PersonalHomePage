@@ -20,10 +20,10 @@ export function LanguageSwitcher() {
           key={code}
           href={pathname || '/'}
           locale={code}
-          className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+          className={`rounded px-3 py-1 text-sm font-medium transition-colors ${
             currentLocale === code
-              ? 'bg-[#f97316] text-white'
-              : 'bg-[#161b22] text-foreground/80 hover:bg-[#30363d]'
+              ? 'bg-accent-orange text-white'
+              : 'bg-surface text-foreground/80 hover:bg-surface/80'
           }`}
         >
           {label}

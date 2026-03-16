@@ -41,13 +41,13 @@ export default async function BookPage({ params }: Props) {
   const coverImage = book?.cover_image ?? defaultCover;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="mb-12 text-3xl font-bold text-[#f97316]">{t('title')}</h1>
+    <div className="container-narrow section">
+      <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
 
       <div className="flex flex-col gap-12 md:flex-row md:items-start md:gap-16">
         {/* Обложка */}
         <div className="shrink-0">
-          <div className="relative aspect-[2/3] w-56 overflow-hidden rounded-lg border border-[#30363d] shadow-xl">
+          <div className="relative aspect-[2/3] w-56 overflow-hidden rounded-lg border border-border shadow-xl">
             <Image
               src={coverImage}
               alt={title}
@@ -62,18 +62,17 @@ export default async function BookPage({ params }: Props) {
         {/* Описание и CTA */}
         <div className="flex-1 space-y-6">
           <div>
-            <p className="text-lg font-medium text-[#f97316]">
+            <p className="text-lg font-medium text-accent-orange">
               {t('subtitle')}
             </p>
-            <p className="mt-1 text-sm text-[#e6edf3]/70">{year}</p>
+            <p className="mt-1 text-sm text-foreground/70">{year}</p>
           </div>
 
-          <p className="whitespace-pre-line text-[#e6edf3]/90">{description}</p>
+          <p className="whitespace-pre-line text-foreground/90">
+            {description}
+          </p>
 
-          <Link
-            href="/contact"
-            className="inline-block rounded bg-[#f97316] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ea580c]"
-          >
+          <Link href="/contact" className="btn-primary inline-block px-6 py-3">
             {t('cta')}
           </Link>
         </div>

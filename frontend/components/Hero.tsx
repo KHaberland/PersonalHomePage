@@ -10,8 +10,8 @@ export function Hero() {
   const t = useTranslations('home');
 
   return (
-    <section className="relative min-h-[70vh] overflow-hidden">
-      {/* Video или градиентный фон */}
+    <section className="relative min-h-[75vh] overflow-hidden sm:min-h-[80vh]">
+      {/* Видео или градиентный фон */}
       <div className="absolute inset-0">
         {HERO_VIDEO_URL ? (
           <video
@@ -29,23 +29,29 @@ export function Hero() {
             <source src={HERO_VIDEO_URL} type="video/mp4" />
           </video>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0d1117] via-[#161b22] to-[#0d1117]" />
+          <div className="hero-gradient absolute inset-0" />
         )}
-        {/* Overlay для читаемости текста */}
-        <div className="absolute inset-0 bg-[#0d1117]/70" />
+        {/* Overlay для читаемости — сварочные оттенки */}
+        <div className="hero-overlay absolute inset-0" />
       </div>
 
-      {/* Контент */}
-      <div className="relative z-10 flex min-h-[70vh] flex-col items-center justify-center px-4 py-20 text-center">
-        <h1 className="text-4xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl">
+      {/* Контент — крупные заголовки, сварочные акценты */}
+      <div className="relative z-10 flex min-h-[75vh] flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[80vh] sm:px-6">
+        <h1 className="heading-1 max-w-4xl text-white drop-shadow-lg">
           {t('heroTitle')}
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-[#e6edf3]/90 drop-shadow-md sm:text-xl">
+        <p className="mt-6 max-w-2xl text-lg text-foreground/90 drop-shadow-md sm:text-xl">
           {t('heroSubtitle')}
         </p>
-        <p className="mt-2 text-2xl font-semibold text-[#f97316] drop-shadow-md">
+        <p className="mt-3 text-xl font-semibold text-accent-orange drop-shadow-md sm:text-2xl">
           {t('subtitle')}
         </p>
+        {/* Декоративная линия — индустриальный акцент */}
+        <div className="mt-8 flex items-center gap-4">
+          <span className="h-px w-12 bg-accent-orange" />
+          <span className="h-2 w-2 rounded-full bg-accent-blue" />
+          <span className="h-px w-12 bg-accent-orange" />
+        </div>
       </div>
     </section>
   );

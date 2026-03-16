@@ -36,11 +36,11 @@ export default async function ExperiencePage({ params }: Props) {
   const t = await getTranslations('experience');
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="mb-12 text-3xl font-bold text-[#f97316]">{t('title')}</h1>
+    <div className="container-narrow section">
+      <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
 
       <div className="relative">
-        <div className="absolute left-4 top-0 h-full w-0.5 bg-[#30363d] md:left-1/2 md:-translate-x-px" />
+        <div className="absolute left-4 top-0 h-full w-0.5 bg-border md:left-1/2 md:-translate-x-px" />
 
         {experiences.map(({ key }, i) => (
           <div
@@ -49,7 +49,7 @@ export default async function ExperiencePage({ params }: Props) {
               i % 2 === 1 ? 'md:flex-row-reverse' : ''
             }`}
           >
-            <div className="relative z-10 ml-8 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f97316] md:ml-0 md:left-1/2 md:-translate-x-1/2">
+            <div className="relative z-10 ml-8 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-orange md:ml-0 md:left-1/2 md:-translate-x-1/2">
               <span className="text-sm font-bold text-white">{i + 1}</span>
             </div>
 
@@ -58,11 +58,9 @@ export default async function ExperiencePage({ params }: Props) {
                 i % 2 === 1 ? 'md:text-right' : 'md:pl-16'
               }`}
             >
-              <h2 className="text-xl font-semibold text-[#e6edf3]">
-                {t(`${key}.role`)}
-              </h2>
-              <p className="text-[#f97316]">{t(`${key}.company`)}</p>
-              <p className="text-sm text-[#e6edf3]/70">{t(`${key}.period`)}</p>
+              <h2 className="heading-3 text-foreground">{t(`${key}.role`)}</h2>
+              <p className="text-accent-orange">{t(`${key}.company`)}</p>
+              <p className="text-sm text-foreground/70">{t(`${key}.period`)}</p>
             </div>
 
             <div className="ml-14 md:ml-0 md:w-1/2" />
@@ -71,14 +69,12 @@ export default async function ExperiencePage({ params }: Props) {
       </div>
 
       <section className="mt-16">
-        <h2 className="mb-6 text-xl font-semibold text-[#e6edf3]">
-          {t('photosTitle')}
-        </h2>
+        <h2 className="heading-2 mb-6 text-foreground">{t('photosTitle')}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {experiencePhotos.map((name) => (
             <div
               key={name}
-              className="relative aspect-video overflow-hidden rounded-lg border border-[#30363d]"
+              className="relative aspect-video overflow-hidden rounded-lg border border-border"
             >
               <Image
                 src={`/images/photos/${name}`}
