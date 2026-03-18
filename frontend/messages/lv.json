@@ -190,6 +190,14 @@
     "backToBlog": "Atpakaļ uz blogu",
     "relatedPosts": "Līdzīgi raksti"
   },
+  "contact": {
+    "title": "Kontakti",
+    "description": "Sazinieties konsultācijām, apmācībām vai grāmatas iegādei. Pieejams pa e-pastu, LinkedIn vai YouTube.",
+    "email": "E-pasts",
+    "linkedin": "Profesionālais profils un atjauninājumi",
+    "youtube": "Metināšanas video un apmācības",
+    "noContact": "Kontaktinformācija tiek atjaunināta. Lūdzu, pārbaudiet vēlāk."
+  },
   "book": {
     "title": "MAG/MIG metināšana",
     "subtitle": "No iekārtu izvēles līdz aizsarggāzei un metināšanas metodēm",

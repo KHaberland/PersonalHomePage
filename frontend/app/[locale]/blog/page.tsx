@@ -195,9 +195,10 @@ function BlogCard({
         <h2 className="heading-3 text-foreground group-hover:text-accent-orange">
           {post.title}
         </h2>
-        <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
-          {post.excerpt}
-        </p>
+        <div
+          className="mt-1 line-clamp-2 text-sm text-foreground/70 [&_p]:inline [&_p]:m-0"
+          dangerouslySetInnerHTML={{ __html: post.excerpt || '' }}
+        />
         <p className="mt-2 text-xs text-foreground/50">
           {post.published_at
             ? new Date(post.published_at).toLocaleDateString(locale)

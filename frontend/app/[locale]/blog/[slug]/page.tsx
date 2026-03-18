@@ -249,9 +249,12 @@ export default async function BlogPostPage({ params }: Props) {
                   <h3 className="heading-3 text-foreground group-hover:text-accent-orange">
                     {related.title}
                   </h3>
-                  <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
-                    {related.excerpt}
-                  </p>
+                  <div
+                    className="mt-1 line-clamp-2 text-sm text-foreground/70 [&_p]:inline [&_p]:m-0"
+                    dangerouslySetInnerHTML={{
+                      __html: related.excerpt || '',
+                    }}
+                  />
                 </div>
               </IntlLink>
             ))}

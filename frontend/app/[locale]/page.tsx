@@ -78,9 +78,12 @@ export default async function HomePage({ params }: Props) {
           <h2 className="heading-2 mb-6 text-accent-orange">
             {t('aboutTitle')}
           </h2>
-          <p className="max-w-3xl text-foreground/90">
-            {about?.bio ?? t('aboutText')}
-          </p>
+          <div
+            className="max-w-3xl text-foreground/90 [&_p]:mt-2 [&_p:first-child]:mt-0"
+            dangerouslySetInnerHTML={{
+              __html: about?.bio ?? t('aboutText'),
+            }}
+          />
         </div>
       </section>
 
@@ -146,9 +149,12 @@ export default async function HomePage({ params }: Props) {
             )}
             <div className="flex-1">
               <h2 className="heading-3 text-accent-orange">{t('bookTitle')}</h2>
-              <p className="mt-2 text-foreground/90">
-                {book?.description ?? t('bookDescription')}
-              </p>
+              <div
+                className="mt-2 text-foreground/90 [&_p]:mt-1 [&_p:first-child]:mt-0"
+                dangerouslySetInnerHTML={{
+                  __html: book?.description ?? t('bookDescription'),
+                }}
+              />
               <p className="mt-1 text-sm text-foreground/70">
                 {book?.year ?? '2024'}
               </p>
@@ -224,9 +230,12 @@ export default async function HomePage({ params }: Props) {
                     <h3 className="heading-3 text-foreground group-hover:text-accent-orange">
                       {post.title}
                     </h3>
-                    <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
-                      {post.excerpt}
-                    </p>
+                    <div
+                      className="mt-1 line-clamp-2 text-sm text-foreground/70 [&_p]:inline [&_p]:m-0"
+                      dangerouslySetInnerHTML={{
+                        __html: post.excerpt || '',
+                      }}
+                    />
                     <p className="mt-2 text-xs text-foreground/50">
                       {post.published_at
                         ? new Date(post.published_at).toLocaleDateString(locale)

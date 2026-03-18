@@ -190,6 +190,14 @@
     "backToBlog": "Back to blog",
     "relatedPosts": "Related articles"
   },
+  "contact": {
+    "title": "Contact",
+    "description": "Get in touch for consulting, training, or to purchase the book. I'm available via email, LinkedIn, or YouTube.",
+    "email": "Email",
+    "linkedin": "Professional profile and updates",
+    "youtube": "Welding videos and tutorials",
+    "noContact": "Contact information is being updated. Please check back later."
+  },
   "book": {
     "title": "MAG/MIG welding",
     "subtitle": "From equipment selection to shielding gas and welding methods",

@@ -77,15 +77,19 @@ export default async function AboutPage({ params }: Props) {
           {/* Биография */}
           <section>
             <h2 className="heading-3 mb-3 text-foreground">{t('bio')}</h2>
-            <p className="whitespace-pre-line text-foreground/80">{bio}</p>
+            <div
+              className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+              dangerouslySetInnerHTML={{ __html: bio }}
+            />
           </section>
 
           {/* Образование */}
           <section>
             <h2 className="heading-3 mb-3 text-foreground">{t('education')}</h2>
-            <p className="whitespace-pre-line text-foreground/80">
-              {education}
-            </p>
+            <div
+              className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+              dangerouslySetInnerHTML={{ __html: education }}
+            />
           </section>
 
           {/* Профессиональные квалификации */}
@@ -93,9 +97,10 @@ export default async function AboutPage({ params }: Props) {
             <h2 className="heading-3 mb-3 text-foreground">
               {t('qualifications')}
             </h2>
-            <p className="text-[#e6edf3]/80 whitespace-pre-line">
-              {qualifications}
-            </p>
+            <div
+              className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+              dangerouslySetInnerHTML={{ __html: qualifications }}
+            />
           </section>
         </div>
       </div>

@@ -68,9 +68,10 @@ export default async function BookPage({ params }: Props) {
             <p className="mt-1 text-sm text-foreground/70">{year}</p>
           </div>
 
-          <p className="whitespace-pre-line text-foreground/90">
-            {description}
-          </p>
+          <div
+            className="text-foreground/90 [&_p]:mt-2 [&_p:first-child]:mt-0 [&_p]:leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
 
           <Link href="/contact" className="btn-primary inline-block px-6 py-3">
             {t('cta')}
