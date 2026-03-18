@@ -1,7 +1,5 @@
 from django.db import models
 
-from apps.users.models import User
-
 
 class Author(models.Model):
     """Author of blog posts."""

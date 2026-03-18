@@ -1,10 +1,12 @@
 """
 Management command для создания суперпользователя (для CI/CD и скриптов).
+
 Использование:
     python manage.py create_superuser
-    python manage.py create_superuser --username admin --email admin@example.com --password secret
+    python manage.py create_superuser --username admin --email x@x.com --password secret
 
-Переменные окружения: DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD
+Переменные окружения:
+    DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD
 """
 
 import os

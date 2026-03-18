@@ -82,7 +82,10 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        )
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
@@ -123,7 +126,8 @@ if _aws_bucket:
         },
     }
 else:
-    # Локальное хранилище (MEDIA_ROOT). Для Cloudinary: django-cloudinary-storage + CLOUDINARY_URL
+    # Локальное хранилище (MEDIA_ROOT).
+    # Для Cloudinary: django-cloudinary-storage + CLOUDINARY_URL
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
