@@ -60,16 +60,14 @@ export default async function AboutPage({ params }: Props) {
     <div className="container-narrow section">
       <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
 
-      <div className="grid gap-12 md:grid-cols-2">
+      <div className="grid items-start gap-12 md:grid-cols-2">
         {/* Фотография */}
-        <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
-          <Image
+        <div className="w-full overflow-hidden rounded-lg border border-border">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={photo}
             alt={t('photoAlt')}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            unoptimized={photo.startsWith('http')}
+            className="block w-full h-auto"
           />
         </div>
 
