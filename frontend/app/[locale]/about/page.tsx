@@ -1,25 +1,41 @@
 import Image from 'next/image';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import { DiplomaCertificates } from '@/components/DiplomaCertificates';
 import { getAbout } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { createPageMetadata } from '@/lib/metadata';
 
-const diplomas = [
-  { file: 'Bakalaura_diploms01.pdf', labelKey: 'bachelor' },
-  { file: 'RTU_magistra_diploms.pdf', labelKey: 'master' },
-  { file: 'MMA_MAG_diploms.pdf', labelKey: 'mma_mag' },
-  { file: 'TIG_diploms.pdf', labelKey: 'tig' },
-] as const;
+/** PDF в `public/diplomas/`. Опционально `preview`: миниатюра в `public/diplomas/previews/`. */
+const diplomas: ReadonlyArray<{
+  file: string;
+  labelKey: 'bachelor' | 'master' | 'mma_mag' | 'tig';
+  summaryKey:
+    | 'bachelorSummary'
+    | 'masterSummary'
+    | 'mma_magSummary'
+    | 'tigSummary';
+  preview?: string;
+}> = [
+  {
+    file: 'Bakalaura_diploms01.pdf',
+    labelKey: 'bachelor',
+    summaryKey: 'bachelorSummary',
+  },
+  {
+    file: 'RTU_magistra_diploms.pdf',
+    labelKey: 'master',
+    summaryKey: 'masterSummary',
+  },
+  {
+    file: 'MMA_MAG_diploms.pdf',
+    labelKey: 'mma_mag',
+    summaryKey: 'mma_magSummary',
+  },
+  { file: 'TIG_diploms.pdf', labelKey: 'tig', summaryKey: 'tigSummary' },
+];
 
-const fallbackBio =
-  'Welding engineer with extensive experience in MIG/MAG, TIG, and MMA processes. Author of the book "MAG/MIG welding". Expert in shielding gases and welding equipment.';
-const fallbackEducation =
-  'Bachelor and Master degrees from RTU (Riga Technical University).';
-const fallbackQualifications =
-  'Certified in MMA/MAG and TIG welding. Welding instructor qualification.';
-
-const defaultPhoto = '/images/photos/DSC_0222_optimized.jpg';
+const defaultPhoto = '/images/photos/small/Author_small.jpg';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -46,28 +62,75 @@ export default async function AboutPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, about] = await Promise.all([
+  const [t, tHome, about] = await Promise.all([
     getTranslations('about'),
+    getTranslations('home'),
     getAbout(lang).catch(() => null),
   ]);
 
   const photo = about?.photo ?? defaultPhoto;
-  const bio = about?.bio ?? fallbackBio;
-  const education = about?.education ?? fallbackEducation;
-  const qualifications = about?.qualifications ?? fallbackQualifications;
+  const bio = about?.bio ?? t.raw('fallbackBio');
+  const education = about?.education ?? t.raw('fallbackEducation');
+  const qualifications =
+    about?.qualifications ?? t.raw('fallbackQualifications');
+
+  const diplomaItems = diplomas.map((d) => {
+    const title = t(d.labelKey);
+    return {
+      id: d.file,
+      pdfUrl: `/diplomas/${d.file}`,
+      fileName: d.file,
+      title,
+      summary: t(d.summaryKey),
+      previewAlt: t('diplomaPreviewAlt', { title }),
+      previewSrc: d.preview,
+    };
+  });
+
+  const diplomaLabels = {
+    openInModal: t('diplomaOpenInModal'),
+    download: t('diplomaDownload'),
+    openNewTab: t('diplomaOpenNewTab'),
+    closeModal: t('diplomaCloseModal'),
+    pdfViewerTitle: t('diplomaPdfViewerTitle'),
+  };
 
   return (
     <div className="container-narrow section">
-      <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
+      <h1 className="heading-1 mb-6 text-accent-orange">{t('title')}</h1>
+
+      <section
+        className="mb-12 rounded-xl border border-border/80 bg-surface/50 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8"
+        aria-labelledby="about-why-heading"
+      >
+        <p className="text-xs font-semibold uppercase tracking-wide text-foreground/55">
+          {t('whyChooseSectionLabel')}
+        </p>
+        <h2
+          id="about-why-heading"
+          className="heading-3 mt-2 text-accent-orange"
+        >
+          {tHome('whyChooseTitle')}
+        </h2>
+        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-foreground/90 marker:text-accent-orange md:pl-6">
+          <li>{tHome('whyChoose1')}</li>
+          <li>{tHome('whyChoose2')}</li>
+          <li>{tHome('whyChoose3')}</li>
+          <li>{tHome('whyChoose4')}</li>
+        </ul>
+      </section>
 
       <div className="grid items-start gap-12 md:grid-cols-2">
         {/* Фотография */}
-        <div className="w-full overflow-hidden rounded-lg border border-border">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-border">
+          <Image
             src={photo}
             alt={t('photoAlt')}
-            className="block w-full h-auto"
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+            unoptimized={photo.startsWith('http')}
           />
         </div>
 
@@ -100,34 +163,25 @@ export default async function AboutPage({ params }: Props) {
               dangerouslySetInnerHTML={{ __html: qualifications }}
             />
           </section>
+
+          <section>
+            <h2 className="heading-3 mb-3 text-foreground">
+              {t('achievements')}
+            </h2>
+            <ul className="list-disc space-y-2 pl-5 text-foreground/80 [&_li]:leading-relaxed">
+              <li>{t('achievement1')}</li>
+              <li>{t('achievement2')}</li>
+              <li>{t('achievement3')}</li>
+              <li>{t('achievement4')}</li>
+            </ul>
+          </section>
         </div>
       </div>
 
       {/* Дипломы и сертификаты */}
       <section className="mt-16">
         <h2 className="heading-2 mb-6 text-foreground">{t('diplomas')}</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {diplomas.map(({ file, labelKey }) => (
-            <a
-              key={file}
-              href={`/diplomas/${file}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card flex flex-col items-center gap-2 p-4"
-            >
-              <svg
-                className="h-12 w-12 text-accent-orange"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" />
-              </svg>
-              <span className="text-center text-sm text-foreground">
-                {t(labelKey)}
-              </span>
-            </a>
-          ))}
-        </div>
+        <DiplomaCertificates items={diplomaItems} labels={diplomaLabels} />
       </section>
 
       {/* Фотографии */}

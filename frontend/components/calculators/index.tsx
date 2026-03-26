@@ -1,4 +1,4 @@
-const CALCULATOR_SLUGS = [
+export const CALCULATOR_SLUGS = [
   'heat-input',
   'gas-flow',
   'shielding-gas',

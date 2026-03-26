@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { calculateWeldingParameters } from '@/lib/api';
+import { CalculatorField } from '@/components/calculators/CalculatorField';
 
 export function WeldingParametersCalculator() {
   const t = useTranslations('calculators');
@@ -44,55 +45,65 @@ export function WeldingParametersCalculator() {
     }
   }
 
+  const h1 = t('weldingParameters.hints.plateThickness');
+  const h2 = t('weldingParameters.hints.jointType');
+  const h3 = t('weldingParameters.hints.wireDiameter');
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingParameters.plateThickness')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={plateThickness}
-          onChange={(e) => setPlateThickness(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingParameters.jointType')}
-        </label>
-        <select
-          value={jointType}
-          onChange={(e) => setJointType(e.target.value)}
-          className="input-industrial mt-1 w-full"
-        >
-          <option value="butt">Butt</option>
-          <option value="fillet">Fillet</option>
-          <option value="lap">Lap</option>
-          <option value="corner">Corner</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingParameters.wireDiameter')}
-        </label>
-        <select
-          value={wireDiameter}
-          onChange={(e) => setWireDiameter(e.target.value)}
-          className="input-industrial mt-1 w-full"
-        >
-          <option value="0.8">0.8</option>
-          <option value="1.0">1.0</option>
-          <option value="1.2">1.2</option>
-          <option value="1.6">1.6</option>
-        </select>
-      </div>
+      <CalculatorField label={t('weldingParameters.plateThickness')} hint={h1}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={plateThickness}
+            onChange={(e) => setPlateThickness(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={h1}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('weldingParameters.jointType')} hint={h2}>
+        {({ inputId, hintId }) => (
+          <select
+            id={inputId}
+            value={jointType}
+            onChange={(e) => setJointType(e.target.value)}
+            className="input-industrial w-full"
+            aria-describedby={hintId}
+            title={h2}
+          >
+            <option value="butt">Butt</option>
+            <option value="fillet">Fillet</option>
+            <option value="lap">Lap</option>
+            <option value="corner">Corner</option>
+          </select>
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('weldingParameters.wireDiameter')} hint={h3}>
+        {({ inputId, hintId }) => (
+          <select
+            id={inputId}
+            value={wireDiameter}
+            onChange={(e) => setWireDiameter(e.target.value)}
+            className="input-industrial w-full"
+            aria-describedby={hintId}
+            title={h3}
+          >
+            <option value="0.8">0.8</option>
+            <option value="1.0">1.0</option>
+            <option value="1.2">1.2</option>
+            <option value="1.6">1.6</option>
+          </select>
+        )}
+      </CalculatorField>
       <button
         type="submit"
         disabled={loading}
-        className="rounded bg-[#f97316] px-4 py-2 font-medium text-white hover:bg-[#ea580c] disabled:opacity-50"
+        className="btn-primary disabled:opacity-50"
       >
         {loading ? t('calculating') : t('calculate')}
       </button>

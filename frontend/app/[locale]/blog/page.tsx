@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
-import { getCategories, getPosts } from '@/lib/api';
+import { getCategories, getPosts, getTags } from '@/lib/api';
 import type { Category, Lang, PostListItem } from '@/lib/api-types';
 import { createPageMetadata } from '@/lib/metadata';
 
@@ -30,6 +30,20 @@ function langFromLocale(locale: string): Lang {
     : 'en';
 }
 
+/** Список /blog с сохранением фильтров категории и тега */
+function buildBlogListHref(filters: {
+  category_slug?: string;
+  tag_slug?: string;
+  page?: number;
+}): string {
+  const q = new URLSearchParams();
+  if (filters.category_slug) q.set('category_slug', filters.category_slug);
+  if (filters.tag_slug) q.set('tag_slug', filters.tag_slug);
+  if (filters.page && filters.page > 1) q.set('page', String(filters.page));
+  const s = q.toString();
+  return s ? `/blog?${s}` : '/blog';
+}
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
   return createPageMetadata({
@@ -52,11 +66,25 @@ export default async function BlogPage({ params, searchParams }: Props) {
   const categorySlug = Array.isArray(resolvedSearchParams.category_slug)
     ? resolvedSearchParams.category_slug[0]
     : resolvedSearchParams.category_slug;
+  const tagSlug = Array.isArray(resolvedSearchParams.tag_slug)
+    ? resolvedSearchParams.tag_slug[0]
+    : resolvedSearchParams.tag_slug;
 
-  const [t, categories, postsResponse] = await Promise.all([
+  const [t, tCommon, categories, tags, postsResponse] = await Promise.all([
     getTranslations('blog'),
+    getTranslations('common'),
     getCategories().catch(() => []),
-    getPosts(lang, { category_slug: categorySlug ?? undefined, page }),
+    getTags().catch(() => []),
+    getPosts(lang, {
+      category_slug: categorySlug ?? undefined,
+      tag_slug: tagSlug ?? undefined,
+      page,
+    }).catch(() => ({
+      results: [] as PostListItem[],
+      count: 0,
+      next: null,
+      previous: null,
+    })),
   ]);
 
   const posts = postsResponse.results;
@@ -70,12 +98,24 @@ export default async function BlogPage({ params, searchParams }: Props) {
   return (
     <div className="container-wide section">
       <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
-      <p className="mb-8 text-foreground/80">{t('description')}</p>
+      <p className="mb-3 text-foreground/80">{t('description')}</p>
+      <p className="mb-8 text-sm text-foreground/70">
+        {t('knowledgeCrossLink')}{' '}
+        <Link
+          href="/knowledge"
+          className="link-accent font-medium hover:underline"
+        >
+          {tCommon('knowledgeNav')}
+        </Link>
+      </p>
 
       {/* Фильтр по категориям */}
-      <div className="mb-8 flex flex-wrap gap-2">
+      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground/50">
+        {t('filterByCategory')}
+      </p>
+      <div className="mb-6 flex flex-wrap gap-2">
         <Link
-          href="/blog"
+          href={buildBlogListHref({ tag_slug: tagSlug ?? undefined })}
           className={`rounded-full px-4 py-2 text-sm transition-colors ${
             !categorySlug
               ? 'bg-accent-orange text-white'
@@ -87,7 +127,10 @@ export default async function BlogPage({ params, searchParams }: Props) {
         {categories.map((cat) => (
           <Link
             key={cat.id}
-            href={`/blog?category_slug=${cat.slug}`}
+            href={buildBlogListHref({
+              category_slug: cat.slug,
+              tag_slug: tagSlug ?? undefined,
+            })}
             className={`rounded-full px-4 py-2 text-sm transition-colors ${
               categorySlug === cat.slug
                 ? 'bg-accent-orange text-white'
@@ -99,6 +142,45 @@ export default async function BlogPage({ params, searchParams }: Props) {
         ))}
       </div>
 
+      {/* Фильтр по тегам */}
+      {tags.length > 0 ? (
+        <>
+          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground/50">
+            {t('filterByTag')}
+          </p>
+          <div className="mb-8 flex flex-wrap gap-2">
+            <Link
+              href={buildBlogListHref({
+                category_slug: categorySlug ?? undefined,
+              })}
+              className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                !tagSlug
+                  ? 'bg-accent-orange text-white'
+                  : 'card text-foreground/80 hover:border-accent-orange'
+              }`}
+            >
+              {t('allTags')}
+            </Link>
+            {tags.map((tag) => (
+              <Link
+                key={tag.id}
+                href={buildBlogListHref({
+                  category_slug: categorySlug ?? undefined,
+                  tag_slug: tag.slug,
+                })}
+                className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                  tagSlug === tag.slug
+                    ? 'bg-accent-orange text-white'
+                    : 'card text-foreground/80 hover:border-accent-orange'
+                }`}
+              >
+                {tag.name}
+              </Link>
+            ))}
+          </div>
+        </>
+      ) : null}
+
       {/* Список статей */}
       {posts.length > 0 ? (
         <>
@@ -109,6 +191,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                 post={post}
                 locale={locale}
                 lang={lang}
+                readMoreLabel={t('readMore')}
                 getCategoryName={getCategoryName}
                 getImageSrc={getImageSrc}
               />
@@ -123,11 +206,11 @@ export default async function BlogPage({ params, searchParams }: Props) {
             >
               {hasPrevious && (
                 <Link
-                  href={
-                    categorySlug
-                      ? `/blog?category_slug=${categorySlug}&page=${pageNum - 1}`
-                      : `/blog?page=${pageNum - 1}`
-                  }
+                  href={buildBlogListHref({
+                    category_slug: categorySlug ?? undefined,
+                    tag_slug: tagSlug ?? undefined,
+                    page: pageNum - 1,
+                  })}
                   className="rounded border border-[#30363d] bg-[#161b22] px-4 py-2 text-sm text-[#e6edf3] hover:border-[#f97316]"
                 >
                   ← {t('previous')}
@@ -138,11 +221,11 @@ export default async function BlogPage({ params, searchParams }: Props) {
               </span>
               {hasNext && (
                 <Link
-                  href={
-                    categorySlug
-                      ? `/blog?category_slug=${categorySlug}&page=${pageNum + 1}`
-                      : `/blog?page=${pageNum + 1}`
-                  }
+                  href={buildBlogListHref({
+                    category_slug: categorySlug ?? undefined,
+                    tag_slug: tagSlug ?? undefined,
+                    page: pageNum + 1,
+                  })}
                   className="card px-4 py-2 text-sm text-foreground hover:border-accent-orange"
                 >
                   {t('next')} →
@@ -164,12 +247,14 @@ function BlogCard({
   post,
   locale,
   lang,
+  readMoreLabel,
   getCategoryName,
   getImageSrc,
 }: {
   post: PostListItem;
   locale: string;
   lang: Lang;
+  readMoreLabel: string;
   getCategoryName: (c: Category, l: Lang) => string;
   getImageSrc: (url: string | null) => string;
 }) {
@@ -209,6 +294,9 @@ function BlogCard({
             </span>
           )}
         </p>
+        <span className="mt-3 inline-block text-sm font-medium text-accent-orange group-hover:underline">
+          {readMoreLabel}
+        </span>
       </div>
     </Link>
   );

@@ -3,7 +3,7 @@
     "defaultTitle": "Olegs Suvorovs | Metināšanas inženieris",
     "defaultDescription": "Metināšanas inženiera portfolio, tehniskā bloga un inženiertehnikas kalkulatori. MIG/MAG, TIG metināšana. Aizsarggāzes. Grāmatas \"MAG/MIG metināšana\" autors.",
     "homeTitle": "Olegs Suvorovs | Metināšanas inženieris",
-    "homeDescription": "Metināšanas inženieris ar pieredzi MIG/MAG, TIG un MMA. Eksperts aizsarggāzēs. Grāmatas \"MAG/MIG metināšana\" autors. Inženiertehnikas kalkulatori.",
+    "homeDescription": "Metināšanas inženieris (IWE). MIG/MAG, TIG un MMA metināšanas procesu optimizācija. Palīdzu uzņēmumiem uzlabot kvalitāti, samazināt izmaksas un apmācīt personālu. Blogs, kalkulatori, MAG/MIG grāmata.",
     "aboutTitle": "Par mani | Olegs Suvorovs — metināšanas inženieris",
     "aboutDescription": "Biogrāfija, izglītība un kvalifikācijas metināšanas inženiera Oļega Suvorova. MMA/MAG, TIG sertifikāti.",
     "experienceTitle": "Profesionālā pieredze | Olegs Suvorovs",
@@ -32,7 +32,10 @@
     "knowledge": "Zināšanu bāze",
     "blog": "Blogs",
     "contactLink": "Kontakti",
-    "rights": "Visas tiesības aizsargātas."
+    "rights": "Visas tiesības aizsargātas.",
+    "ctaHint": "Vajadzīga palīdzība ar metināšanu vai apmācību?",
+    "homeSectionsNavLabel": "Sadaļas sākumlapā",
+    "languages": "Valoda"
   },
   "common": {
     "home": "Sākums",
@@ -40,36 +43,154 @@
     "experience": "Pieredze",
     "book": "Grāmata",
     "tools": "Inženiertehnikas kalkulatori",
+    "toolsNav": "Rīki",
     "knowledge": "Zināšanu bāze",
     "blog": "Blogs",
-    "contact": "Kontakti"
+    "blogNav": "Blogs — raksti",
+    "knowledgeNav": "Zināšanu bāze — rokasgrāmata",
+    "contact": "Kontakti",
+    "expertise": "Ekspertīze",
+    "expertiseCompetencies": "Kompetences",
+    "expertiseServices": "Pakalpojumi",
+    "expertiseCases": "Gadījumi",
+    "homePageSections": "Sākumlapas sadaļas",
+    "homeSectionAbout": "Par mani",
+    "homeSectionWhy": "Kāpēc es",
+    "homeSectionExperience": "Profesionālā pieredze",
+    "homeSectionBook": "Grāmata",
+    "homeSectionTools": "Rīki",
+    "homeSectionBlog": "Blogs",
+    "homeSectionContact": "Kontakti",
+    "homePageProgressLabel": "Šajā lapā"
   },
   "home": {
     "title": "Olegs Suvorovs",
-    "subtitle": "Metināšanas inženieris",
-    "heroTitle": "Metināšanas inženieris un eksperts",
-    "heroSubtitle": "MIG/MAG, TIG metināšana. Aizsarggāzes. Grāmatas \"MAG/MIG metināšana\" autors.",
-    "aboutTitle": "Par speciālistu",
-    "aboutText": "Metināšanas inženieris ar plašu pieredzi MIG/MAG, TIG un MMA procesos. Eksperts aizsarggāzēs un metināšanas iekārtās.",
+    "subtitle": "Metināšanas inženieris (IWE)",
+    "heroTitleLine1": "Metināšanas inženieris (IWE)",
+    "heroTitleLine2": "MIG/MAG, TIG un MMA metināšanas procesu optimizācija",
+    "heroTitleLine3": "Palīdzu uzņēmumiem uzlabot kvalitāti, samazināt izmaksas un apmācīt personālu.",
+    "heroCtaContact": "Sazināties",
+    "heroCtaTools": "Inženiertehnikas rīki",
+    "heroScrollToCompetencies": "Uz galvenajām kompetencēm",
+    "whyChooseTitle": "Kāpēc izvēlas mani",
+    "whyChoose1": "Sertificēts metināšanas inženieris (IWE) ar praktisku pieredzi ražošanā.",
+    "whyChoose2": "Skaidri, praktiski ieteikumi — mazāk brāķa un paredzamas izmaksas.",
+    "whyChoose3": "Metinātāju un vadītāju apmācība — prasmes, kas strādā cehā.",
+    "whyChoose4": "Grāmatas par MAG/MIG autors un ilgtermiņa atbalsts ražošanas komandām.",
+    "aboutTitle": "Par mani",
+    "aboutText": "<p>Metināšanas inženieris (IWE) ar daudzu gadu praktisko pieredzi MIG/MAG, TIG un MMA ieviešanā un optimizācijā — no režīmiem līdz kvalitātes kontrolei.</p><p>Apmācu personālu un atbalstu ražošanas projektus. Grāmatas par MAG/MIG metināšanu autors. Pilna biogrāfija, diplomi un sertifikāti — atsevišķā lapā.</p>",
+    "aboutMoreCta": "Vairāk par mani",
     "competenciesTitle": "Galvenās kompetences",
-    "competency1": "MIG/MAG metināšanas tehnoloģija",
-    "competency2": "Aizsarggāzu izvēle",
-    "competency3": "Metināšanas iekārtas",
-    "competency4": "Gāzu griešana",
+    "competenciesTechnicalSubtitle": "Tehniskās prasmes",
+    "competenciesTechnicalLead": "Procesi, iekārtas un materiāli — inženieru kompetences pamats.",
+    "competenciesBusinessSubtitle": "Uzņēmuma rezultāti",
+    "competenciesBusinessLead": "Mērjams rezultāts: KPI, izmaksas un komandas sagatavotība.",
+    "competencyBusiness1Title": "Kvalitāte un izmaksas (KPI)",
+    "competencyBusiness1Desc": "Mazāk brāķa un patēriņa, skaidras izmaksas uz metru un projektu.",
+    "competencyBusiness2Title": "Komandas spējas",
+    "competencyBusiness2Desc": "Metinātāju un vadītāju apmācība — prasmes, kas nostiprinās cehā.",
+    "competencyBusiness3Title": "Procesi un dokumentācija",
+    "competencyBusiness3Desc": "Atbalsts auditos un tenderos, stabili metināšanas procesi un izsekojamība.",
+    "competency1": "MIG/MAG metināšana",
+    "competency2": "TIG metināšana alumīnijam",
+    "competency3": "Aizsarggāzes",
+    "competency4": "Metināšanas iekārtas",
     "competency5": "Metināšanas metalurģija",
+    "competencyCard1": "režīmu ieviešana, izmaksu un kvalitātes kontrole",
+    "competencyCard2": "režīmu optimizācija un brāķa samazināšana",
+    "competencyCard3": "Gāzu maisījumu izvēle un patēriņa optimizācija",
+    "competencyCard4": "Optimāla izvēle un audits efektivitātes paaugstināšanai",
+    "competencyCard5": "defekti, siltuma ievade, šuves kvalitātes kontrole",
+    "competencyIconCuttingGases": "Gāzes griešanai",
+    "competencyCard6": "Optimāla degvielas gāzes izvēle un griešanas parametru iestatīšana",
+    "competencyIconMigMag": "MIG/MAG metināšana",
+    "competencyIconTigAl": "TIG metināšana alumīnijam",
+    "competencyIconGas": "Aizsarggāzes MIG/MAG/TIG",
+    "competencyIconEquipment": "Metināšanas iekārtas",
+    "competencyIconCutting": "Gāzu griešana",
+    "competencyIconMetallurgy": "Metināšanas metalurģija",
+    "servicesTitle": "Pakalpojumi",
+    "servicesSubtitle": "Praktisks atbalsts ražošanai: no eksperta vērtējuma līdz apmācītām komandām.",
+    "serviceConsulting": "Konsultācijas",
+    "serviceConsultingDesc": "Skaidri ieteikumi par režīmiem, aizsarggāzēm un defektiem — mazāk brāķa un ātrākas tehniskās izvēles.",
+    "serviceImplementation": "Procesu ieviešana",
+    "serviceImplementationDesc": "Strukturēta metināšanas procesu ieviešana jūsu uzņēmumā — stabila kvalitāte un izsekojamība.",
+    "serviceEquipment": "Iekārtu izvēle",
+    "serviceEquipmentDesc": "Izvēle un iestatīšana pēc jūsu materiāliem un apjomiem — pamatoti ieguldījumi, mazāk dīkstāves.",
+    "serviceTraining": "Personāla apmācība",
+    "serviceTrainingDesc": "Praktiska apmācība metinātājiem un vadītājiem — mazāk kļūdu un vienots izpildes līmenis.",
+    "servicesCta": "Apspriest uzdevumu",
+    "toolsSectionLead": "Praktiski rīki inženieriem un tehnologiem",
     "experienceTitle": "Profesionālā pieredze",
+    "casesTitle": "Praktiskā pieredze / Gadījumi",
+    "casesSubtitle": "Piemēri: apmācība, procesu optimizācija un konsultācijas.",
+    "casesCta": "Pilna pieredze un projekti",
+    "case1Title": "Metinātāju apmācības programma",
+    "case1Description": "Strukturēta apmācība un sertifikācijas atbalsts ražošanas komandām.",
+    "case2Title": "TIG metināšana alumīnijam",
+    "case2Description": "Režīmu optimizācija un defektu samazināšana plāniem alumīnija mezgliem.",
+    "case3Title": "Konsultācijas par aizsarggāzēm",
+    "case3Description": "Gāzu maisījumu un plūsmas ieteikumi kvalitātei un ekonomikai.",
     "bookTitle": "Grāmata: MAG/MIG metināšana",
     "bookDescription": "No iekārtu izvēles līdz aizsarggāzei un metināšanas metodēm. 2024.",
     "bookCta": "Uzzināt vairāk",
+    "bookMoreCta": "Vairāk par grāmatu",
     "toolsTitle": "Inženiertehnikas kalkulatori",
     "toolsDescription": "Profesionāli kalkulatori metināšanas inženieriem",
-    "toolsCta": "Visas rīki",
+    "toolsCta": "Doties pie kalkulatoriem",
     "blogTitle": "Jaunākie raksti",
+    "blogSubtitle": "Tehniskie raksti par metināšanu, gāzēm un iekārtām — atveriet rakstu vai pārejiet uz pilnu blogu.",
+    "blogReadMore": "Pilns raksts",
     "blogCta": "Lasīt blogu",
-    "contactTitle": "Kontakti"
+    "blogAllArticles": "Visi raksti",
+    "blogFallbackCard1Title": "Aizsarggāzes izvēle",
+    "blogFallbackCard1Excerpt": "<p>Kā maisījums un plūsma ietekmē MIG/MAG un TIG kvalitāti un izmaksas.</p>",
+    "blogFallbackCard2Title": "Siltuma ievade un šuves kvalitāte",
+    "blogFallbackCard2Excerpt": "<p>Siltuma ievades saistība ar defektiem un mehāniskajām īpašībām kvalitātes kontrolei.</p>",
+    "blogFallbackCard3Title": "Metināšanas iekārtas un procesi",
+    "blogFallbackCard3Excerpt": "<p>Praktiski ieteikumi iekārtu izvēlei un iestatīšanai jūsu pielietojumam.</p>",
+    "fallbackTool": {
+      "shieldingGas": {
+        "name": "Aizsarggāzes kalkulators",
+        "description": "Ieteicamās aizsarggāzes plūsmas aprēķins"
+      },
+      "heatInput": {
+        "name": "Siltuma ievades kalkulators",
+        "description": "Siltuma ievade pēc sprieguma, strāvas un metināšanas ātruma"
+      },
+      "gasFlow": {
+        "name": "Gāzes plūsmas kalkulators",
+        "description": "Gāzes patēriņa un balona darba laika novērtējums"
+      },
+      "gasCutting": {
+        "name": "Gāzu griešanas kalkulators",
+        "description": "Gāzu griešanas parametri pēc plāksnes biezuma"
+      },
+      "weldingCost": {
+        "name": "Metināšanas izmaksu kalkulators",
+        "description": "Izmaksu novērtējums pēc stieples, gāzes un laika"
+      },
+      "weldingParameters": {
+        "name": "Metināšanas parametru kalkulators",
+        "description": "Ieteicamie metināšanas parametri pēc biezuma"
+      }
+    },
+    "contactTitle": "Kontakti",
+    "ctaBannerTitle": "Vajadzīga palīdzība ar metināšanas iestatīšanu?",
+    "ctaBannerText": "Sazinieties konsultācijām, apmācībām vai sadarbībai.",
+    "ctaBannerContact": "Sazināties",
+    "ctaBannerEmailWhatsapp": "E-pasts / WhatsApp",
+    "ctaBannerEmail": "E-pasts",
+    "ctaBannerWhatsapp": "WhatsApp"
   },
   "about": {
+    "whyChooseSectionLabel": "Vērtība darba devējam un klientam",
     "title": "Par mani",
+    "achievements": "Sasniegumi",
+    "achievement1": "Praktiskā rokasgrāmata «MAG/MIG metināšana» (2024) autors.",
+    "achievement2": "Metināšanas inženieris (IWE): MIG/MAG, TIG un MMA procesu ieviešana un audits.",
+    "achievement3": "Pieredze ražošanas atbalstā un metinātāju apmācībā rūpniecībā un mācību centros.",
+    "achievement4": "Ekspertīze aizsarggāzu un metināšanas iekārtu izvēlē.",
     "photoAlt": "Olegs Suvorovs, metināšanas inženieris",
     "workPhotoAlt": "Fotogrāfija no darba",
     "bio": "Biogrāfija",
@@ -79,11 +200,32 @@
     "bachelor": "Bakalaura grāds",
     "master": "Maģistra grāds (RTU)",
     "mma_mag": "MMA/MAG metināšana",
-    "tig": "TIG metināšana"
+    "tig": "TIG metināšana",
+    "bachelorSummary": "Augstākā izglītība: bakalaura grāds RTU.",
+    "masterSummary": "RTU maģistra grāds — padziļināta inženieru sagatavošana.",
+    "mma_magSummary": "Kvalifikācija manuālajā loka un pusautomātiskajā metināšanā (MMA/MAG).",
+    "tigSummary": "Sertifikācija TIG / GTAW metināšanā.",
+    "diplomaOpenInModal": "Skatīt",
+    "diplomaDownload": "Lejupielādēt PDF",
+    "diplomaOpenNewTab": "Jaunā cilnē",
+    "diplomaCloseModal": "Aizvērt",
+    "diplomaPdfViewerTitle": "PDF dokumenta skatītājs",
+    "diplomaPreviewAlt": "Priekšskatījums dokumentam «{title}»",
+    "fallbackBio": "<p>Metināšanas inženieris ar plašu pieredzi MIG/MAG, TIG un MMA procesos. Grāmatas «MAG/MIG metināšana» autors. Eksperts aizsarggāzēs un metināšanas iekārtās.</p>",
+    "fallbackEducation": "<p>Bakalaura un maģistra grāds RTU (Rīgas Tehniskā universitāte).</p>",
+    "fallbackQualifications": "<p>Sertifikācija MMA/MAG un TIG. Metināšanas instruktora kvalifikācija.</p>"
   },
   "experience": {
     "title": "Profesionālā pieredze",
+    "present": "pašlaik",
     "photosTitle": "Fotogrāfijas no darba",
+    "projectsTitle": "Projekti un virzieni",
+    "projectsIntro": "Konsultācijas par režīmiem un gāzēm, procesu ieviešana klienta vietā, apmācību programmas un sertifikācijas atbalsts — no pirmssērijām līdz stabilam izlaidumam.",
+    "resultsTitle": "Rezultāti",
+    "resultsIntro": "Mazāk brāķa un pārmācīšanas, pateicoties saskaņotiem režīmiem un kontrolei; skaidri ieteikumi inženieriem un ražošanai; vienots prasmju līmenis pēc apmācībām.",
+    "testimonialsTitle": "Atsauksmes un darba formāti",
+    "testimonial1": "«Tipisks formais: inženieru atbalsts klienta vietā ar dokumentētiem ieteikumiem; prioritāte — atkārtojama šuves kvalitāte un procesa ekonomika.»",
+    "testimonialAttribution": "Biežākie pieprasījumi: konsultācijas, ieviešana, apmācība.",
     "elme": {
       "company": "Elme Messer Gaas",
       "role": "Metināšanas inženieris",
@@ -98,7 +240,26 @@
       "company": "Ražošanas pieredze",
       "role": "Metinātājs",
       "period": "Līdz 2013"
-    }
+    },
+    "casesTitle": "Kā piemēri",
+    "casesIntro": "Īsi, praktiski piemēri — atveriet kartīti kontekstam, rezultātiem un saitei uz tālāku soli (blogs, rīki vai kontakti).",
+    "caseToggleShow": "Sīkāk",
+    "caseToggleHide": "Aizvērt",
+    "case1Title": "Aizsarggāze un MAG režīmi metālapstrādes darbnīcai",
+    "case1Summary": "Saskaņota gāzes izvēle, plūsma un stieples iestatījumi ar reālu piekļuvi šuvim — mazāk poru un pārmācīšanas.",
+    "case1Detail": "Sākums no WPS melnrakstiem un darbnīcas ierobežojumiem; pēc tam validācija paraugos un sērijā. Ierakstīts gala parametru logs, lai metinātāji varētu atkārtot rezultātu maiņās.",
+    "case1MoreHref": "/blog",
+    "case1MoreLabel": "Blogs — raksti un piezīmes",
+    "case2Title": "TIG alumīnijam — siltuma ievade un vāliņa kontrole",
+    "case2Summary": "Stabilizēts izskats un atkārtojamība, pielāgojot līdzsvaru, pārvietošanos un piedevas ritmu plānām loksnēm.",
+    "case2Detail": "Tipiskus defektu cēloņus (piesārņojums, pārkaršana) saista ar mērāmiem labojumiem; apmācība par degļa leņķiem un piedevas laikā.",
+    "case2MoreHref": "/tools/heat-input",
+    "case2MoreLabel": "Siltuma ievades kalkulators",
+    "case3Title": "Apmācība un dokumentācija auditam",
+    "case3Summary": "Praktiski apmācību cikls un izsekojamības pakete iekšējiem auditiem un klientu anketām.",
+    "case3Detail": "Kombinācija no demonstrācijām un īsām pārbaudes listēm vadītājiem — ko pārbaudīt pirms sērijas atbrīvošanas un kā fiksēt parametrus.",
+    "case3MoreHref": "/contact",
+    "case3MoreLabel": "Apspriest līdzīgu uzdevumu"
   },
   "calculators": {
     "calculate": "Aprēķināt",
@@ -110,12 +271,50 @@
     "errorPlateThickness": "Ievadiet derīgu loksnes biezumu.",
     "errorCylinderVolume": "Balona tilpumam jābūt > 0.",
     "errorCalculationFailed": "Aprēķina kļūda",
+    "exampleSectionTitle": "Piemēra rezultāts (ilustrācija)",
+    "pages": {
+      "heat-input": {
+        "lead": "Novērtē siltuma ievadi (kJ/mm) no sprieguma, strāvas un metināšanas ātruma. Inženieriem un tehnologiem, salīdzinot WPS un termisko slodzi.",
+        "exampleTitle": "Illustratīva salīdzināšana",
+        "exampleCaption": "Divi dažādi siltuma ievades līmeņi: lielāks Q parasti nozīmē vairāk enerģijas uz švīdas garuma vienību."
+      },
+      "gas-flow": {
+        "lead": "Novērtē gāzes patēriņu metināšanas laikā un sasaista ar balona tilpumu. Noderīgi plānojot darbus un balonu krājumus.",
+        "exampleTitle": "Patēriņa skice",
+        "exampleCaption": "Plūsma reizināta ar laiku dod tilpumu; salīdziniet ar balona ietilpību, lai novērtētu darba laiku."
+      },
+      "shielding-gas": {
+        "lead": "Piedāvā saprātīgu aizsarggāzes plūsmas diapazonu pēc stieples, materiāla un procesa. Sākuma punkts pirms pielāgošanas testos.",
+        "exampleTitle": "Tipisks plūsmas josla",
+        "exampleCaption": "Min–max josla ar tipisku iestatījumu; pielāgojiet sprauslai, caurvējam un piekļuvei šuvim."
+      },
+      "gas-cutting": {
+        "lead": "Skābekļa griešana: indicatīvs O₂ spiediens un degvielas plūsma pēc loksnes biezuma (un pēc izvēles griešanas ātruma). Pārbaudiet pēc iekārtas instrukcijām.",
+        "exampleTitle": "Spiediens pret biezumu",
+        "exampleCaption": "Biezākai lokšnei parasti augstāks skābekļa spiediens; vērtības ir orientējošas."
+      },
+      "welding-cost": {
+        "lead": "Aptuvena izmaksu sadalījums starp stiepli un aizsarggāzi cenu, nanosanas ātruma un laika ietvaros. Novērtētājiem un darbnīcas plānošanai.",
+        "exampleTitle": "Izmaksu struktūra",
+        "exampleCaption": "Illustratīva stieples un gāzes daļa; faktiskā sadalījums atkarīgs no režīmiem un cenām."
+      },
+      "welding-parameters": {
+        "lead": "Sākuma strāva, spriegums un ātrums pēc biezuma, savienojuma un stieples diametra. Apstipriniet paraugos un savā WPS.",
+        "exampleTitle": "Piemēra izvade",
+        "exampleCaption": "Piemēram parametru kopa (I, U, ātrums) tipiskam MAG leņķa šuvim — neaizstāj procedūras kvalifikāciju."
+      }
+    },
     "heatInput": {
       "title": "Siltuma ievades kalkulators",
       "voltage": "Spriegums (V)",
       "current": "Strāva (A)",
       "travelSpeed": "Metināšanas ātrums (mm/min)",
-      "result": "Siltuma ievade"
+      "result": "Siltuma ievade",
+      "hints": {
+        "voltage": "Loka vai slodzes spriegums siltuma ievades formulā (pārbaudiet, kāds U ir WPS).",
+        "current": "Metināšanas strāva ampēros; jāatbilst procesam un stieples izmēram.",
+        "travelSpeed": "Lodes kustības ātrums gar šuvi; jābūt > 0. Vienības — mm/min."
+      }
     },
     "gasFlow": {
       "title": "Gāzes plūsmas kalkulators",
@@ -123,7 +322,12 @@
       "weldingTime": "Metināšanas laiks (min)",
       "cylinderVolume": "Balona tilpums (L)",
       "consumption": "Gāzes patēriņš",
-      "cylinderDuration": "Balona darbības laiks"
+      "cylinderDuration": "Balona darbības laiks",
+      "hints": {
+        "flowRate": "Aizsarggāzes plūsma pie lodes (L/min), pēc plūsmas mērītāja vai reduktora.",
+        "weldingTime": "Kopējais loka laiks minūtēs izvēlētajam periodam (ne obligāti maiņas laiks).",
+        "cylinderVolume": "Gāzes tilpums pilnā balonā litros (bieži norādīts uz balona vai datu lapā)."
+      }
     },
     "shieldingGas": {
       "title": "Aizsarggāzes kalkulators",
@@ -131,7 +335,12 @@
       "material": "Materiāls",
       "process": "Process",
       "flowRange": "Ieteicamā plūsma",
-      "typical": "Tipisks"
+      "typical": "Tipisks",
+      "hints": {
+        "wireDiameter": "Pildstieples diametrs; lielākiem diametriem plūsmas logs bieži ir platāks.",
+        "material": "Materiālu grupa (tērauds, nerūsējošais, alumīnijs) ietekmē aizsardzību un plūsmu.",
+        "process": "MIG/MAG vai TIG — atšķirīga lodes un aizsardzības uzvedība."
+      }
     },
     "gasCutting": {
       "title": "Gāzu griešanas kalkulators",
@@ -140,7 +349,12 @@
       "cuttingSpeed": "Griešanas ātrums (m/min, pēc izvēles)",
       "cuttingSpeedPlaceholder": "Pēc izvēles",
       "o2Pressure": "O₂ spiediens",
-      "fuelFlow": "Degvielas plūsma"
+      "fuelFlow": "Degvielas plūsma",
+      "hints": {
+        "plateThickness": "Griešanās loksnes biezums; nosaka skābekļa spiedienu un iestatījumu.",
+        "gasType": "Degvielas gāzes veids (acetilēns, propāns u. c.) ietekmē degvielas plūsmu.",
+        "cuttingSpeed": "Pēc izvēles: faktiskais griešanas ātrums; atstājiet tukšu, ja nezināms."
+      }
     },
     "weldingCost": {
       "title": "Metināšanas izmaksu kalkulators",
@@ -154,7 +368,14 @@
       "cylindersUsed": "Izmantotie baloni",
       "wireCost": "Stieples izmaksas",
       "gasCost": "Gāzes izmaksas",
-      "totalCost": "Kopējās izmaksas"
+      "totalCost": "Kopējās izmaksas",
+      "hints": {
+        "wirePrice": "Iepirkuma cena par pildstieples kilogramu.",
+        "gasPrice": "Cena par pilnu aizsarggāzes balonu (tās pašas vienības kā piedāvājumā).",
+        "cylinderVolume": "Gāzes tilpums vienā balonā litros (patēriņa un izmaksu pārrēķinam).",
+        "depositionRate": "Nanosināta metāla masa stundā pie jūsu režīmiem (no datu lapām vai mērījumiem).",
+        "weldingTime": "Loka stundas darbam vai partijai, ko novērtējat."
+      }
     },
     "weldingParameters": {
       "title": "Metināšanas parametru kalkulators",
@@ -163,7 +384,12 @@
       "wireDiameter": "Stieples diametrs (mm)",
       "current": "Strāva",
       "voltage": "Spriegums",
-      "travelSpeed": "Metināšanas ātrums"
+      "travelSpeed": "Metināšanas ātrums",
+      "hints": {
+        "plateThickness": "Galvenā loksnes biezums savienojumā; galvenā ievade siltuma ieteikumam.",
+        "jointType": "Šuvju veids (butt, fillet, overlap, stūris) ietekmē ieteiktos parametrus.",
+        "wireDiameter": "Pildstieples diametrs procesā."
+      }
     }
   },
   "knowledge": {
@@ -176,12 +402,18 @@
     "weldingMetallurgy": "Metināšanas metalurģija",
     "weldingDefects": "Metināšanas defekti",
     "noArticles": "Šajā sadaļā vēl nav rakstu.",
-    "viewAllInCategory": "Visus rakstus sadaļā"
+    "viewAllInCategory": "Visus rakstus sadaļā",
+    "schemaNote": "Zināšanu bāzē materiāli sakārtoti pēc tēmām. Pilnu rakstu plūsmu ar kategorijām un tagiem atveriet sadaļā"
   },
   "blog": {
     "title": "Blogs",
     "description": "Tehniskie raksti par metināšanu, aizsarggāzēm, iekārtām un procesiem.",
+    "readMore": "Pilns raksts",
+    "knowledgeCrossLink": "Materiālus pēc tēmām atveriet sadaļā",
+    "filterByCategory": "Kategorijas",
     "allCategories": "Visi",
+    "allTags": "Visas birkas",
+    "filterByTag": "Birkas",
     "noArticles": "Rakstu vēl nav.",
     "pagination": "Lapdales navigācija",
     "previous": "Atpakaļ",
@@ -193,6 +425,17 @@
   "contact": {
     "title": "Kontakti",
     "description": "Sazinieties konsultācijām, apmācībām vai grāmatas iegādei. Pieejams pa e-pastu, LinkedIn vai YouTube.",
+    "formTitle": "Nosūtīt ziņu",
+    "formName": "Vārds",
+    "formEmail": "Jūsu e-pasts",
+    "formMessage": "Ziņa",
+    "formSubmit": "Atvērt e-pasta klientu",
+    "formHint": "Ziņa tiks ievietota priekšā e-pasta programmā. Nepieciešamības gadījumā nosūtiet manuāli.",
+    "formSubjectPrefix": "Pieprasījums no vietnes",
+    "formBodyName": "Vārds",
+    "formBodyEmail": "E-pasts",
+    "mapTitle": "Karte",
+    "mapDescription": "Darba reģions: Latvija un attālās konsultācijas. Kartes punkts ir aptuvens.",
     "email": "E-pasts",
     "linkedin": "Profesionālais profils un atjauninājumi",
     "youtube": "Metināšanas video un apmācības",
@@ -203,6 +446,18 @@
     "subtitle": "No iekārtu izvēles līdz aizsarggāzei un metināšanas metodēm",
     "year": "2024",
     "description": "Pilnīga rokasgrāmata MAG/MIG metināšanai: no pareizās iekārtas un aizsarggāzes izvēles līdz metināšanas paņēmienu apgūšanai. Rakstīta praktizējoša metināšanas inženiera ar daudzu gadu pieredzi.",
-    "cta": "Sazināties par iegādi"
+    "cta": "Sazināties par iegādi",
+    "coverAlt": "Grāmatas vāks «MAG/MIG metināšana»",
+    "purchaseTitle": "Kā iegādāties",
+    "purchaseIntro": "Drukātā un elektroniskā versija pieejama pēc pieprasījuma. Pasūtiet caur kontaktu formu vai e-pastu.",
+    "ctaEmail": "Rakstīt e-pastu",
+    "emailSubjectBook": "Pasūtījums: grāmata MAG/MIG",
+    "buyOnline": "Iegādāties veikalā",
+    "downloadSample": "Lejupielādēt fragmentu",
+    "previewTitle": "Grāmatas izvērsums",
+    "previewCaption": "Ilustratīvs izvērsums — struktūra, shēmas un piemēri darbnīcas lietošanai.",
+    "authorityTitle": "Lasītāji un komandas",
+    "authorityQuote": "«Praktiska saite starp iekārtu katalogiem un to, kas patiesi strādā ražošanā — bez liekas ūdens līšanas.»",
+    "authorityAttribution": "Tipiska atgriezeniskā saite: inženieri un meistari, kam vajadzīgi atkārtojami MAG/MIG režīmi."
   }
 }

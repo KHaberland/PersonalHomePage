@@ -57,8 +57,10 @@ export default async function KnowledgePage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, categories, postsByCategory] = await Promise.all([
+  const [t, tBlog, tCommon, categories, postsByCategory] = await Promise.all([
     getTranslations('knowledge'),
+    getTranslations('blog'),
+    getTranslations('common'),
     getCategories().catch(() => []),
     Promise.all(
       KNOWLEDGE_SECTIONS.map(({ slug }) =>
@@ -75,7 +77,13 @@ export default async function KnowledgePage({ params }: Props) {
   return (
     <div className="container-wide section">
       <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
-      <p className="mb-12 text-foreground/80">{t('description')}</p>
+      <p className="mb-3 max-w-3xl text-foreground/80">{t('description')}</p>
+      <p className="mb-12 max-w-3xl text-sm text-foreground/70">
+        {t('schemaNote')}{' '}
+        <Link href="/blog" className="link-accent font-medium hover:underline">
+          {tCommon('blogNav')}
+        </Link>
+      </p>
 
       <div className="space-y-16">
         {KNOWLEDGE_SECTIONS.map(({ slug, translationKey }, idx) => {
@@ -132,6 +140,9 @@ export default async function KnowledgePage({ params }: Props) {
                             </span>
                           )}
                         </p>
+                        <span className="mt-3 inline-block text-sm font-medium text-accent-orange group-hover:underline">
+                          {tBlog('readMore')}
+                        </span>
                       </div>
                     </Link>
                   ))}

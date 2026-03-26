@@ -1,42 +1,10 @@
-import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import { Section } from '@/components/Section';
+import { ToolCardLink } from '@/components/ToolCardLink';
 import { getTools } from '@/lib/api';
-import type { Calculator } from '@/lib/api-types';
+import { buildFallbackTools } from '@/lib/fallback-content';
 import { createPageMetadata } from '@/lib/metadata';
-
-const fallbackTools: Omit<Calculator, 'id' | 'created_at'>[] = [
-  {
-    name: 'Shielding Gas Calculator',
-    description: 'Calculate recommended shielding gas flow rate',
-    slug: 'shielding-gas',
-  },
-  {
-    name: 'Heat Input Calculator',
-    description: 'Calculate heat input from voltage, current and travel speed',
-    slug: 'heat-input',
-  },
-  {
-    name: 'Gas Flow Calculator',
-    description: 'Estimate gas consumption and cylinder duration',
-    slug: 'gas-flow',
-  },
-  {
-    name: 'Gas Cutting Calculator',
-    description: 'Gas cutting parameters for plate thickness',
-    slug: 'gas-cutting',
-  },
-  {
-    name: 'Welding Cost Calculator',
-    description: 'Estimate welding cost from wire, gas and time',
-    slug: 'welding-cost',
-  },
-  {
-    name: 'Welding Parameters Calculator',
-    description: 'Recommended welding parameters by thickness',
-    slug: 'welding-parameters',
-  },
-];
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -64,32 +32,26 @@ export default async function ToolsPage({ params }: Props) {
   const tools =
     apiTools.length > 0
       ? apiTools
-      : fallbackTools.map((item, i) => ({
+      : buildFallbackTools(t).map((item) => ({
           ...item,
-          id: i + 1,
           created_at: '',
         }));
 
   return (
-    <div className="container-wide section">
+    <Section bordered={false} scrollMargin={false}>
       <h1 className="heading-1 mb-4 text-accent-orange">{t('toolsTitle')}</h1>
       <p className="mb-12 text-foreground/80">{t('toolsDescription')}</p>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {tools.map((tool) => (
-          <Link
+          <ToolCardLink
             key={tool.id}
-            href={`/tools/${tool.slug}`}
-            className="card block p-6"
-          >
-            <h2 className="heading-3 text-foreground">{tool.name}</h2>
-            <p className="mt-2 text-foreground/70">{tool.description}</p>
-            <span className="link-accent mt-4 inline-block text-sm">
-              {t('toolsCta')} →
-            </span>
-          </Link>
+            tool={tool}
+            ctaText={t('toolsCta')}
+            density="comfortable"
+          />
         ))}
       </div>
-    </div>
+    </Section>
   );
 }

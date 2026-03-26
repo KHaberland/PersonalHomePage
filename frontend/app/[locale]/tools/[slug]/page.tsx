@@ -2,48 +2,13 @@ import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getTools } from '@/lib/api';
-import {
-  isCalculatorSlug,
-  type CalculatorSlug,
-} from '@/components/calculators';
+import { CALCULATOR_SLUGS, isCalculatorSlug } from '@/components/calculators';
+import { loadCalculator } from '@/components/calculators/loadCalculator';
+import { CalculatorStaticExample } from '@/components/calculators/CalculatorStaticExample';
 import { createPageMetadata } from '@/lib/metadata';
 
-/** Динамическая загрузка калькуляторов для code splitting */
-async function loadCalculator(slug: CalculatorSlug) {
-  switch (slug) {
-    case 'heat-input':
-      return (await import('@/components/calculators/HeatInputCalculator'))
-        .HeatInputCalculator;
-    case 'gas-flow':
-      return (await import('@/components/calculators/GasFlowCalculator'))
-        .GasFlowCalculator;
-    case 'shielding-gas':
-      return (await import('@/components/calculators/ShieldingGasCalculator'))
-        .ShieldingGasCalculator;
-    case 'gas-cutting':
-      return (await import('@/components/calculators/GasCuttingCalculator'))
-        .GasCuttingCalculator;
-    case 'welding-cost':
-      return (await import('@/components/calculators/WeldingCostCalculator'))
-        .WeldingCostCalculator;
-    case 'welding-parameters':
-      return (
-        await import('@/components/calculators/WeldingParametersCalculator')
-      ).WeldingParametersCalculator;
-    default:
-      return null;
-  }
-}
-
 export function generateStaticParams() {
-  return [
-    { slug: 'heat-input' },
-    { slug: 'gas-flow' },
-    { slug: 'shielding-gas' },
-    { slug: 'gas-cutting' },
-    { slug: 'welding-cost' },
-    { slug: 'welding-parameters' },
-  ];
+  return CALCULATOR_SLUGS.map((slug) => ({ slug }));
 }
 
 const fallbackTools: { name: string; slug: string }[] = [
@@ -93,11 +58,43 @@ export default async function CalculatorPage({ params }: Props) {
   const CalculatorComponent = await loadCalculator(slug);
   if (!CalculatorComponent) notFound();
 
+  const tCalc = await getTranslations({ locale, namespace: 'calculators' });
+  const pageBase = `pages.${slug}`;
+  const lead = tCalc(`${pageBase}.lead` as 'pages.heat-input.lead');
+  const exampleTitle = tCalc(
+    `${pageBase}.exampleTitle` as 'pages.heat-input.exampleTitle'
+  );
+  const exampleCaption = tCalc(
+    `${pageBase}.exampleCaption` as 'pages.heat-input.exampleCaption'
+  );
+  const exampleSectionTitle = tCalc('exampleSectionTitle');
+
   return (
     <div className="container-narrow section">
-      <h1 className="heading-1 mb-8 text-accent-orange">
+      <h1 className="heading-1 mb-4 text-accent-orange">
         {tool?.name ?? slug}
       </h1>
+      <p className="mb-8 max-w-3xl text-lg leading-relaxed text-foreground/85">
+        {lead}
+      </p>
+
+      <section
+        className="mb-8 rounded-xl border border-foreground/10 bg-foreground/[0.03] p-6"
+        aria-labelledby="calc-example-heading"
+      >
+        <p className="mb-1 text-xs font-medium uppercase tracking-wide text-foreground/55">
+          {exampleSectionTitle}
+        </p>
+        <h2
+          id="calc-example-heading"
+          className="heading-3 mb-3 text-foreground"
+        >
+          {exampleTitle}
+        </h2>
+        <p className="mb-4 text-sm text-foreground/70">{exampleCaption}</p>
+        <CalculatorStaticExample slug={slug} />
+      </section>
+
       <div className="card p-6">
         <CalculatorComponent />
       </div>

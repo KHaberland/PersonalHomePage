@@ -14,13 +14,13 @@ export function LanguageSwitcher() {
   const currentLocale = useLocale();
 
   return (
-    <nav className="flex gap-2">
+    <nav className="flex shrink-0 gap-1.5" aria-label="Language">
       {locales.map(({ code, label }) => (
         <Link
           key={code}
           href={pathname || '/'}
           locale={code}
-          className={`rounded px-3 py-1 text-sm font-medium transition-colors ${
+          className={`rounded px-2 py-0.5 text-[calc(0.875rem-2pt)] font-medium leading-tight transition-colors ${
             currentLocale === code
               ? 'bg-accent-orange text-white'
               : 'bg-surface text-foreground/80 hover:bg-surface/80'

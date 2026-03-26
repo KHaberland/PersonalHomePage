@@ -3,7 +3,7 @@
     "defaultTitle": "Oleg Suvorov | Welding Engineer",
     "defaultDescription": "Professional welding engineer portfolio, technical blog, and engineering calculators. MIG/MAG, TIG welding. Shielding gases. Author of MAG/MIG welding book.",
     "homeTitle": "Oleg Suvorov | Welding Engineer",
-    "homeDescription": "Welding engineer with extensive experience in MIG/MAG, TIG, and MMA. Expert in shielding gases. Author of MAG/MIG welding book. Engineering calculators.",
+    "homeDescription": "Welding Engineer (IWE). Optimizing MIG/MAG, TIG, and MMA welding processes. Helping companies improve quality, reduce costs, and train staff. Blog, calculators, MAG/MIG book.",
     "aboutTitle": "About Oleg Suvorov | Welding Engineer",
     "aboutDescription": "Biography, education and professional qualifications of welding engineer Oleg Suvorov. MMA/MAG, TIG certifications.",
     "experienceTitle": "Professional Experience | Oleg Suvorov",
@@ -32,7 +32,10 @@
     "knowledge": "Welding Knowledge",
     "blog": "Blog",
     "contactLink": "Contact",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "ctaHint": "Need help with welding setup or training?",
+    "homeSectionsNavLabel": "Sections on the home page",
+    "languages": "Language"
   },
   "common": {
     "home": "Home",
@@ -40,36 +43,154 @@
     "experience": "Experience",
     "book": "Book",
     "tools": "Engineering Tools",
+    "toolsNav": "Tools",
     "knowledge": "Welding Knowledge",
     "blog": "Blog",
-    "contact": "Contact"
+    "blogNav": "Blog — articles",
+    "knowledgeNav": "Knowledge base — reference",
+    "contact": "Contact",
+    "expertise": "Expertise",
+    "expertiseCompetencies": "Competencies",
+    "expertiseServices": "Services",
+    "expertiseCases": "Case studies",
+    "homePageSections": "Home sections",
+    "homeSectionAbout": "About me",
+    "homeSectionWhy": "Why choose me",
+    "homeSectionExperience": "Professional experience",
+    "homeSectionBook": "Book",
+    "homeSectionTools": "Tools",
+    "homeSectionBlog": "Blog",
+    "homeSectionContact": "Contact",
+    "homePageProgressLabel": "On this page"
   },
   "home": {
     "title": "Oleg Suvorov",
-    "subtitle": "Welding Engineer",
-    "heroTitle": "Welding Engineer & Expert",
-    "heroSubtitle": "MIG/MAG, TIG welding. Shielding gases. Author of \"MAG/MIG welding\" book.",
-    "aboutTitle": "About the Specialist",
-    "aboutText": "Welding engineer with extensive experience in MIG/MAG, TIG, and MMA processes. Expert in shielding gases and welding equipment.",
+    "subtitle": "Welding Engineer (IWE)",
+    "heroTitleLine1": "Welding Engineer (IWE)",
+    "heroTitleLine2": "Optimizing MIG/MAG, TIG, and MMA welding processes",
+    "heroTitleLine3": "Helping companies improve quality, reduce costs, and train staff",
+    "heroCtaContact": "Get in touch",
+    "heroCtaTools": "Engineering tools",
+    "heroScrollToCompetencies": "Explore key competencies",
+    "whyChooseTitle": "Why work with me",
+    "whyChoose1": "Certified welding engineer (IWE) with hands-on industrial experience.",
+    "whyChoose2": "Clear, practical recommendations — fewer defects, predictable costs.",
+    "whyChoose3": "Training for welders and supervisors — skills that transfer to the shop floor.",
+    "whyChoose4": "Author of a MAG/MIG welding book and long-term collaboration with production teams.",
+    "aboutTitle": "About me",
+    "aboutText": "<p>Welding engineer (IWE) with long-term hands-on experience implementing and optimizing MIG/MAG, TIG, and MMA — from welding parameters to quality control.</p><p>I train teams and support industrial projects. Author of a book on MAG/MIG welding. Full biography, diplomas, and certificates are on a dedicated page.</p>",
+    "aboutMoreCta": "More about me",
     "competenciesTitle": "Key Competencies",
-    "competency1": "MIG/MAG welding technology",
-    "competency2": "Shielding gases selection",
-    "competency3": "Welding equipment",
-    "competency4": "Gas cutting",
+    "competenciesTechnicalSubtitle": "Technical skills",
+    "competenciesTechnicalLead": "Processes, equipment, and materials — the engineering depth behind the work.",
+    "competenciesBusinessSubtitle": "Business outcomes",
+    "competenciesBusinessLead": "Measurable impact: KPIs, cost control, and a stronger welding team.",
+    "competencyBusiness1Title": "Cost and quality KPIs",
+    "competencyBusiness1Desc": "Lower defect rates, optimized consumables, and clearer cost per meter.",
+    "competencyBusiness2Title": "Team capability",
+    "competencyBusiness2Desc": "Training paths for welders and supervisors — skills that transfer to the shop floor.",
+    "competencyBusiness3Title": "Process assurance",
+    "competencyBusiness3Desc": "Support for audits, tenders, and stable welding procedures and documentation.",
+    "competency1": "MIG/MAG welding",
+    "competency2": "TIG aluminum welding",
+    "competency3": "Shielding gases",
+    "competency4": "Welding equipment",
     "competency5": "Welding metallurgy",
+    "competencyCard1": "process implementation, cost and quality control",
+    "competencyCard2": "mode optimization and defect reduction",
+    "competencyCard3": "Gas mixture selection and consumption optimization",
+    "competencyCard4": "Optimal selection and audits to improve efficiency",
+    "competencyCard5": "defects, heat input, weld quality control",
+    "competencyIconCuttingGases": "Cutting gases",
+    "competencyCard6": "Optimal fuel gas selection and cutting parameter setup",
+    "competencyIconMigMag": "MIG/MAG welding",
+    "competencyIconTigAl": "TIG aluminum welding",
+    "competencyIconGas": "Shielding gases for MIG/MAG/TIG",
+    "competencyIconEquipment": "Welding equipment",
+    "competencyIconCutting": "Gas cutting",
+    "competencyIconMetallurgy": "Welding metallurgy",
+    "servicesTitle": "Services",
+    "servicesSubtitle": "Practical support for production: from expert advice to trained teams.",
+    "serviceConsulting": "Consulting",
+    "serviceConsultingDesc": "Clear guidance on modes, shielding gases, and defects — fewer rejects and faster technical decisions.",
+    "serviceImplementation": "Process implementation",
+    "serviceImplementationDesc": "Structured rollout of welding processes at your facility — stable quality and traceability.",
+    "serviceEquipment": "Equipment selection",
+    "serviceEquipmentDesc": "Selection and setup matched to your materials and volumes — sensible investment, less downtime.",
+    "serviceTraining": "Staff training",
+    "serviceTrainingDesc": "Hands-on training for welders and supervisors — fewer errors and consistent workmanship.",
+    "servicesCta": "Discuss your needs",
+    "toolsSectionLead": "Practical tools for engineers and technologists",
     "experienceTitle": "Professional Experience",
+    "casesTitle": "Practical experience / Case studies",
+    "casesSubtitle": "Examples of projects: training, process optimization, and consulting.",
+    "casesCta": "Full experience & projects",
+    "case1Title": "Welder training program",
+    "case1Description": "Structured training and certification support for production teams.",
+    "case2Title": "TIG welding of aluminum",
+    "case2Description": "Mode optimization and defect reduction on thin aluminum assemblies.",
+    "case3Title": "Shielding gas consulting",
+    "case3Description": "Gas mix and flow recommendations for quality and economy.",
     "bookTitle": "Book: MAG/MIG welding",
     "bookDescription": "From equipment selection to shielding gas and welding methods. 2024.",
     "bookCta": "Learn more",
+    "bookMoreCta": "More about the book",
     "toolsTitle": "Engineering Calculators",
     "toolsDescription": "Professional calculators for welding engineers",
-    "toolsCta": "View all tools",
+    "toolsCta": "Go to calculators",
     "blogTitle": "Latest Articles",
+    "blogSubtitle": "Technical articles on welding, gases, and equipment — open a post or browse the full blog.",
+    "blogReadMore": "Read more",
     "blogCta": "Read blog",
-    "contactTitle": "Contact"
+    "blogAllArticles": "All articles",
+    "blogFallbackCard1Title": "Shielding gas selection",
+    "blogFallbackCard1Excerpt": "<p>How gas mix and flow affect MIG/MAG and TIG quality and cost.</p>",
+    "blogFallbackCard2Title": "Heat input and weld quality",
+    "blogFallbackCard2Excerpt": "<p>Relating heat input to defects and mechanical properties for quality control.</p>",
+    "blogFallbackCard3Title": "Welding equipment and processes",
+    "blogFallbackCard3Excerpt": "<p>Practical notes on choosing and setting up equipment for your application.</p>",
+    "fallbackTool": {
+      "shieldingGas": {
+        "name": "Shielding Gas Calculator",
+        "description": "Calculate recommended shielding gas flow rate"
+      },
+      "heatInput": {
+        "name": "Heat Input Calculator",
+        "description": "Calculate heat input from voltage, current and travel speed"
+      },
+      "gasFlow": {
+        "name": "Gas Flow Calculator",
+        "description": "Estimate gas consumption and cylinder duration"
+      },
+      "gasCutting": {
+        "name": "Gas Cutting Calculator",
+        "description": "Gas cutting parameters for plate thickness"
+      },
+      "weldingCost": {
+        "name": "Welding Cost Calculator",
+        "description": "Estimate welding cost from wire, gas and time"
+      },
+      "weldingParameters": {
+        "name": "Welding Parameters Calculator",
+        "description": "Recommended welding parameters by thickness"
+      }
+    },
+    "contactTitle": "Contact",
+    "ctaBannerTitle": "Need help with welding setup?",
+    "ctaBannerText": "Reach out for consulting, training, or collaboration.",
+    "ctaBannerContact": "Get in touch",
+    "ctaBannerEmailWhatsapp": "Email / WhatsApp",
+    "ctaBannerEmail": "Email",
+    "ctaBannerWhatsapp": "WhatsApp"
   },
   "about": {
+    "whyChooseSectionLabel": "Value for employers and clients",
     "title": "About Me",
+    "achievements": "Achievements",
+    "achievement1": "Author of the practical guide “MAG/MIG welding” (2024).",
+    "achievement2": "Welding engineer (IWE): implementation and auditing of MIG/MAG, TIG, and MMA processes.",
+    "achievement3": "Experience supporting industrial production and training welders in industry and training centres.",
+    "achievement4": "Expertise in shielding gas selection and welding equipment.",
     "photoAlt": "Oleg Suvorov, welding engineer",
     "workPhotoAlt": "Work photo",
     "bio": "Biography",
@@ -79,11 +200,32 @@
     "bachelor": "Bachelor's degree",
     "master": "Master's degree (RTU)",
     "mma_mag": "MMA/MAG Welding",
-    "tig": "TIG Welding"
+    "tig": "TIG Welding",
+    "bachelorSummary": "Higher education: bachelor’s degree from RTU.",
+    "masterSummary": "RTU master’s degree — advanced engineering preparation.",
+    "mma_magSummary": "Qualification in manual metal arc and semi-automatic welding (MMA/MAG).",
+    "tigSummary": "Certification in TIG / GTAW welding.",
+    "diplomaOpenInModal": "View",
+    "diplomaDownload": "Download PDF",
+    "diplomaOpenNewTab": "Open in new tab",
+    "diplomaCloseModal": "Close",
+    "diplomaPdfViewerTitle": "PDF document viewer",
+    "diplomaPreviewAlt": "Preview of document “{title}”",
+    "fallbackBio": "<p>Welding engineer with extensive experience in MIG/MAG, TIG, and MMA processes. Author of the book &quot;MAG/MIG welding&quot;. Expert in shielding gases and welding equipment.</p>",
+    "fallbackEducation": "<p>Bachelor and Master degrees from RTU (Riga Technical University).</p>",
+    "fallbackQualifications": "<p>Certified in MMA/MAG and TIG welding. Welding instructor qualification.</p>"
   },
   "experience": {
     "title": "Professional Experience",
+    "present": "present",
     "photosTitle": "Photos from work",
+    "projectsTitle": "Projects and focus areas",
+    "projectsIntro": "Consulting on parameters and gases, on-site process rollout, training programmes and certification support — from pilot runs to stable output.",
+    "resultsTitle": "Outcomes",
+    "resultsIntro": "Fewer rejects and rework through aligned parameters and control; clear recommendations for engineering and production; consistent skill levels after training.",
+    "testimonialsTitle": "Feedback and ways of working",
+    "testimonial1": "“Typical engagement: on-site engineering support with documented recommendations; priority is reproducible weld quality and process economics.”",
+    "testimonialAttribution": "Common client requests: consulting, implementation, training.",
     "elme": {
       "company": "Elme Messer Gaas",
       "role": "Welding Engineer",
@@ -98,7 +240,26 @@
       "company": "Production experience",
       "role": "Welder",
       "period": "Until 2013"
-    }
+    },
+    "casesTitle": "Case highlights",
+    "casesIntro": "Short, practical examples — open a card for context, typical results, and a link to follow up (blog, tools, or contact).",
+    "caseToggleShow": "Details",
+    "caseToggleHide": "Hide",
+    "case1Title": "Shielding gas and MAG parameters for a fabrication shop",
+    "case1Summary": "Aligned gas choice, flow, and wire settings with real joint access — fewer pores and less rework.",
+    "case1Detail": "Started from current WPS drafts and shop constraints, then validated settings on sample plates and production trials. Documented the final parameter window so welders could reproduce results across shifts.",
+    "case1MoreHref": "/blog",
+    "case1MoreLabel": "Blog — articles and notes",
+    "case2Title": "TIG aluminum — heat input and bead control",
+    "case2Summary": "Stabilized appearance and mechanical consistency by tuning balance, travel, and filler rhythm for thin sections.",
+    "case2Detail": "Mapped common defect triggers (contamination, overheating) to measurable adjustments; trained the team on torch angle and filler timing checkpoints.",
+    "case2MoreHref": "/tools/heat-input",
+    "case2MoreLabel": "Heat input calculator",
+    "case3Title": "Training + audit-ready welding documentation",
+    "case3Summary": "Built a pragmatic training loop and traceability pack for internal audits and customer questionnaires.",
+    "case3Detail": "Combined hands-on demos with short checklists for supervisors: what to verify before releasing a batch, and how to capture parameters consistently.",
+    "case3MoreHref": "/contact",
+    "case3MoreLabel": "Discuss a similar engagement"
   },
   "calculators": {
     "calculate": "Calculate",
@@ -110,12 +271,50 @@
     "errorPlateThickness": "Enter valid plate thickness.",
     "errorCylinderVolume": "Cylinder volume must be > 0.",
     "errorCalculationFailed": "Calculation failed",
+    "exampleSectionTitle": "Example result (illustrative)",
+    "pages": {
+      "heat-input": {
+        "lead": "Estimates heat input (kJ/mm) from voltage, current and travel speed. For welding engineers and technicians comparing WPS values and thermal load.",
+        "exampleTitle": "Illustrative comparison",
+        "exampleCaption": "Two different heat-input levels: higher Q usually means more energy per unit length in the weld."
+      },
+      "gas-flow": {
+        "lead": "Estimates gas consumption over welding time and relates it to cylinder volume. Helpful when planning jobs and cylinder stock.",
+        "exampleTitle": "Consumption sketch",
+        "exampleCaption": "Flow rate multiplied by time gives volume; compare with cylinder capacity for run time."
+      },
+      "shielding-gas": {
+        "lead": "Suggests a reasonable shielding gas flow range from wire size, material and process. Use as a starting point before fine-tuning with tests.",
+        "exampleTitle": "Typical flow band",
+        "exampleCaption": "Min–max band with a typical setpoint; adjust for nozzle, draft and joint access."
+      },
+      "gas-cutting": {
+        "lead": "Oxygen cutting: indicative O₂ pressure and fuel flow from plate thickness (and optional cutting speed). Always verify with equipment manuals and trials.",
+        "exampleTitle": "Pressure vs thickness",
+        "exampleCaption": "Thicker plate generally needs higher oxygen pressure; values are indicative."
+      },
+      "welding-cost": {
+        "lead": "Rough cost split between filler wire and shielding gas from prices, deposition rate and time. For estimators and workshop planning.",
+        "exampleTitle": "Cost structure",
+        "exampleCaption": "Illustrative share of wire vs gas; your actual split depends on parameters and prices."
+      },
+      "welding-parameters": {
+        "lead": "Starting-point current, voltage and travel speed from plate thickness, joint and wire diameter. Confirm on samples and your WPS.",
+        "exampleTitle": "Sample output",
+        "exampleCaption": "Example parameter set (I, U, travel speed) for a typical MAG fillet — not a substitute for procedure qualification."
+      }
+    },
     "heatInput": {
       "title": "Heat Input Calculator",
       "voltage": "Voltage (V)",
       "current": "Current (A)",
       "travelSpeed": "Travel speed (mm/min)",
-      "result": "Heat input"
+      "result": "Heat input",
+      "hints": {
+        "voltage": "Arc or load voltage used in the heat-input formula (check whether your WPS uses measured arc voltage).",
+        "current": "Welding current in amperes; must match the process and wire size you use.",
+        "travelSpeed": "Torch travel speed along the joint; must be greater than zero. Use consistent units (mm/min here)."
+      }
     },
     "gasFlow": {
       "title": "Gas Flow Calculator",
@@ -123,7 +322,12 @@
       "weldingTime": "Welding time (min)",
       "cylinderVolume": "Cylinder volume (L)",
       "consumption": "Gas consumption",
-      "cylinderDuration": "Cylinder duration"
+      "cylinderDuration": "Cylinder duration",
+      "hints": {
+        "flowRate": "Shielding gas flow at the torch (L/min), as set on the flowmeter or regulator.",
+        "weldingTime": "Total arc time in minutes for the calculation period (not necessarily clock time).",
+        "cylinderVolume": "Gas volume of the full cylinder in litres (often stated on the cylinder or data sheet)."
+      }
     },
     "shieldingGas": {
       "title": "Shielding Gas Calculator",
@@ -131,7 +335,12 @@
       "material": "Material",
       "process": "Process",
       "flowRange": "Recommended flow",
-      "typical": "Typical"
+      "typical": "Typical",
+      "hints": {
+        "wireDiameter": "Filler wire diameter; larger wires often allow a slightly wider flow window.",
+        "material": "Base material group (steel, stainless, aluminium) affects recommended shielding and flow.",
+        "process": "MIG/MAG or TIG — different torch and shielding behaviour."
+      }
     },
     "gasCutting": {
       "title": "Gas Cutting Calculator",
@@ -140,7 +349,12 @@
       "cuttingSpeed": "Cutting speed (m/min, optional)",
       "cuttingSpeedPlaceholder": "Optional",
       "o2Pressure": "O₂ pressure",
-      "fuelFlow": "Fuel flow"
+      "fuelFlow": "Fuel flow",
+      "hints": {
+        "plateThickness": "Thickness of the plate to cut; drives oxygen pressure and cutting setup.",
+        "gasType": "Fuel gas type (e.g. acetylene or propane) affects fuel flow recommendations.",
+        "cuttingSpeed": "Optional: actual cutting speed to refine estimates; leave empty if unknown."
+      }
     },
     "weldingCost": {
       "title": "Welding Cost Calculator",
@@ -154,7 +368,14 @@
       "cylindersUsed": "Cylinders used",
       "wireCost": "Wire cost",
       "gasCost": "Gas cost",
-      "totalCost": "Total cost"
+      "totalCost": "Total cost",
+      "hints": {
+        "wirePrice": "Purchase price per kilogram of filler wire.",
+        "gasPrice": "Price per full cylinder of shielding gas (same units as in your quote).",
+        "cylinderVolume": "Gas content of one cylinder in litres, for consumption and cost conversion.",
+        "depositionRate": "Mass of metal deposited per hour for your parameters (from datasheets or measurements).",
+        "weldingTime": "Arc hours for the job or batch being estimated."
+      }
     },
     "weldingParameters": {
       "title": "Welding Parameters Calculator",
@@ -163,7 +384,12 @@
       "wireDiameter": "Wire diameter (mm)",
       "current": "Current",
       "voltage": "Voltage",
-      "travelSpeed": "Travel speed"
+      "travelSpeed": "Travel speed",
+      "hints": {
+        "plateThickness": "Main plate thickness in the joint; primary input for suggested heat.",
+        "jointType": "Butt, fillet, lap or corner — influences recommended parameters.",
+        "wireDiameter": "Filler wire diameter used in the process."
+      }
     }
   },
   "knowledge": {
@@ -176,12 +402,18 @@
     "weldingMetallurgy": "Welding metallurgy",
     "weldingDefects": "Welding defects",
     "noArticles": "No articles in this section yet.",
-    "viewAllInCategory": "View all in category"
+    "viewAllInCategory": "View all in category",
+    "schemaNote": "The knowledge base groups materials by topic for quick reference. For the full article feed with categories and tags, open"
   },
   "blog": {
     "title": "Blog",
     "description": "Technical articles on welding, shielding gases, equipment and processes.",
+    "readMore": "Read more",
+    "knowledgeCrossLink": "For materials grouped by topic, open",
+    "filterByCategory": "Categories",
     "allCategories": "All",
+    "allTags": "All tags",
+    "filterByTag": "Tags",
     "noArticles": "No articles yet.",
     "pagination": "Pagination",
     "previous": "Previous",
@@ -193,6 +425,17 @@
   "contact": {
     "title": "Contact",
     "description": "Get in touch for consulting, training, or to purchase the book. I'm available via email, LinkedIn, or YouTube.",
+    "formTitle": "Send a message",
+    "formName": "Name",
+    "formEmail": "Your email",
+    "formMessage": "Message",
+    "formSubmit": "Open email client",
+    "formHint": "Your message will be inserted into your email app. Send it manually if needed.",
+    "formSubjectPrefix": "Website inquiry",
+    "formBodyName": "Name",
+    "formBodyEmail": "Email",
+    "mapTitle": "Map",
+    "mapDescription": "Work region: Latvia and remote consulting. Map pin is approximate.",
     "email": "Email",
     "linkedin": "Professional profile and updates",
     "youtube": "Welding videos and tutorials",
@@ -203,6 +446,18 @@
     "subtitle": "From equipment selection to shielding gas and welding methods",
     "year": "2024",
     "description": "A comprehensive guide to MAG/MIG welding: from choosing the right equipment and shielding gas to mastering welding techniques. Written by a practicing welding engineer with years of experience.",
-    "cta": "Contact for purchase"
+    "cta": "Contact for purchase",
+    "coverAlt": "Book cover: MAG/MIG welding",
+    "purchaseTitle": "How to buy",
+    "purchaseIntro": "Print and digital editions are available on request. Order via the contact form or email.",
+    "ctaEmail": "Email the author",
+    "emailSubjectBook": "MAG/MIG book order",
+    "buyOnline": "Buy in store",
+    "downloadSample": "Download sample",
+    "previewTitle": "Inside the book",
+    "previewCaption": "Illustrative spread — structure, diagrams, and worked examples for shop-floor use.",
+    "authorityTitle": "Readers and teams",
+    "authorityQuote": "“A practical bridge between equipment catalogues and what actually works in production — clear language, no filler.”",
+    "authorityAttribution": "Typical feedback: engineers and shop leads who want repeatable MAG/MIG settings."
   }
 }

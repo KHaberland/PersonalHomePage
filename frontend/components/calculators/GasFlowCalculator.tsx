@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { calculateGasFlow } from '@/lib/api';
+import { CalculatorField } from '@/components/calculators/CalculatorField';
 
 export function GasFlowCalculator() {
   const t = useTranslations('calculators');
@@ -44,47 +45,57 @@ export function GasFlowCalculator() {
     }
   }
 
+  const h1 = t('gasFlow.hints.flowRate');
+  const h2 = t('gasFlow.hints.weldingTime');
+  const h3 = t('gasFlow.hints.cylinderVolume');
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('gasFlow.flowRate')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={flowRate}
-          onChange={(e) => setFlowRate(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('gasFlow.weldingTime')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={weldingTime}
-          onChange={(e) => setWeldingTime(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('gasFlow.cylinderVolume')}
-        </label>
-        <input
-          type="number"
-          step="1"
-          value={cylinderVolume}
-          onChange={(e) => setCylinderVolume(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
+      <CalculatorField label={t('gasFlow.flowRate')} hint={h1}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={flowRate}
+            onChange={(e) => setFlowRate(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={h1}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('gasFlow.weldingTime')} hint={h2}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={weldingTime}
+            onChange={(e) => setWeldingTime(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={h2}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('gasFlow.cylinderVolume')} hint={h3}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="1"
+            value={cylinderVolume}
+            onChange={(e) => setCylinderVolume(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={h3}
+          />
+        )}
+      </CalculatorField>
       <button
         type="submit"
         disabled={loading}

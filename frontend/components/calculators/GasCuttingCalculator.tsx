@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { calculateGasCutting } from '@/lib/api';
+import { CalculatorField } from '@/components/calculators/CalculatorField';
 
 export function GasCuttingCalculator() {
   const t = useTranslations('calculators');
@@ -45,47 +46,57 @@ export function GasCuttingCalculator() {
     }
   }
 
+  const h1 = t('gasCutting.hints.plateThickness');
+  const h2 = t('gasCutting.hints.gasType');
+  const h3 = t('gasCutting.hints.cuttingSpeed');
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('gasCutting.plateThickness')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={plateThickness}
-          onChange={(e) => setPlateThickness(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('gasCutting.gasType')}
-        </label>
-        <select
-          value={gasType}
-          onChange={(e) => setGasType(e.target.value)}
-          className="input-industrial mt-1 w-full"
-        >
-          <option value="acetylene">Acetylene</option>
-          <option value="propane">Propane</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('gasCutting.cuttingSpeed')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={cuttingSpeed}
-          onChange={(e) => setCuttingSpeed(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          placeholder={t('gasCutting.cuttingSpeedPlaceholder')}
-        />
-      </div>
+      <CalculatorField label={t('gasCutting.plateThickness')} hint={h1}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={plateThickness}
+            onChange={(e) => setPlateThickness(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={h1}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('gasCutting.gasType')} hint={h2}>
+        {({ inputId, hintId }) => (
+          <select
+            id={inputId}
+            value={gasType}
+            onChange={(e) => setGasType(e.target.value)}
+            className="input-industrial w-full"
+            aria-describedby={hintId}
+            title={h2}
+          >
+            <option value="acetylene">Acetylene</option>
+            <option value="propane">Propane</option>
+          </select>
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('gasCutting.cuttingSpeed')} hint={h3}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={cuttingSpeed}
+            onChange={(e) => setCuttingSpeed(e.target.value)}
+            className="input-industrial w-full"
+            placeholder={t('gasCutting.cuttingSpeedPlaceholder')}
+            aria-describedby={hintId}
+            title={h3}
+          />
+        )}
+      </CalculatorField>
       <button
         type="submit"
         disabled={loading}

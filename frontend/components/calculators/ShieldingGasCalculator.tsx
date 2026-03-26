@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { calculateShieldingGas } from '@/lib/api';
+import { CalculatorField } from '@/components/calculators/CalculatorField';
 
 export function ShieldingGasCalculator() {
   const t = useTranslations('calculators');
@@ -43,50 +44,60 @@ export function ShieldingGasCalculator() {
     }
   }
 
+  const hw = t('shieldingGas.hints.wireDiameter');
+  const hm = t('shieldingGas.hints.material');
+  const hp = t('shieldingGas.hints.process');
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('shieldingGas.wireDiameter')}
-        </label>
-        <select
-          value={wireDiameter}
-          onChange={(e) => setWireDiameter(e.target.value)}
-          className="input-industrial mt-1 w-full"
-        >
-          <option value="0.8">0.8</option>
-          <option value="1.0">1.0</option>
-          <option value="1.2">1.2</option>
-          <option value="1.6">1.6</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('shieldingGas.material')}
-        </label>
-        <select
-          value={material}
-          onChange={(e) => setMaterial(e.target.value)}
-          className="input-industrial mt-1 w-full"
-        >
-          <option value="steel">Steel</option>
-          <option value="stainless">Stainless steel</option>
-          <option value="aluminum">Aluminum</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('shieldingGas.process')}
-        </label>
-        <select
-          value={process}
-          onChange={(e) => setProcess(e.target.value)}
-          className="input-industrial mt-1 w-full"
-        >
-          <option value="MIG/MAG">MIG/MAG</option>
-          <option value="TIG">TIG</option>
-        </select>
-      </div>
+      <CalculatorField label={t('shieldingGas.wireDiameter')} hint={hw}>
+        {({ inputId, hintId }) => (
+          <select
+            id={inputId}
+            value={wireDiameter}
+            onChange={(e) => setWireDiameter(e.target.value)}
+            className="input-industrial w-full"
+            aria-describedby={hintId}
+            title={hw}
+          >
+            <option value="0.8">0.8</option>
+            <option value="1.0">1.0</option>
+            <option value="1.2">1.2</option>
+            <option value="1.6">1.6</option>
+          </select>
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('shieldingGas.material')} hint={hm}>
+        {({ inputId, hintId }) => (
+          <select
+            id={inputId}
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+            className="input-industrial w-full"
+            aria-describedby={hintId}
+            title={hm}
+          >
+            <option value="steel">Steel</option>
+            <option value="stainless">Stainless steel</option>
+            <option value="aluminum">Aluminum</option>
+          </select>
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('shieldingGas.process')} hint={hp}>
+        {({ inputId, hintId }) => (
+          <select
+            id={inputId}
+            value={process}
+            onChange={(e) => setProcess(e.target.value)}
+            className="input-industrial w-full"
+            aria-describedby={hintId}
+            title={hp}
+          >
+            <option value="MIG/MAG">MIG/MAG</option>
+            <option value="TIG">TIG</option>
+          </select>
+        )}
+      </CalculatorField>
       <button
         type="submit"
         disabled={loading}

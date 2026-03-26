@@ -3,3 +3,5 @@ node_modules/
 out/
 build/
 *.min.js
+# Медиа в public — не текстовые форматы для Prettier
+public/

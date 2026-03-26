@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { calculateHeatInput } from '@/lib/api';
+import { CalculatorField } from '@/components/calculators/CalculatorField';
 
 export function HeatInputCalculator() {
   const t = useTranslations('calculators');
@@ -43,47 +44,57 @@ export function HeatInputCalculator() {
     }
   }
 
+  const hv = t('heatInput.hints.voltage');
+  const hc = t('heatInput.hints.current');
+  const hs = t('heatInput.hints.travelSpeed');
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('heatInput.voltage')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={voltage}
-          onChange={(e) => setVoltage(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('heatInput.current')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={current}
-          onChange={(e) => setCurrent(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('heatInput.travelSpeed')}
-        </label>
-        <input
-          type="number"
-          step="1"
-          value={travelSpeed}
-          onChange={(e) => setTravelSpeed(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
+      <CalculatorField label={t('heatInput.voltage')} hint={hv}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={voltage}
+            onChange={(e) => setVoltage(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={hv}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('heatInput.current')} hint={hc}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={current}
+            onChange={(e) => setCurrent(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={hc}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('heatInput.travelSpeed')} hint={hs}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="1"
+            value={travelSpeed}
+            onChange={(e) => setTravelSpeed(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={hs}
+          />
+        )}
+      </CalculatorField>
       <button
         type="submit"
         disabled={loading}

@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 const socialLinkIcons = {
   linkedin: (
@@ -22,8 +23,23 @@ type FooterProps = {
   youtubeUrl?: string | null;
 };
 
+const homeSectionLinks = [
+  { href: '/#why-choose', key: 'homeSectionWhy' as const },
+  { href: '/#about', key: 'homeSectionAbout' as const },
+  { href: '/#competencies', key: 'expertiseCompetencies' as const },
+  { href: '/#services', key: 'expertiseServices' as const },
+  { href: '/#cases', key: 'expertiseCases' as const },
+  { href: '/#experience', key: 'homeSectionExperience' as const },
+  { href: '/#book', key: 'homeSectionBook' as const },
+  { href: '/#tools', key: 'homeSectionTools' as const },
+  { href: '/#blog', key: 'homeSectionBlog' as const },
+  { href: '/#contact', key: 'homeSectionContact' as const },
+] as const;
+
 export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
   const t = useTranslations('footer');
+  const tc = useTranslations('common');
+  const th = useTranslations('home');
 
   const socialLinks = [
     linkedinUrl && { href: linkedinUrl, key: 'linkedin' as const },
@@ -71,12 +87,66 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
                 ))}
               </div>
             )}
+            <div className="flex flex-col gap-2">
+              <p className="text-sm font-medium text-foreground">
+                {t('languages')}
+              </p>
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
 
-        <nav className="mt-8 flex flex-wrap gap-6 border-t border-border pt-8">
+        <div className="mt-8 border-t border-border pt-8">
+          <p className="text-center text-sm font-medium text-foreground">
+            {t('ctaHint')}
+          </p>
+          <div className="mt-4 flex justify-center">
+            <Link
+              href="/contact"
+              className="btn-primary inline-block px-8 py-3"
+            >
+              {th('ctaBannerContact')}
+            </Link>
+          </div>
+        </div>
+
+        <nav
+          className="mt-8 border-t border-border pt-8"
+          aria-label={t('homeSectionsNavLabel')}
+        >
+          <p className="mb-4 text-xs font-medium uppercase tracking-wide text-foreground/50">
+            {tc('homePageSections')}
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {homeSectionLinks.map(({ href, key }) => (
+              <Link key={href} href={href} className={linkClass}>
+                {tc(key)}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        <nav
+          className="mt-8 flex flex-wrap gap-6 border-t border-border pt-8"
+          aria-label="Footer"
+        >
           <Link href="/" className={linkClass}>
             {t('home')}
+          </Link>
+          <Link href="/#competencies" className={linkClass}>
+            {tc('expertise')}
+          </Link>
+          <Link href="/tools" className={linkClass}>
+            {tc('toolsNav')}
+          </Link>
+          <Link href="/blog" className={linkClass}>
+            {tc('blogNav')}
+          </Link>
+          <Link href="/book" className={linkClass}>
+            {t('book')}
+          </Link>
+          <Link href="/contact" className={linkClass}>
+            {t('contactLink')}
           </Link>
           <Link href="/about" className={linkClass}>
             {t('about')}
@@ -84,20 +154,8 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
           <Link href="/experience" className={linkClass}>
             {t('experience')}
           </Link>
-          <Link href="/book" className={linkClass}>
-            {t('book')}
-          </Link>
-          <Link href="/tools" className={linkClass}>
-            {t('tools')}
-          </Link>
           <Link href="/knowledge" className={linkClass}>
-            {t('knowledge')}
-          </Link>
-          <Link href="/blog" className={linkClass}>
-            {t('blog')}
-          </Link>
-          <Link href="/contact" className={linkClass}>
-            {t('contact')}
+            {tc('knowledgeNav')}
           </Link>
         </nav>
 

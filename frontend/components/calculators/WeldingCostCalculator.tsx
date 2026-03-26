@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { calculateWeldingCost } from '@/lib/api';
+import { CalculatorField } from '@/components/calculators/CalculatorField';
 
 export function WeldingCostCalculator() {
   const t = useTranslations('calculators');
@@ -54,73 +55,89 @@ export function WeldingCostCalculator() {
     }
   }
 
+  const ha = t('weldingCost.hints.wirePrice');
+  const hb = t('weldingCost.hints.gasPrice');
+  const hc = t('weldingCost.hints.cylinderVolume');
+  const hd = t('weldingCost.hints.depositionRate');
+  const he = t('weldingCost.hints.weldingTime');
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingCost.wirePrice')}
-        </label>
-        <input
-          type="number"
-          step="0.01"
-          value={wirePrice}
-          onChange={(e) => setWirePrice(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingCost.gasPrice')}
-        </label>
-        <input
-          type="number"
-          step="0.01"
-          value={gasPrice}
-          onChange={(e) => setGasPrice(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingCost.cylinderVolume')}
-        </label>
-        <input
-          type="number"
-          step="1"
-          value={cylinderVolume}
-          onChange={(e) => setCylinderVolume(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingCost.depositionRate')}
-        </label>
-        <input
-          type="number"
-          step="0.01"
-          value={depositionRate}
-          onChange={(e) => setDepositionRate(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">
-          {t('weldingCost.weldingTime')}
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          value={weldingTime}
-          onChange={(e) => setWeldingTime(e.target.value)}
-          className="input-industrial mt-1 w-full"
-          required
-        />
-      </div>
+      <CalculatorField label={t('weldingCost.wirePrice')} hint={ha}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.01"
+            value={wirePrice}
+            onChange={(e) => setWirePrice(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={ha}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('weldingCost.gasPrice')} hint={hb}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.01"
+            value={gasPrice}
+            onChange={(e) => setGasPrice(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={hb}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('weldingCost.cylinderVolume')} hint={hc}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="1"
+            value={cylinderVolume}
+            onChange={(e) => setCylinderVolume(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={hc}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('weldingCost.depositionRate')} hint={hd}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.01"
+            value={depositionRate}
+            onChange={(e) => setDepositionRate(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={hd}
+          />
+        )}
+      </CalculatorField>
+      <CalculatorField label={t('weldingCost.weldingTime')} hint={he}>
+        {({ inputId, hintId }) => (
+          <input
+            id={inputId}
+            type="number"
+            step="0.1"
+            value={weldingTime}
+            onChange={(e) => setWeldingTime(e.target.value)}
+            className="input-industrial w-full"
+            required
+            aria-describedby={hintId}
+            title={he}
+          />
+        )}
+      </CalculatorField>
       <button
         type="submit"
         disabled={loading}

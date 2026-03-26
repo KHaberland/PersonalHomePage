@@ -13,6 +13,8 @@ repos:
       - id: check-json
       - id: check-added-large-files
         args: ['--maxkb=1000']
+        # Видео/фото в public намеренно крупные; лимит остаётся для остального репозитория
+        exclude: ^frontend/public/
       - id: detect-private-key
 
   # Python: Black
@@ -38,3 +40,6 @@ repos:
         entry: npx prettier --write
         language: system
         files: ^frontend/
+        # .prettierignore — не формат Prettier; плюс бинарные/медиа
+        exclude: (?i)(\.prettierignore$|\.(jpe?g|png|gif|webp|mp4|webm|mov|ico|woff2?|ttf|eot|pdf)$)
+        types: [text]

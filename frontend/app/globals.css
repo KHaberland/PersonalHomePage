@@ -48,6 +48,16 @@
   --color-border: var(--border);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -77,7 +87,7 @@ body {
 }
 
 .heading-2 {
-  font-size: var(--text-h2);
+  font-size: calc(var(--text-h2) - 1pt);
   font-weight: 700;
   letter-spacing: -0.01em;
 }
@@ -85,6 +95,33 @@ body {
 .heading-3 {
   font-size: var(--text-h3);
   font-weight: 600;
+}
+
+/* Hero: первая строка — на 1pt меньше обычного heading-1 */
+.hero-title-line1 {
+  font-size: calc(var(--text-h1) - 1pt);
+}
+
+/* Hero: вторая строка — text-lg / sm:text-xl + 1pt */
+.hero-title-line2 {
+  font-size: calc(1.125rem + 1pt);
+}
+
+@media (min-width: 640px) {
+  .hero-title-line2 {
+    font-size: calc(1.25rem + 1pt);
+  }
+}
+
+/* Hero: третья строка — на 3pt меньше второй */
+.hero-title-line3 {
+  font-size: calc(1.125rem - 2pt);
+}
+
+@media (min-width: 640px) {
+  .hero-title-line3 {
+    font-size: calc(1.25rem - 2pt);
+  }
 }
 
 /* Секции — единообразные отступы */
@@ -120,6 +157,12 @@ body {
 .card:hover {
   border-color: var(--accent-orange);
   box-shadow: 0 0 0 1px var(--accent-orange-glow);
+}
+
+/* Карточка компетенций: группа «результаты для бизнеса» — синий hover вместо оранжевого */
+.card.competency-card--business:hover {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue-glow);
 }
 
 /* Кнопки */
@@ -189,10 +232,37 @@ body {
   );
 }
 
-.hero-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(10, 12, 15, 0.6) 0%,
-    rgba(10, 12, 15, 0.85) 100%
-  );
+/* Секция «Инженерные инструменты» — отдельный фон и акцент (UX п. 4) */
+.section-tools {
+  position: relative;
+  background:
+    radial-gradient(
+      ellipse 120% 80% at 50% -20%,
+      var(--accent-blue-glow),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #121820 0%, var(--surface) 45%, #0d1117 100%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(59, 130, 246, 0.15),
+    inset 3px 0 0 0 var(--accent-blue);
+}
+
+/* Модальное окно просмотра PDF (дипломы / сертификаты) */
+.diploma-dialog {
+  max-width: min(96vw, 56rem);
+  width: 100%;
+  max-height: 92vh;
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.diploma-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.65);
 }

@@ -1,7 +1,11 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import { ContactForm } from '@/components/ContactForm';
 import { getContact } from '@/lib/api';
 import { createPageMetadata } from '@/lib/metadata';
+
+const DEFAULT_MAP_EMBED =
+  'https://www.openstreetmap.org/export/embed.html?bbox=23.95%2C56.82%2C24.35%2C57.05&layer=mapnik&marker=24.1052%2C56.9496';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -26,11 +30,20 @@ export default async function ContactPage({ params }: Props) {
     getContact().catch(() => null),
   ]);
 
+  const mapSrc =
+    process.env.NEXT_PUBLIC_MAP_EMBED_URL?.trim() || DEFAULT_MAP_EMBED;
+
   return (
     <div className="container-narrow section">
       <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
 
       <p className="mb-12 max-w-2xl text-foreground/90">{t('description')}</p>
+
+      {contact?.email && (
+        <div className="mb-12">
+          <ContactForm contactEmail={contact.email} />
+        </div>
+      )}
 
       <div className="flex flex-col gap-6">
         {contact?.email && (
@@ -90,6 +103,24 @@ export default async function ContactPage({ params }: Props) {
       </div>
 
       {!contact && <p className="mt-8 text-foreground/70">{t('noContact')}</p>}
+
+      <section className="mt-16" aria-labelledby="contact-map-heading">
+        <h2 id="contact-map-heading" className="heading-2 mb-2 text-foreground">
+          {t('mapTitle')}
+        </h2>
+        <p className="mb-4 max-w-2xl text-sm text-foreground/70">
+          {t('mapDescription')}
+        </p>
+        <div className="overflow-hidden rounded-lg border border-border">
+          <iframe
+            title={t('mapTitle')}
+            src={mapSrc}
+            className="aspect-[16/9] h-[min(22rem,50vh)] w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </section>
     </div>
   );
 }
