@@ -77,8 +77,8 @@ export function IconCompetencyGas({ className, title, ...p }: IconProps) {
   );
 }
 
-/** Сварочное оборудование — инвертор */
-export function IconCompetencyEquipment({ className, title, ...p }: IconProps) {
+/** Техника безопасности с газами: баллон + учебная шапочка (обучение персонала) */
+export function IconCompetencyGasSafety({ className, title, ...p }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -94,9 +94,13 @@ export function IconCompetencyEquipment({ className, title, ...p }: IconProps) {
       {...p}
     >
       {title ? <title>{title}</title> : null}
-      <rect x="4" y="6" width="16" height="12" rx="2" />
-      <path d="M8 10h8M8 14h5" />
-      <circle cx="17" cy="9" r="1" fill="currentColor" stroke="none" />
+      <path d="M4 4h5v3a2.5 2.5 0 1 1-5 0V4z" />
+      <path d="M2.5 20h8M6.5 8.5V20" />
+      <path d="M4 14h5" />
+      <g transform="translate(10.25, 1.5) scale(0.5)">
+        <path strokeWidth={3} d="M22 10v6M2 10l10-5 10 5-10 5z" />
+        <path strokeWidth={3} d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5" />
+      </g>
     </svg>
   );
 }

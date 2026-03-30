@@ -13,7 +13,6 @@ import {
 export type DiplomaCertificateItem = {
   id: string;
   pdfUrl: string;
-  fileName: string;
   title: string;
   summary: string;
   previewAlt: string;
@@ -23,7 +22,6 @@ export type DiplomaCertificateItem = {
 
 export type DiplomaCertificateLabels = {
   openInModal: string;
-  download: string;
   openNewTab: string;
   closeModal: string;
   pdfViewerTitle: string;
@@ -33,6 +31,10 @@ type Props = {
   items: DiplomaCertificateItem[];
   labels: DiplomaCertificateLabels;
 };
+
+function isRasterDocumentUrl(url: string): boolean {
+  return /\.(jpe?g|png|webp|gif)(\?|#|$)/i.test(url);
+}
 
 function PreviewPlaceholder() {
   return (
@@ -144,21 +146,14 @@ export function DiplomaCertificates({ items, labels }: Props) {
               <p className="text-xs leading-relaxed text-foreground/70">
                 {item.summary}
               </p>
-              <div className="mt-auto flex flex-col gap-2 pt-2 sm:flex-row">
+              <div className="mt-auto pt-2">
                 <button
                   type="button"
-                  className="btn-primary flex-1 px-3 py-2 text-center text-xs sm:text-sm"
+                  className="btn-primary w-full px-3 py-2 text-center text-xs sm:text-sm"
                   onClick={() => openModal(item.pdfUrl, item.title)}
                 >
                   {labels.openInModal}
                 </button>
-                <a
-                  href={item.pdfUrl}
-                  download={item.fileName}
-                  className="btn-secondary inline-flex flex-1 items-center justify-center px-3 py-2 text-center text-xs sm:text-sm"
-                >
-                  {labels.download}
-                </a>
               </div>
             </div>
           </article>
@@ -199,12 +194,23 @@ export function DiplomaCertificates({ items, labels }: Props) {
                 </button>
               </div>
             </div>
-            <div className="min-h-0 flex-1 bg-[var(--background)]">
-              <iframe
-                src={`${active.url}#view=FitH`}
-                title={labels.pdfViewerTitle}
-                className="h-[min(78vh,720px)] w-full border-0"
-              />
+            <div className="min-h-0 flex-1 overflow-auto bg-[var(--background)]">
+              {isRasterDocumentUrl(active.url) ? (
+                <div className="flex min-h-[min(78vh,720px)] items-center justify-center p-4">
+                  {/* изображение из public — без оптимизации Next */}
+                  <img
+                    src={active.url}
+                    alt={active.title}
+                    className="max-h-[min(78vh,720px)] w-full max-w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <iframe
+                  src={`${active.url}#view=FitH`}
+                  title={labels.pdfViewerTitle}
+                  className="h-[min(78vh,720px)] w-full border-0"
+                />
+              )}
             </div>
           </div>
         ) : null}

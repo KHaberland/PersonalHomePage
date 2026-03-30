@@ -65,16 +65,35 @@ body {
   line-height: 1.6;
 }
 
-/* Десктоп: основной текст 10–12px, контент «Обо мне» 12–14px, heading-3: 18–22px */
+/* «Обо мне» (страница /about): биография, образование, квалификации — на 2pt меньше body, без жирного */
+.about-content {
+  font-size: calc(var(--text-body) - 2pt);
+  font-weight: 400;
+}
+
+.about-content :where(b, strong) {
+  font-weight: 400;
+}
+
+/* Заголовки Biography / Education / Qualifications — обычная насыщенность, на 1pt меньше прежнего heading-3 */
+.heading-3.about-block-title {
+  font-size: calc(var(--text-h3) - 2pt);
+  font-weight: 400;
+}
+
+/* Десктоп: основной текст 10–12px, контент «Обо мне» на 2pt меньше */
 @media (min-width: 1024px) {
   body {
     font-size: clamp(0.625rem, 0.5vw, 0.75rem);
   }
   .about-content {
-    font-size: clamp(0.75rem, 0.8vw, 0.875rem);
+    font-size: calc(clamp(0.75rem, 0.8vw, 0.875rem) - 2pt);
   }
   .heading-3 {
     font-size: clamp(1.125rem, 2vw, 1.375rem);
+  }
+  .heading-3.about-block-title {
+    font-size: calc(clamp(1.125rem, 2vw, 1.375rem) - 2pt);
   }
 }
 
@@ -97,9 +116,11 @@ body {
   font-weight: 600;
 }
 
-/* Hero: первая строка — на 1pt меньше обычного heading-1 */
+/* Hero H1: длинный заголовок — меньше базового h1, чтобы укладывался примерно в 2 строки */
 .hero-title-line1 {
-  font-size: calc(var(--text-h1) - 1pt);
+  font-size: clamp(1.35rem, 4vw + 0.55rem, 2.45rem);
+  text-wrap: balance;
+  white-space: pre-line;
 }
 
 /* Hero: вторая строка — text-lg / sm:text-xl + 1pt */
@@ -122,6 +143,58 @@ body {
   .hero-title-line3 {
     font-size: calc(1.25rem - 2pt);
   }
+}
+
+/* Главная — блок «Обо мне»: те же размеры, что тексты в WhyChooseCard
+   (заголовок карточки 17px semibold, описание 14px / leading 1.45). */
+.home-about-copy {
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.home-about-copy .home-about-lead {
+  margin: 0 0 0.75rem;
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.375;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.home-about-copy .home-about-p {
+  margin: 0 0 0.75rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.home-about-copy .home-about-p--gap-lg {
+  margin-bottom: 0.875rem;
+}
+
+/* Страница /about: те же классы — светлая тема, та же шкала 17px / 14px */
+.about-content .home-about-lead {
+  margin: 0 0 0.75rem;
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.375;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.about-content .home-about-p {
+  margin: 0 0 0.75rem;
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.about-content .home-about-p--gap-lg {
+  margin-bottom: 0.875rem;
 }
 
 /* Секции — единообразные отступы */

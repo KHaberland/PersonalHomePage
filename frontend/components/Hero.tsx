@@ -64,6 +64,9 @@ export function Hero() {
         <p className="hero-title-line2 mt-6 max-w-2xl text-foreground/90 drop-shadow-md">
           {t('heroTitleLine2')}
         </p>
+        <p className="mt-4 max-w-3xl text-sm font-medium tracking-wide text-white/90 drop-shadow-md sm:text-base">
+          {t('heroTitleLineHighlight')}
+        </p>
         <p className="hero-title-line3 mt-3 font-semibold text-accent-orange drop-shadow-md">
           {t('heroTitleLine3')}
         </p>

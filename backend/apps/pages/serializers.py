@@ -16,9 +16,15 @@ class AboutSerializer(serializers.ModelSerializer):
 
     def _get_lang_field(self, obj, base_name):
         lang = self.context.get("lang", "en")
-        return getattr(obj, f"{base_name}_{lang}", None) or getattr(
-            obj, f"{base_name}_en", ""
-        )
+        en_val = getattr(obj, f"{base_name}_en", "") or ""
+        if lang == "en":
+            return en_val
+        loc_val = getattr(obj, f"{base_name}_{lang}", "") or ""
+        if lang == "ru" and base_name == "bio" and (not loc_val or not loc_val.strip()):
+            return ""
+        if loc_val.strip():
+            return loc_val
+        return en_val
 
     def get_bio(self, obj):
         return self._get_lang_field(obj, "bio")

@@ -4,13 +4,14 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { CompetencyCard } from '@/components/CompetencyCard';
 import { Hero } from '@/components/Hero';
+import { WhyChooseCard } from '@/components/WhyChooseCard';
 import { HomeSectionProgress } from '@/components/HomeSectionProgress';
 import { Section } from '@/components/Section';
 import { ToolCardLink } from '@/components/ToolCardLink';
 import {
   IconCompetencyCutting,
-  IconCompetencyEquipment,
   IconCompetencyGas,
+  IconCompetencyGasSafety,
   IconCompetencyMetallurgy,
   IconCompetencyMigMag,
   IconCompetencyTig,
@@ -18,6 +19,10 @@ import {
   IconServiceEquipment,
   IconServiceImplementation,
   IconServiceTraining,
+  IconWhyBook,
+  IconWhyChartShield,
+  IconWhyDiploma,
+  IconWhyTeam,
 } from '@/components/icons';
 import {
   getAbout,
@@ -52,7 +57,7 @@ const competencyTechnicalItems = [
     descKey: 'competencyCard3',
   },
   {
-    Icon: IconCompetencyEquipment,
+    Icon: IconCompetencyGasSafety,
     titleKey: 'competencyIconEquipment',
     descKey: 'competencyCard4',
   },
@@ -84,6 +89,29 @@ const competencyBusinessItems = [
     Icon: IconServiceConsulting,
     titleKey: 'competencyBusiness3Title',
     descKey: 'competencyBusiness3Desc',
+  },
+] as const;
+
+const whyChooseItems = [
+  {
+    Icon: IconWhyDiploma,
+    titleKey: 'whyChooseCard1Title' as const,
+    descKey: 'whyChooseCard1Desc' as const,
+  },
+  {
+    Icon: IconWhyChartShield,
+    titleKey: 'whyChooseCard2Title' as const,
+    descKey: 'whyChooseCard2Desc' as const,
+  },
+  {
+    Icon: IconWhyTeam,
+    titleKey: 'whyChooseCard3Title' as const,
+    descKey: 'whyChooseCard3Desc' as const,
+  },
+  {
+    Icon: IconWhyBook,
+    titleKey: 'whyChooseCard4Title' as const,
+    descKey: 'whyChooseCard4Desc' as const,
   },
 ] as const;
 
@@ -213,37 +241,61 @@ export default async function HomePage({ params }: Props) {
       <Hero />
       <HomeSectionProgress />
 
-      {/* Почему выбирают — доверие с первого экрана */}
-      <Section id="why-choose" aria-labelledby="home-why-heading">
-        <h2 id="home-why-heading" className="heading-2 mb-6 text-accent-orange">
-          {t('whyChooseTitle')}
+      {/* Почему выбирают — макет why_me.md: чёрный фон, 4 карточки, сетка 4→2→1 */}
+      <Section
+        id="why-choose"
+        aria-labelledby="home-why-heading"
+        className="!border-white/10 bg-black text-white"
+      >
+        <h2
+          id="home-why-heading"
+          className="heading-2 mb-8 max-w-4xl whitespace-pre-line font-semibold tracking-tight text-white md:mb-10"
+        >
+          {t('whyChooseSectionHeading')}
         </h2>
-        <ul className="mx-auto max-w-3xl list-disc space-y-3 pl-5 text-sm font-medium text-foreground/90 marker:text-accent-orange md:pl-6">
-          <li>{t('whyChoose1')}</li>
-          <li>{t('whyChoose2')}</li>
-          <li>{t('whyChoose3')}</li>
-          <li>{t('whyChoose4')}</li>
+        <ul className="grid list-none grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {whyChooseItems.map(({ Icon, titleKey, descKey }) => (
+            <li key={titleKey} className="min-h-0">
+              <WhyChooseCard
+                title={t(titleKey)}
+                description={t(descKey)}
+                icon={
+                  <Icon
+                    className="text-inherit"
+                    aria-hidden
+                    title={undefined}
+                  />
+                }
+              />
+            </li>
+          ))}
         </ul>
       </Section>
 
       {/* Обо мне (краткий блок на главной) */}
-      <Section id="about" variant="surface">
-        <h2 className="heading-2 mb-8 text-accent-orange">{t('aboutTitle')}</h2>
-        <div className="grid gap-8 md:grid-cols-2 md:items-center md:gap-12">
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-lg border border-border md:mx-0">
+      <Section
+        id="about"
+        variant="default"
+        className="bg-[color-mix(in_srgb,var(--surface)_85%,black_15%)]"
+      >
+        <h2 className="heading-2 mb-8 max-w-4xl font-semibold tracking-tight text-white md:mb-10">
+          {t('aboutTitle')}
+        </h2>
+        <div className="grid w-full gap-8 md:grid-cols-2 md:items-center md:gap-12">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] overflow-hidden rounded-lg border border-border md:mx-0">
             <Image
               src={aboutPhotoSrc}
               alt={tAbout('photoAlt')}
               fill
               className="object-cover object-top"
-              sizes="(max-width: 768px) 100vw, 28rem"
+              sizes="(max-width: 768px) 100vw, 26.88rem"
               priority={false}
               unoptimized={aboutPhotoUnoptimized}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex w-full min-w-0 flex-col">
             <div
-              className="text-foreground/90 [&_p]:mt-3 [&_p:first-child]:mt-0 [&_p]:leading-relaxed"
+              className="home-about-copy w-full max-w-none text-left [&_b]:font-inherit [&_strong]:font-inherit"
               dangerouslySetInnerHTML={{ __html: aboutShortHtml }}
             />
             <Link
@@ -260,7 +312,7 @@ export default async function HomePage({ params }: Props) {
       <Section id="competencies" aria-labelledby="home-competencies-heading">
         <h2
           id="home-competencies-heading"
-          className="heading-2 mb-8 text-accent-orange"
+          className="heading-2 mb-8 max-w-4xl font-semibold tracking-tight text-white md:mb-10"
         >
           {t('competenciesTitle')}
         </h2>

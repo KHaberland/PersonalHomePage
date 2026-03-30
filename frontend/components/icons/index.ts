@@ -1,7 +1,7 @@
 export {
   IconCompetencyCutting,
-  IconCompetencyEquipment,
   IconCompetencyGas,
+  IconCompetencyGasSafety,
   IconCompetencyMetallurgy,
   IconCompetencyMigMag,
   IconCompetencyTig,
@@ -12,3 +12,9 @@ export {
   IconServiceImplementation,
   IconServiceTraining,
 } from './services';
+export {
+  IconWhyBook,
+  IconWhyChartShield,
+  IconWhyDiploma,
+  IconWhyTeam,
+} from './why-choose';

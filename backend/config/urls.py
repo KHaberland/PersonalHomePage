@@ -7,6 +7,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.users.admin_forms import EmailOrUsernameAdminAuthenticationForm
+
+# Надёжнее, чем только AppConfig.ready(): форма входа в /admin/
+admin.site.login_form = EmailOrUsernameAdminAuthenticationForm
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ckeditor5/", include("django_ckeditor_5.urls")),

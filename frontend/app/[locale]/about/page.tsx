@@ -6,36 +6,51 @@ import { getAbout } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { createPageMetadata } from '@/lib/metadata';
 
-/** PDF в `public/diplomas/`. Опционально `preview`: миниатюра в `public/diplomas/previews/`. */
+/** PDF в `public/diplomas/` или снимок в `public/images/photos/small/`. Для фото `preview` по умолчанию совпадает с документом. */
 const diplomas: ReadonlyArray<{
   file: string;
-  labelKey: 'bachelor' | 'master' | 'mma_mag' | 'tig';
+  mediaFolder?: 'diplomas' | 'images/photos/small';
+  labelKey: 'bachelor' | 'master' | 'iwe' | 'mma_mag' | 'tig';
   summaryKey:
     | 'bachelorSummary'
     | 'masterSummary'
+    | 'iweSummary'
     | 'mma_magSummary'
     | 'tigSummary';
   preview?: string;
 }> = [
   {
-    file: 'Bakalaura_diploms01.pdf',
+    file: 'IMG_bakalv_165628.jpg',
+    mediaFolder: 'images/photos/small',
     labelKey: 'bachelor',
     summaryKey: 'bachelorSummary',
   },
   {
-    file: 'RTU_magistra_diploms.pdf',
+    file: 'magist1.jpg',
+    mediaFolder: 'images/photos/small',
     labelKey: 'master',
     summaryKey: 'masterSummary',
   },
   {
-    file: 'MMA_MAG_diploms.pdf',
+    file: 'IWE_diploms.pdf',
+    labelKey: 'iwe',
+    summaryKey: 'iweSummary',
+  },
+  {
+    file: 'MMA_dipl.jpg',
+    mediaFolder: 'images/photos/small',
     labelKey: 'mma_mag',
     summaryKey: 'mma_magSummary',
   },
-  { file: 'TIG_diploms.pdf', labelKey: 'tig', summaryKey: 'tigSummary' },
+  {
+    file: 'BUTS1_dipl.jpg',
+    mediaFolder: 'images/photos/small',
+    labelKey: 'tig',
+    summaryKey: 'tigSummary',
+  },
 ];
 
-const defaultPhoto = '/images/photos/small/Author_small.jpg';
+const defaultPhoto = '/images/photos/small/author01_small.jpg';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -45,6 +60,15 @@ function langFromLocale(locale: string): Lang {
   return locale === 'en' || locale === 'ru' || locale === 'lv'
     ? (locale as Lang)
     : 'en';
+}
+
+function htmlHasVisibleText(html: string): boolean {
+  return (
+    html
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .trim().length > 0
+  );
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -76,20 +100,25 @@ export default async function AboutPage({ params }: Props) {
 
   const diplomaItems = diplomas.map((d) => {
     const title = t(d.labelKey);
+    const folder = d.mediaFolder ?? 'diplomas';
+    const docPath =
+      folder === 'diplomas'
+        ? `/diplomas/${d.file}`
+        : `/images/photos/small/${d.file}`;
+    const previewSrc =
+      d.preview ?? (folder === 'images/photos/small' ? docPath : undefined);
     return {
-      id: d.file,
-      pdfUrl: `/diplomas/${d.file}`,
-      fileName: d.file,
+      id: d.labelKey,
+      pdfUrl: docPath,
       title,
       summary: t(d.summaryKey),
       previewAlt: t('diplomaPreviewAlt', { title }),
-      previewSrc: d.preview,
+      previewSrc,
     };
   });
 
   const diplomaLabels = {
     openInModal: t('diplomaOpenInModal'),
-    download: t('diplomaDownload'),
     openNewTab: t('diplomaOpenNewTab'),
     closeModal: t('diplomaCloseModal'),
     pdfViewerTitle: t('diplomaPdfViewerTitle'),
@@ -97,7 +126,7 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <div className="container-narrow section">
-      <h1 className="heading-1 mb-6 text-accent-orange">{t('title')}</h1>
+      <h1 className="heading-2 mb-6 text-accent-orange">{t('title')}</h1>
 
       <section
         className="mb-12 rounded-xl border border-border/80 bg-surface/50 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8"
@@ -112,15 +141,47 @@ export default async function AboutPage({ params }: Props) {
         >
           {tHome('whyChooseTitle')}
         </h2>
-        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-foreground/90 marker:text-accent-orange md:pl-6">
-          <li>{tHome('whyChoose1')}</li>
-          <li>{tHome('whyChoose2')}</li>
-          <li>{tHome('whyChoose3')}</li>
-          <li>{tHome('whyChoose4')}</li>
+        <ul className="mt-4 list-none space-y-3 text-sm text-foreground/90">
+          <li>
+            <span className="font-semibold text-foreground">
+              {tHome('whyChooseCard1Title')}
+            </span>
+            <span className="text-foreground/80">
+              {' '}
+              — {tHome('whyChooseCard1Desc')}
+            </span>
+          </li>
+          <li>
+            <span className="font-semibold text-foreground">
+              {tHome('whyChooseCard2Title')}
+            </span>
+            <span className="text-foreground/80">
+              {' '}
+              — {tHome('whyChooseCard2Desc')}
+            </span>
+          </li>
+          <li>
+            <span className="font-semibold text-foreground">
+              {tHome('whyChooseCard3Title')}
+            </span>
+            <span className="text-foreground/80">
+              {' '}
+              — {tHome('whyChooseCard3Desc')}
+            </span>
+          </li>
+          <li>
+            <span className="font-semibold text-foreground">
+              {tHome('whyChooseCard4Title')}
+            </span>
+            <span className="text-foreground/80">
+              {' '}
+              — {tHome('whyChooseCard4Desc')}
+            </span>
+          </li>
         </ul>
       </section>
 
-      <div className="grid items-start gap-12 md:grid-cols-2">
+      <div className="grid items-start gap-12 md:grid-cols-[23fr_17fr]">
         {/* Фотография */}
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-border">
           <Image
@@ -135,18 +196,23 @@ export default async function AboutPage({ params }: Props) {
         </div>
 
         <div className="space-y-6">
-          {/* Биография */}
-          <section>
-            <h2 className="heading-3 mb-3 text-foreground">{t('bio')}</h2>
-            <div
-              className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
-              dangerouslySetInnerHTML={{ __html: bio }}
-            />
-          </section>
+          {htmlHasVisibleText(bio) ? (
+            <section>
+              <h2 className="about-block-title heading-3 mb-3 text-foreground">
+                {t('bio')}
+              </h2>
+              <div
+                className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                dangerouslySetInnerHTML={{ __html: bio }}
+              />
+            </section>
+          ) : null}
 
           {/* Образование */}
           <section>
-            <h2 className="heading-3 mb-3 text-foreground">{t('education')}</h2>
+            <h2 className="about-block-title heading-3 mb-3 text-foreground">
+              {t('education')}
+            </h2>
             <div
               className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
               dangerouslySetInnerHTML={{ __html: education }}
@@ -155,7 +221,7 @@ export default async function AboutPage({ params }: Props) {
 
           {/* Профессиональные квалификации */}
           <section>
-            <h2 className="heading-3 mb-3 text-foreground">
+            <h2 className="about-block-title heading-3 mb-3 text-foreground">
               {t('qualifications')}
             </h2>
             <div
@@ -165,7 +231,7 @@ export default async function AboutPage({ params }: Props) {
           </section>
 
           <section>
-            <h2 className="heading-3 mb-3 text-foreground">
+            <h2 className="about-block-title heading-3 mb-3 text-foreground">
               {t('achievements')}
             </h2>
             <ul className="list-disc space-y-2 pl-5 text-foreground/80 [&_li]:leading-relaxed">
@@ -173,6 +239,7 @@ export default async function AboutPage({ params }: Props) {
               <li>{t('achievement2')}</li>
               <li>{t('achievement3')}</li>
               <li>{t('achievement4')}</li>
+              <li>{t('achievement5')}</li>
             </ul>
           </section>
         </div>

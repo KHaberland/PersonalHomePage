@@ -41,6 +41,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -93,6 +94,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "en-us"
+LANGUAGES = [
+    ("en", "English"),
+    ("ru", "Русский"),
+    ("lv", "Latviešu"),
+]
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -209,6 +215,12 @@ CKEDITOR_5_CONFIGS = {
 
 # Custom User model
 AUTH_USER_MODEL = "users.User"
+
+# Вход в /admin/ и по username, и по email (первое поле формы)
+AUTHENTICATION_BACKENDS = [
+    "apps.users.backends.EmailOrUsernameModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # CORS
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(

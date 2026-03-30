@@ -49,11 +49,13 @@ export function CompetencyCard({
           {icon}
         </div>
         <h3 className="heading-3 text-foreground">{title}</h3>
-        <p
-          className={`text-sm leading-relaxed ${isBusiness ? 'text-foreground/85' : 'text-foreground/80'}`}
-        >
-          {description}
-        </p>
+        {description ? (
+          <p
+            className={`text-sm leading-relaxed ${isBusiness ? 'text-foreground/85' : 'text-foreground/80'}`}
+          >
+            {description}
+          </p>
+        ) : null}
       </div>
     </article>
   );
