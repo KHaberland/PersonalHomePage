@@ -84,7 +84,7 @@
     "whyChooseCard4Title": "Autorība un pavadība",
     "whyChooseCard4Desc": "Grāmatas par MAG/MIG autors; ilgtermiņā pavadošu ražošanas komandas.",
     "aboutTitle": "Par mani",
-    "aboutText": "<p class='home-about-lead'>Metināšanas inženieris (IWE) ar pasniegšanas pieredzi</p><p class='home-about-p'>Kvalifikācija TIG, MAG un MMA metināšanas procesos; praktiskās prasmes autogēnā griešanā, lodēšanā un termiskajā iztaisnošanā.</p><p class='home-about-p'>Pieredze metāla konstrukciju metināšanas un montāžas tehnoloģijās ar minimālām termiskām deformācijām un metināšanas procesu optimizāciju.</p><p class='home-about-p home-about-p--gap-lg'>Eksperta atbalsts aizsarggāzu maisījumu izvēlē MAG, MIG un TIG metināšanai, lai paaugstinātu kvalitāti un procesa stabilitāti.</p><p class='home-about-p home-about-p--gap-lg'>Grāmatas par MAG/MIG metināšanu autors.</p>",
+    "aboutText": "<p class='home-about-lead'>Metināšanas inženieris (IWE) ar pasniegšanas pieredzi un grāmatas par MAG/MIG metināšanu autors.</p><p class='home-about-p'>Kvalifikācija TIG, MAG un MMA metināšanas procesos; praktiskās prasmes skābekļa–degvielas griešanā, lodēšanā, aplodēšanā un termiskajā iztaisnošanā.</p><p class='home-about-p'>Pieredze tērauda konstrukciju metināšanā un montāžā ar minimālām termiskajām deformācijām un metināšanas procesu optimizāciju.</p><p class='home-about-p home-about-p--gap-lg'>Ekspertu atbalsts aizsarggāzu maisījumu izvēlē MAG, MIG un TIG metināšanai, lai uzlabotu kvalitāti un procesa stabilitāti.</p>",
     "aboutMoreCta": "Vairāk par mani",
     "competenciesTitle": "Galvenās kompetences",
     "competenciesTechnicalSubtitle": "Tehniskās prasmes",
@@ -190,17 +190,9 @@
     "ctaBannerWhatsapp": "WhatsApp"
   },
   "about": {
-    "whyChooseSectionLabel": "Vērtība darba devējam un klientam",
     "title": "Par mani",
-    "achievements": "Sasniegumi un ekspertīze",
-    "achievement1": "Praktiskā rokasgrāmata «MAG/MIG metināšana» (2024) autors.",
-    "achievement2": "Metināšanas inženieris (IWE): MIG/MAG, TIG un MMA procesu ieviešana un audits.",
-    "achievement3": "Pieredze ražošanas atbalstā un metinātāju apmācībā rūpniecībā un mācību centros.",
-    "achievement4": "Ekspertīze aizsarggāzu un metināšanas iekārtu izvēlē.",
-    "achievement5": "Metināšanas kvalitātes un procesa efektivitātes optimizācija.",
     "photoAlt": "Olegs Suvorovs, metināšanas inženieris",
     "workPhotoAlt": "Fotogrāfija no darba",
-    "bio": "Biogrāfija",
     "education": "Izglītība",
     "qualifications": "Profesionālās kvalifikācijas",
     "diplomas": "Diplomi un sertifikāti",
@@ -219,9 +211,9 @@
     "diplomaCloseModal": "Aizvērt",
     "diplomaPdfViewerTitle": "PDF dokumenta skatītājs",
     "diplomaPreviewAlt": "Priekšskatījums dokumentam «{title}»",
-    "fallbackBio": "<p class='home-about-lead'>Metināšanas inženieris (IWE) ar pasniegšanas pieredzi</p><p class='home-about-p'>Kvalifikācija TIG, MAG un MMA metināšanas procesos; praktiskās prasmes autogēnā griešanā, lodēšanā un termiskajā iztaisnošanā.</p><p class='home-about-p'>Pieredze metāla konstrukciju metināšanas un montāžas tehnoloģijās ar minimālām termiskām deformācijām un metināšanas procesu optimizāciju.</p><p class='home-about-p home-about-p--gap-lg'>Eksperta atbalsts aizsarggāzu maisījumu izvēlē MAG, MIG un TIG metināšanai, lai paaugstinātu kvalitāti un procesa stabilitāti.</p><p class='home-about-p home-about-p--gap-lg'>Grāmatas par MAG/MIG metināšanu autors.</p>",
-    "fallbackEducation": "<p>Bakalaura un maģistra grāds RTU (Rīgas Tehniskā universitāte).</p>",
-    "fallbackQualifications": "<p>Sertifikācija MMA/MAG un TIG. Metināšanas instruktora kvalifikācija.</p>"
+    "fallbackBio": "<p class='home-about-p'>Es esmu metināšanas inženieris (IWE) ar praktisku pieredzi ražošanā un pedagoģisko darbu. Mana ceļš metināšanā sākās 2011. gadā pēc apmācības MMA un MAG procesos 3. Rīgas arodskolā.</p><p class='home-about-p'>Gadu gaitā, strādājot par metinātāju, esmu ieguvis pieredzi dažādās ražošanas uzņēmumos, sākot no remonta metināšanas darbiem līdz armatūras karkasu un metāla konstrukciju izgatavošanai. Tas sniedza man dziļu izpratni par metinātāja darbu reālos apstākļos un atšķirību starp teoriju un praksi.</p><p class='home-about-p'>Gandrīz trīs gadus esmu pasniedzis materiālzinības, tehnoloģiju un vadījis praktiskās metināšanas nodarbības Rīgas mācību centrā, uzsverot prasmes, kas tieši pielietojamas darbā.</p><p class='home-about-p'>Pašlaik strādāju par metināšanas inženieri starptautiskā uzņēmumā, kas nodarbojas ar gāzu ražošanu un tirdzniecību. Šajā darbā es sadarbojos ar vadītājiem, sniedzu konsultācijas par aizsarg- un degošo gāzu izvēli, veicu testus, piedalos metināšanas tehnoloģiju korekcijā, optimizēju kvalitāti un procesa stabilitāti.</p><p class='home-about-p'>Esmu grāmatas par MAG/MIG metināšanu autors.</p><p class='home-about-p home-about-p--gap-lg'>Man ir bakalaura un maģistra grāds inženierzinātnēs specialitātē «Ierīču būve», pabeidzu Rīgas Tehnisko universitāti. Esmu izgājis papildapmācību: metināšanas koordinatora sagatavošanas kurss saskaņā ar DVS-IIW 1170 — «Starptautiskais metināšanas inženieris (IWE)», International Welding Engineer (IWE).</p>",
+    "fallbackEducation": "",
+    "fallbackQualifications": ""
   },
   "experience": {
     "title": "Profesionālā pieredze",

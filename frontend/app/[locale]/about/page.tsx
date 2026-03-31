@@ -86,9 +86,8 @@ export default async function AboutPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, tHome, about] = await Promise.all([
+  const [t, about] = await Promise.all([
     getTranslations('about'),
-    getTranslations('home'),
     getAbout(lang).catch(() => null),
   ]);
 
@@ -125,82 +124,26 @@ export default async function AboutPage({ params }: Props) {
   };
 
   return (
-    <div className="container-narrow section">
+    <div className="container-wide section">
       <h1 className="heading-2 mb-6 text-accent-orange">{t('title')}</h1>
 
-      <section
-        className="mb-12 rounded-xl border border-border/80 bg-surface/50 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:p-8"
-        aria-labelledby="about-why-heading"
-      >
-        <p className="text-xs font-semibold uppercase tracking-wide text-foreground/55">
-          {t('whyChooseSectionLabel')}
-        </p>
-        <h2
-          id="about-why-heading"
-          className="heading-3 mt-2 text-accent-orange"
-        >
-          {tHome('whyChooseTitle')}
-        </h2>
-        <ul className="mt-4 list-none space-y-3 text-sm text-foreground/90">
-          <li>
-            <span className="font-semibold text-foreground">
-              {tHome('whyChooseCard1Title')}
-            </span>
-            <span className="text-foreground/80">
-              {' '}
-              — {tHome('whyChooseCard1Desc')}
-            </span>
-          </li>
-          <li>
-            <span className="font-semibold text-foreground">
-              {tHome('whyChooseCard2Title')}
-            </span>
-            <span className="text-foreground/80">
-              {' '}
-              — {tHome('whyChooseCard2Desc')}
-            </span>
-          </li>
-          <li>
-            <span className="font-semibold text-foreground">
-              {tHome('whyChooseCard3Title')}
-            </span>
-            <span className="text-foreground/80">
-              {' '}
-              — {tHome('whyChooseCard3Desc')}
-            </span>
-          </li>
-          <li>
-            <span className="font-semibold text-foreground">
-              {tHome('whyChooseCard4Title')}
-            </span>
-            <span className="text-foreground/80">
-              {' '}
-              — {tHome('whyChooseCard4Desc')}
-            </span>
-          </li>
-        </ul>
-      </section>
-
-      <div className="grid items-start gap-12 md:grid-cols-[23fr_17fr]">
-        {/* Фотография */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-border">
+      <div className="grid w-full items-start gap-8 md:grid-cols-2 md:gap-12">
+        {/* Фотография — те же пропорции ширины, что блок «Обо мне» на главной */}
+        <div className="relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] overflow-hidden rounded-lg border border-border md:mx-0">
           <Image
             src={photo}
             alt={t('photoAlt')}
             fill
             className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 768px) 100vw, 26.88rem"
             priority
             unoptimized={photo.startsWith('http')}
           />
         </div>
 
-        <div className="space-y-6">
+        <div className="w-full min-w-0 space-y-6">
           {htmlHasVisibleText(bio) ? (
             <section>
-              <h2 className="about-block-title heading-3 mb-3 text-foreground">
-                {t('bio')}
-              </h2>
               <div
                 className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
                 dangerouslySetInnerHTML={{ __html: bio }}
@@ -209,39 +152,30 @@ export default async function AboutPage({ params }: Props) {
           ) : null}
 
           {/* Образование */}
-          <section>
-            <h2 className="about-block-title heading-3 mb-3 text-foreground">
-              {t('education')}
-            </h2>
-            <div
-              className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
-              dangerouslySetInnerHTML={{ __html: education }}
-            />
-          </section>
+          {htmlHasVisibleText(education) ? (
+            <section>
+              <h2 className="about-block-title heading-3 mb-3 text-foreground">
+                {t('education')}
+              </h2>
+              <div
+                className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                dangerouslySetInnerHTML={{ __html: education }}
+              />
+            </section>
+          ) : null}
 
           {/* Профессиональные квалификации */}
-          <section>
-            <h2 className="about-block-title heading-3 mb-3 text-foreground">
-              {t('qualifications')}
-            </h2>
-            <div
-              className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
-              dangerouslySetInnerHTML={{ __html: qualifications }}
-            />
-          </section>
-
-          <section>
-            <h2 className="about-block-title heading-3 mb-3 text-foreground">
-              {t('achievements')}
-            </h2>
-            <ul className="list-disc space-y-2 pl-5 text-foreground/80 [&_li]:leading-relaxed">
-              <li>{t('achievement1')}</li>
-              <li>{t('achievement2')}</li>
-              <li>{t('achievement3')}</li>
-              <li>{t('achievement4')}</li>
-              <li>{t('achievement5')}</li>
-            </ul>
-          </section>
+          {htmlHasVisibleText(qualifications) ? (
+            <section>
+              <h2 className="about-block-title heading-3 mb-3 text-foreground">
+                {t('qualifications')}
+              </h2>
+              <div
+                className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                dangerouslySetInnerHTML={{ __html: qualifications }}
+              />
+            </section>
+          ) : null}
         </div>
       </div>
 

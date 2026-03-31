@@ -84,7 +84,7 @@
     "whyChooseCard4Title": "Authorship & long-term support",
     "whyChooseCard4Desc": "Author of a MAG/MIG book; I support production teams over the long term.",
     "aboutTitle": "About me",
-    "aboutText": "<p class='home-about-lead'>Welding engineer (IWE) with teaching experience</p><p class='home-about-p'>Qualifications in TIG, MAG, and MMA welding processes; practical skills in oxy-fuel cutting, soldering, brazing, and thermal straightening.</p><p class='home-about-p'>Experience in welding and assembly of steel structures with minimal thermal distortion and optimization of welding processes.</p><p class='home-about-p home-about-p--gap-lg'>Expert support in selecting shielding gas mixtures for MAG, MIG, and TIG welding to improve quality and process stability.</p><p class='home-about-p home-about-p--gap-lg'>Author of a book on MAG/MIG welding.</p>",
+    "aboutText": "<p class='home-about-lead'>Welding engineer (IWE) with teaching experience and author of a book on MAG/MIG welding.</p><p class='home-about-p'>Qualifications in TIG, MAG, and MMA welding processes; practical skills in oxy-fuel cutting, soldering, brazing, and thermal straightening.</p><p class='home-about-p'>Experience in welding and assembly of steel structures with minimal thermal distortion and optimization of welding processes.</p><p class='home-about-p home-about-p--gap-lg'>Expert support in selecting shielding gas mixtures for MAG, MIG, and TIG welding to improve quality and process stability.</p>",
     "aboutMoreCta": "More about me",
     "competenciesTitle": "Key Competencies",
     "competenciesTechnicalSubtitle": "Technical skills",
@@ -190,17 +190,9 @@
     "ctaBannerWhatsapp": "WhatsApp"
   },
   "about": {
-    "whyChooseSectionLabel": "Value for employers and clients",
     "title": "About Me",
-    "achievements": "Achievements and expertise",
-    "achievement1": "Author of the practical guide “MAG/MIG welding” (2024).",
-    "achievement2": "Welding engineer (IWE): implementation and auditing of MIG/MAG, TIG, and MMA processes.",
-    "achievement3": "Experience supporting industrial production and training welders in industry and training centres.",
-    "achievement4": "Expertise in shielding gas selection and welding equipment.",
-    "achievement5": "Optimization of welding quality and process efficiency.",
     "photoAlt": "Oleg Suvorov, welding engineer",
     "workPhotoAlt": "Work photo",
-    "bio": "Biography",
     "education": "Education",
     "qualifications": "Professional Qualifications",
     "diplomas": "Diplomas & Certifications",
@@ -219,9 +211,9 @@
     "diplomaCloseModal": "Close",
     "diplomaPdfViewerTitle": "PDF document viewer",
     "diplomaPreviewAlt": "Preview of document “{title}”",
-    "fallbackBio": "<p class='home-about-lead'>Welding engineer (IWE) with teaching experience</p><p class='home-about-p'>Qualifications in TIG, MAG, and MMA welding processes; practical skills in oxy-fuel cutting, soldering, brazing, and thermal straightening.</p><p class='home-about-p'>Experience in welding and assembly of steel structures with minimal thermal distortion and optimization of welding processes.</p><p class='home-about-p home-about-p--gap-lg'>Expert support in selecting shielding gas mixtures for MAG, MIG, and TIG welding to improve quality and process stability.</p><p class='home-about-p home-about-p--gap-lg'>Author of a book on MAG/MIG welding.</p>",
-    "fallbackEducation": "<p>Bachelor and Master degrees from RTU (Riga Technical University).</p>",
-    "fallbackQualifications": "<p>Certified in MMA/MAG and TIG welding. Welding instructor qualification.</p>"
+    "fallbackBio": "<p class='home-about-p'>I am a Welding Engineer (IWE) with hands-on production experience and teaching background. My journey in welding began in 2011 after completing training in MMA and MAG processes at the 3rd Riga Vocational School.</p><p class='home-about-p'>Over the years as a welder, I gained experience in various production companies, from repair welding work to manufacturing rebar frameworks and metal structures. This provided me with a deep understanding of a welder's work in real conditions and the difference between theory and practice.</p><p class='home-about-p'>For nearly three years, I taught materials science, welding technology, and practical welding classes at a training center in Riga, focusing on skills directly applicable in the workplace.</p><p class='home-about-p'>Currently, I work as a Welding Engineer in an international company specializing in gas production and sales. In this role, I collaborate with managers, advise on the selection of shielding and combustible gases, conduct testing, participate in welding technology adjustments, and optimize process quality and stability.</p><p class='home-about-p home-about-p--gap-lg'>I am the author of a book on MAG/MIG welding. I hold a Bachelor's and Master's degree in Engineering (Instrumentation) from Riga Technical University. I have completed additional training: a Welding Coordination course according to DVS-IIW 1170 — International Welding Engineer (IWE), International Welding Engineer (IWE).</p>",
+    "fallbackEducation": "",
+    "fallbackQualifications": ""
   },
   "experience": {
     "title": "Professional Experience",
