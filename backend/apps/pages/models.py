@@ -1,6 +1,23 @@
 from django.db import models
 
 
+class AboutMain(models.Model):
+    """Краткий блок «Обо мне» на главной странице — отдельно от полной биографии /about."""
+
+    main_bio_en = models.TextField(blank=True)
+    main_bio_ru = models.TextField(blank=True)
+    main_bio_lv = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_about_main"
+        verbose_name = "About – Main"
+        verbose_name_plural = "About – Main"
+
+    def __str__(self):
+        return "About – Main"
+
+
 class About(models.Model):
     """About page content - single row."""
 
@@ -77,6 +94,45 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title_en
+
+
+class HomeTechnicalSkillsIntro(models.Model):
+    """Вводный абзац под заголовком «Технические навыки» на главной — одна запись."""
+
+    lead_en = models.TextField(blank=True)
+    lead_ru = models.TextField(blank=True)
+    lead_lv = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_home_technical_skills_intro"
+        verbose_name = "Home – Technical skills (lead)"
+        verbose_name_plural = "Home – Technical skills (lead)"
+
+    def __str__(self):
+        return "Home – Technical skills (lead)"
+
+
+class HomeTechnicalSkillCard(models.Model):
+    """Одна из шести карточек «технические навыки» на главной (порядок и иконки фиксированы в коде)."""
+
+    order = models.PositiveSmallIntegerField(unique=True)
+    title_en = models.CharField(max_length=500)
+    title_ru = models.CharField(max_length=500, blank=True)
+    title_lv = models.CharField(max_length=500, blank=True)
+    description_en = models.TextField(blank=True)
+    description_ru = models.TextField(blank=True)
+    description_lv = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_home_technical_skill_card"
+        verbose_name = "Home – Technical skill card"
+        verbose_name_plural = "Home – Technical skill cards"
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.order}. {self.title_en[:40]}"
 
 
 class Contact(models.Model):

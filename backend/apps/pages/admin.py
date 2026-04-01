@@ -2,7 +2,31 @@ from django.contrib import admin
 from django.db import models
 from django_ckeditor_5.widgets import CKEditor5Widget
 
-from .models import About, Book, Contact, Experience
+from .models import (
+    About,
+    AboutMain,
+    Book,
+    Contact,
+    Experience,
+    HomeTechnicalSkillCard,
+    HomeTechnicalSkillsIntro,
+)
+
+
+@admin.register(AboutMain)
+class AboutMainAdmin(admin.ModelAdmin):
+    list_display = ["updated_at"]
+    formfield_overrides = {
+        models.TextField: {"widget": CKEditor5Widget(config_name="extends")},
+    }
+    fieldsets = (
+        ("English", {"fields": ("main_bio_en",)}),
+        ("Русский", {"fields": ("main_bio_ru",)}),
+        ("Latviešu", {"fields": ("main_bio_lv",)}),
+    )
+
+    def has_add_permission(self, request):
+        return not AboutMain.objects.exists()
 
 
 @admin.register(About)
@@ -54,3 +78,29 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ["email", "linkedin_url", "youtube_url"]
+
+
+@admin.register(HomeTechnicalSkillsIntro)
+class HomeTechnicalSkillsIntroAdmin(admin.ModelAdmin):
+    list_display = ["updated_at"]
+    fieldsets = (
+        ("English", {"fields": ("lead_en",)}),
+        ("Русский", {"fields": ("lead_ru",)}),
+        ("Latviešu", {"fields": ("lead_lv",)}),
+    )
+
+    def has_add_permission(self, request):
+        return not HomeTechnicalSkillsIntro.objects.exists()
+
+
+@admin.register(HomeTechnicalSkillCard)
+class HomeTechnicalSkillCardAdmin(admin.ModelAdmin):
+    list_display = ["order", "title_en", "updated_at"]
+    ordering = ["order"]
+    search_fields = ["title_en", "title_ru", "description_en"]
+    fieldsets = (
+        (None, {"fields": ("order",)}),
+        ("English", {"fields": ("title_en", "description_en")}),
+        ("Русский", {"fields": ("title_ru", "description_ru")}),
+        ("Latviešu", {"fields": ("title_lv", "description_lv")}),
+    )

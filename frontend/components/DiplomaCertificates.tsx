@@ -39,11 +39,11 @@ function isRasterDocumentUrl(url: string): boolean {
 function PreviewPlaceholder() {
   return (
     <div
-      className="flex h-full min-h-[7.5rem] flex-col items-center justify-center gap-2 bg-[linear-gradient(145deg,var(--surface-elevated)_0%,#121820_50%,var(--surface)_100%)] px-3 py-4 text-center"
+      className="flex h-full min-h-0 flex-col items-center justify-center gap-1 bg-[linear-gradient(145deg,var(--surface-elevated)_0%,#121820_50%,var(--surface)_100%)] px-2 py-2 text-center sm:gap-2 sm:px-3 sm:py-4"
       aria-hidden
     >
       <svg
-        className="h-10 w-10 shrink-0 text-accent-orange/90"
+        className="h-6 w-6 shrink-0 text-accent-orange/90 sm:h-10 sm:w-10"
         fill="currentColor"
         viewBox="0 0 24 24"
       >
@@ -67,7 +67,7 @@ function PreviewImage({ src, alt }: { src: string; alt: string }) {
       alt={alt}
       fill
       className="object-cover object-top"
-      sizes="(max-width: 640px) 100vw, 25vw"
+      sizes="(max-width: 640px) 20vw, 20vw"
       loading="lazy"
       unoptimized
       onError={() => setFailed(true)}
@@ -86,7 +86,7 @@ function CertificatePreview({
     return <PreviewPlaceholder />;
   }
   return (
-    <div className="relative h-full min-h-[7.5rem] w-full">
+    <div className="relative h-full min-h-0 w-full">
       <PreviewImage key={previewSrc} src={previewSrc} alt={alt} />
     </div>
   );
@@ -127,13 +127,13 @@ export function DiplomaCertificates({ items, labels }: Props) {
 
   return (
     <>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-5 gap-2 min-[480px]:gap-3 sm:gap-4">
         {items.map((item) => (
           <article
             key={item.id}
-            className="card flex flex-col overflow-hidden p-0 transition-[border-color,box-shadow]"
+            className="card flex min-w-0 flex-col overflow-hidden p-0 transition-[border-color,box-shadow]"
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-border">
+            <div className="relative aspect-[4/3] w-full min-h-0 overflow-hidden border-b border-border">
               <CertificatePreview
                 previewSrc={item.previewSrc}
                 alt={item.previewAlt}

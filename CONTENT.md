@@ -29,7 +29,7 @@
 
 **About (страница «Обо мне»):**
 - `DSC_0222_optimized.jpg` — основное фото (уже используется как default)
-- `IMG20230830105750.jpg`, `IMG20240828143738.jpg`, `IMG20250404114114.jpg`, `IMG20250518152029.jpg` — галерея
+- `small/FB_IMG_gas.jpg`, `small/IMG_20250714_MAG.jpg`, `small/mag_weld2.jpg`, `small/tig_weld.jpg` — галерея (пути от `public/images/photos/`)
 
 **Experience (страница «Опыт»):**
 - `DSC_2992.jpg`, `DSC_3010.jpg`, `IMG20250618100959.jpg` — фото с работы

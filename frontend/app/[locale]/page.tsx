@@ -29,6 +29,7 @@ import {
   getBook,
   getContact,
   getExperience,
+  getHomeTechnicalSkills,
   getPosts,
   getTools,
 } from '@/lib/api';
@@ -202,7 +203,7 @@ export default async function HomePage({ params }: Props) {
     getTranslations('experience'),
   ]);
 
-  const [about, book, contact, experience, tools, postsResponse] =
+  const [about, book, contact, experience, tools, postsResponse, homeTechnicalSkills] =
     await Promise.all([
       getAbout(lang).catch(() => null),
       getBook(lang).catch(() => null),
@@ -210,7 +211,15 @@ export default async function HomePage({ params }: Props) {
       getExperience(lang).catch(() => []),
       getTools().catch(() => []),
       getPosts(lang, { page: '1' }).catch(() => ({ results: [], count: 0 })),
+      getHomeTechnicalSkills(lang).catch(() => null),
     ]);
+
+  const homeTechnicalByOrder = new Map(
+    (homeTechnicalSkills?.items ?? []).map((row) => [row.order, row])
+  );
+  const technicalLeadParagraph =
+    (homeTechnicalSkills?.technical_lead ?? '').trim() ||
+    t('competenciesTechnicalLead');
 
   const latestPosts =
     postsResponse.results?.slice(0, HOME_BLOG_POSTS_LIMIT) ?? [];
@@ -223,7 +232,11 @@ export default async function HomePage({ params }: Props) {
           created_at: '',
         }));
 
-  const aboutShortHtml = about?.bio?.trim() ? about.bio : t.raw('aboutText');
+  const aboutShortHtml = about?.bio_main?.trim()
+    ? about.bio_main
+    : t.raw('aboutText');
+  /** Краткий блок главной: без увеличенного кегля развёрнутой биографии (/about). */
+  const useNarrativeBioSize = false;
 
   const defaultAboutPhoto = '/images/photos/small/Author_small.jpg';
   const defaultBookCover = '/images/photos/author01.jpg';
@@ -295,7 +308,10 @@ export default async function HomePage({ params }: Props) {
           </div>
           <div className="flex w-full min-w-0 flex-col">
             <div
-              className="home-about-copy w-full max-w-none text-left [&_b]:font-inherit [&_strong]:font-inherit"
+              className={
+                'home-about-copy w-full max-w-none text-left [&_b]:font-inherit [&_strong]:font-inherit' +
+                (useNarrativeBioSize ? ' about-bio-narrative' : '')
+              }
               dangerouslySetInnerHTML={{ __html: aboutShortHtml }}
             />
             <Link
@@ -325,24 +341,32 @@ export default async function HomePage({ params }: Props) {
             {t('competenciesTechnicalSubtitle')}
           </h3>
           <p className="mb-6 max-w-3xl text-sm text-foreground/70">
-            {t('competenciesTechnicalLead')}
+            {technicalLeadParagraph}
           </p>
           <ul
             className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3"
             aria-labelledby="competencies-technical"
           >
-            {competencyTechnicalItems.map(({ Icon, titleKey, descKey }) => (
-              <li key={titleKey} className="h-full min-h-0">
-                <CompetencyCard
-                  variant="technical"
-                  title={t(titleKey)}
-                  description={t(descKey)}
-                  icon={
-                    <Icon className="h-6 w-6" aria-hidden title={undefined} />
-                  }
-                />
-              </li>
-            ))}
+            {competencyTechnicalItems.map(({ Icon, titleKey, descKey }, idx) => {
+              const order = idx + 1;
+              const fromApi = homeTechnicalByOrder.get(order);
+              const cardTitle =
+                (fromApi?.title ?? '').trim() || t(titleKey);
+              const cardDescription =
+                (fromApi?.description ?? '').trim() || t(descKey);
+              return (
+                <li key={titleKey} className="h-full min-h-0">
+                  <CompetencyCard
+                    variant="technical"
+                    title={cardTitle}
+                    description={cardDescription}
+                    icon={
+                      <Icon className="h-6 w-6" aria-hidden title={undefined} />
+                    }
+                  />
+                </li>
+              );
+            })}
           </ul>
         </div>
 

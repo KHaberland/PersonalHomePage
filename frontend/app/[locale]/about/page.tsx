@@ -145,7 +145,7 @@ export default async function AboutPage({ params }: Props) {
           {htmlHasVisibleText(bio) ? (
             <section>
               <div
-                className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                className="about-content about-bio-narrative text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
                 dangerouslySetInnerHTML={{ __html: bio }}
               />
             </section>
@@ -188,10 +188,10 @@ export default async function AboutPage({ params }: Props) {
       {/* Фотографии */}
       <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {[
-          'IMG20230830105750.jpg',
-          'IMG20240828143738.jpg',
-          'IMG20250404114114.jpg',
-          'IMG20250518152029.jpg',
+          'small/FB_IMG_gas.jpg',
+          'small/IMG_20250714_MAG.jpg',
+          'small/mag_weld2.jpg',
+          'small/tig_weld.jpg',
         ].map((name) => (
           <div
             key={name}

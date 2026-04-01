@@ -1,13 +1,17 @@
 from django.http import Http404
 
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import About, Book, Contact, Experience
+from .models import About, Book, Contact, Experience, HomeTechnicalSkillCard, HomeTechnicalSkillsIntro
 from .serializers import (
     AboutSerializer,
     BookSerializer,
     ContactSerializer,
     ExperienceSerializer,
+    HomeTechnicalSkillCardSerializer,
+    _localized_text,
 )
 
 
@@ -67,3 +71,22 @@ class ContactView(generics.RetrieveAPIView):
         if obj is None:
             raise Http404("Contact info not found")
         return obj
+
+
+class HomeTechnicalSkillsView(APIView):
+    """GET /api/home-technical-skills/ — блок «Технические навыки» на главной."""
+
+    def get(self, request):
+        lang = request.query_params.get("lang", "en")
+        intro = HomeTechnicalSkillsIntro.objects.first()
+        items = HomeTechnicalSkillCard.objects.order_by("order")
+        ctx = {"lang": lang}
+        lead = _localized_text(intro, "lead", lang) if intro else ""
+        return Response(
+            {
+                "technical_lead": lead,
+                "items": HomeTechnicalSkillCardSerializer(
+                    items, many=True, context=ctx
+                ).data,
+            }
+        )

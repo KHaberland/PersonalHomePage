@@ -174,12 +174,17 @@ body {
   margin-bottom: 0.875rem;
 }
 
-/* Страница /about: те же классы — светлая тема, та же шкала 17px / 14px */
+/* Страница /about: кегли задаются здесь; биография с .about-bio-narrative использует те же значения (без отдельного перекрытия). */
+.about-content {
+  --about-lead-font-size: 14px;
+  --about-body-font-size: 11px;
+}
+
 .about-content .home-about-lead {
   margin: 0 0 0.75rem;
   color: var(--foreground);
   font-weight: 600;
-  font-size: 17px;
+  font-size: var(--about-lead-font-size);
   line-height: 1.375;
   letter-spacing: -0.025em;
   text-wrap: balance;
@@ -189,12 +194,25 @@ body {
   margin: 0 0 0.75rem;
   color: color-mix(in srgb, var(--foreground) 88%, transparent);
   font-weight: 400;
-  font-size: 14px;
+  font-size: var(--about-body-font-size);
   line-height: 1.45;
 }
 
 .about-content .home-about-p--gap-lg {
   margin-bottom: 0.875rem;
+}
+
+/* Биография: более узкий селектор раньше бил ваши 12px/15px; оставляем те же переменные + голые <p> из редактора */
+.about-content.about-bio-narrative .home-about-p,
+.home-about-copy.about-bio-narrative .home-about-p,
+.about-content.about-bio-narrative p,
+.home-about-copy.about-bio-narrative p {
+  font-size: var(--about-body-font-size);
+}
+
+.about-content.about-bio-narrative .home-about-lead,
+.home-about-copy.about-bio-narrative .home-about-lead {
+  font-size: var(--about-lead-font-size);
 }
 
 /* Секции — единообразные отступы */
