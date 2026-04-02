@@ -313,6 +313,16 @@ body {
   color: var(--accent-orange-hover);
 }
 
+/* Главная — «Обо мне»: свечение вокруг рамки фото (box-shadow; слой под fill-изображением не был виден) */
+.about-photo-glow-wrap {
+  box-shadow:
+    -10px -12px 27px 9px rgba(249, 115, 22, 0.1),
+    -5px -7px 50px 20px rgba(59, 130, 246, 0.045),
+    -4px -5px 62px 24px rgba(249, 115, 22, 0.037),
+    8px 10px 38px 15px rgba(59, 130, 246, 0.02),
+    10px 12px 44px 17px rgba(249, 115, 22, 0.01);
+}
+
 /* Градиент для Hero — сварочные цвета */
 .hero-gradient {
   background: linear-gradient(

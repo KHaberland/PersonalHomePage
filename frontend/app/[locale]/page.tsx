@@ -315,16 +315,18 @@ export default async function HomePage({ params }: Props) {
           {t('aboutTitle')}
         </h2>
         <div className="grid w-full gap-8 md:grid-cols-2 md:items-center md:gap-12">
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] overflow-hidden rounded-lg border border-border md:mx-0">
-            <Image
-              src={aboutPhotoSrc}
-              alt={tAbout('photoAlt')}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 768px) 100vw, 26.88rem"
-              priority={false}
-              unoptimized={aboutPhotoUnoptimized}
-            />
+          <div className="about-photo-glow-wrap relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] rounded-lg md:mx-0">
+            <div className="absolute inset-0 overflow-hidden rounded-lg border border-border">
+              <Image
+                src={aboutPhotoSrc}
+                alt={tAbout('photoAlt')}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, 26.88rem"
+                priority={false}
+                unoptimized={aboutPhotoUnoptimized}
+              />
+            </div>
           </div>
           <div className="flex w-full min-w-0 flex-col">
             <div
