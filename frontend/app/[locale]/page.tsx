@@ -29,6 +29,7 @@ import {
   getBook,
   getContact,
   getExperience,
+  getHomeBusinessOutcomes,
   getHomeTechnicalSkills,
   getPosts,
   getTools,
@@ -203,16 +204,25 @@ export default async function HomePage({ params }: Props) {
     getTranslations('experience'),
   ]);
 
-  const [about, book, contact, experience, tools, postsResponse, homeTechnicalSkills] =
-    await Promise.all([
-      getAbout(lang).catch(() => null),
-      getBook(lang).catch(() => null),
-      getContact().catch(() => null),
-      getExperience(lang).catch(() => []),
-      getTools().catch(() => []),
-      getPosts(lang, { page: '1' }).catch(() => ({ results: [], count: 0 })),
-      getHomeTechnicalSkills(lang).catch(() => null),
-    ]);
+  const [
+    about,
+    book,
+    contact,
+    experience,
+    tools,
+    postsResponse,
+    homeTechnicalSkills,
+    homeBusinessOutcomes,
+  ] = await Promise.all([
+    getAbout(lang).catch(() => null),
+    getBook(lang).catch(() => null),
+    getContact().catch(() => null),
+    getExperience(lang).catch(() => []),
+    getTools().catch(() => []),
+    getPosts(lang, { page: '1' }).catch(() => ({ results: [], count: 0 })),
+    getHomeTechnicalSkills(lang).catch(() => null),
+    getHomeBusinessOutcomes(lang).catch(() => null),
+  ]);
 
   const homeTechnicalByOrder = new Map(
     (homeTechnicalSkills?.items ?? []).map((row) => [row.order, row])
@@ -220,6 +230,16 @@ export default async function HomePage({ params }: Props) {
   const technicalLeadParagraph =
     (homeTechnicalSkills?.technical_lead ?? '').trim() ||
     t('competenciesTechnicalLead');
+
+  const homeBusinessByOrder = new Map(
+    (homeBusinessOutcomes?.items ?? []).map((row) => [row.order, row])
+  );
+  const businessSubtitle =
+    (homeBusinessOutcomes?.business_subtitle ?? '').trim() ||
+    t('competenciesBusinessSubtitle');
+  const businessLead =
+    (homeBusinessOutcomes?.business_lead ?? '').trim() ||
+    t('competenciesBusinessLead');
 
   const latestPosts =
     postsResponse.results?.slice(0, HOME_BLOG_POSTS_LIMIT) ?? [];
@@ -347,17 +367,55 @@ export default async function HomePage({ params }: Props) {
             className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3"
             aria-labelledby="competencies-technical"
           >
-            {competencyTechnicalItems.map(({ Icon, titleKey, descKey }, idx) => {
+            {competencyTechnicalItems.map(
+              ({ Icon, titleKey, descKey }, idx) => {
+                const order = idx + 1;
+                const fromApi = homeTechnicalByOrder.get(order);
+                const cardTitle = (fromApi?.title ?? '').trim() || t(titleKey);
+                const cardDescription =
+                  (fromApi?.description ?? '').trim() || t(descKey);
+                return (
+                  <li key={titleKey} className="h-full min-h-0">
+                    <CompetencyCard
+                      variant="technical"
+                      title={cardTitle}
+                      description={cardDescription}
+                      icon={
+                        <Icon
+                          className="h-6 w-6"
+                          aria-hidden
+                          title={undefined}
+                        />
+                      }
+                    />
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </div>
+
+        <div className="mt-10 rounded-xl border border-accent-blue/25 bg-surface p-6 shadow-[inset_0_1px_0_0_rgba(59,130,246,0.08)] sm:p-8 md:p-10">
+          <h3 id="competencies-business" className="heading-3 text-accent-blue">
+            {businessSubtitle}
+          </h3>
+          <p className="mb-6 max-w-3xl text-sm text-foreground/75">
+            {businessLead}
+          </p>
+          <ul
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            aria-labelledby="competencies-business"
+          >
+            {competencyBusinessItems.map(({ Icon, titleKey, descKey }, idx) => {
               const order = idx + 1;
-              const fromApi = homeTechnicalByOrder.get(order);
-              const cardTitle =
-                (fromApi?.title ?? '').trim() || t(titleKey);
+              const fromApi = homeBusinessByOrder.get(order);
+              const cardTitle = (fromApi?.title ?? '').trim() || t(titleKey);
               const cardDescription =
                 (fromApi?.description ?? '').trim() || t(descKey);
               return (
-                <li key={titleKey} className="h-full min-h-0">
+                <li key={titleKey}>
                   <CompetencyCard
-                    variant="technical"
+                    variant="business"
                     title={cardTitle}
                     description={cardDescription}
                     icon={
@@ -367,32 +425,6 @@ export default async function HomePage({ params }: Props) {
                 </li>
               );
             })}
-          </ul>
-        </div>
-
-        <div className="mt-10 rounded-xl border border-accent-blue/25 bg-surface p-6 shadow-[inset_0_1px_0_0_rgba(59,130,246,0.08)] sm:p-8 md:p-10">
-          <h3 id="competencies-business" className="heading-3 text-accent-blue">
-            {t('competenciesBusinessSubtitle')}
-          </h3>
-          <p className="mb-6 max-w-3xl text-sm text-foreground/75">
-            {t('competenciesBusinessLead')}
-          </p>
-          <ul
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            aria-labelledby="competencies-business"
-          >
-            {competencyBusinessItems.map(({ Icon, titleKey, descKey }) => (
-              <li key={titleKey}>
-                <CompetencyCard
-                  variant="business"
-                  title={t(titleKey)}
-                  description={t(descKey)}
-                  icon={
-                    <Icon className="h-6 w-6" aria-hidden title={undefined} />
-                  }
-                />
-              </li>
-            ))}
           </ul>
         </div>
       </Section>

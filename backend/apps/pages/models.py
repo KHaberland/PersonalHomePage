@@ -2,7 +2,7 @@ from django.db import models
 
 
 class AboutMain(models.Model):
-    """Краткий блок «Обо мне» на главной странице — отдельно от полной биографии /about."""
+    """Краткий «Обо мне» на главной; полная биография — отдельная страница /about."""
 
     main_bio_en = models.TextField(blank=True)
     main_bio_ru = models.TextField(blank=True)
@@ -113,8 +113,50 @@ class HomeTechnicalSkillsIntro(models.Model):
         return "Home – Technical skills (lead)"
 
 
+class HomeBusinessOutcomesIntro(models.Model):
+    """Подзаголовок и лид блока «Business outcomes» на главной — одна запись."""
+
+    subtitle_en = models.CharField(max_length=500, blank=True)
+    subtitle_ru = models.CharField(max_length=500, blank=True)
+    subtitle_lv = models.CharField(max_length=500, blank=True)
+    lead_en = models.TextField(blank=True)
+    lead_ru = models.TextField(blank=True)
+    lead_lv = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_home_business_outcomes_intro"
+        verbose_name = "Home – Business outcomes (intro)"
+        verbose_name_plural = "Home – Business outcomes (intro)"
+
+    def __str__(self):
+        return "Home – Business outcomes (intro)"
+
+
+class HomeBusinessOutcomeCard(models.Model):
+    """Карточка «business outcomes» на главной; порядок и иконки задаются в коде."""
+
+    order = models.PositiveSmallIntegerField(unique=True)
+    title_en = models.CharField(max_length=500)
+    title_ru = models.CharField(max_length=500, blank=True)
+    title_lv = models.CharField(max_length=500, blank=True)
+    description_en = models.TextField(blank=True)
+    description_ru = models.TextField(blank=True)
+    description_lv = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_home_business_outcome_card"
+        verbose_name = "Home – Business outcome card"
+        verbose_name_plural = "Home – Business outcome cards"
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.order}. {self.title_en[:40]}"
+
+
 class HomeTechnicalSkillCard(models.Model):
-    """Одна из шести карточек «технические навыки» на главной (порядок и иконки фиксированы в коде)."""
+    """Карточка «технические навыки» на главной; порядок и иконки задаются в коде."""
 
     order = models.PositiveSmallIntegerField(unique=True)
     title_en = models.CharField(max_length=500)

@@ -4,12 +4,22 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import About, Book, Contact, Experience, HomeTechnicalSkillCard, HomeTechnicalSkillsIntro
+from .models import (
+    About,
+    Book,
+    Contact,
+    Experience,
+    HomeBusinessOutcomeCard,
+    HomeBusinessOutcomesIntro,
+    HomeTechnicalSkillCard,
+    HomeTechnicalSkillsIntro,
+)
 from .serializers import (
     AboutSerializer,
     BookSerializer,
     ContactSerializer,
     ExperienceSerializer,
+    HomeBusinessOutcomeCardSerializer,
     HomeTechnicalSkillCardSerializer,
     _localized_text,
 )
@@ -86,6 +96,27 @@ class HomeTechnicalSkillsView(APIView):
             {
                 "technical_lead": lead,
                 "items": HomeTechnicalSkillCardSerializer(
+                    items, many=True, context=ctx
+                ).data,
+            }
+        )
+
+
+class HomeBusinessOutcomesView(APIView):
+    """GET /api/home-business-outcomes/ — блок «Business outcomes» на главной."""
+
+    def get(self, request):
+        lang = request.query_params.get("lang", "en")
+        intro = HomeBusinessOutcomesIntro.objects.first()
+        items = HomeBusinessOutcomeCard.objects.order_by("order")
+        ctx = {"lang": lang}
+        subtitle = _localized_text(intro, "subtitle", lang) if intro else ""
+        lead = _localized_text(intro, "lead", lang) if intro else ""
+        return Response(
+            {
+                "business_subtitle": subtitle,
+                "business_lead": lead,
+                "items": HomeBusinessOutcomeCardSerializer(
                     items, many=True, context=ctx
                 ).data,
             }

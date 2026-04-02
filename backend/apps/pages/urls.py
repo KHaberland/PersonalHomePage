@@ -12,4 +12,9 @@ urlpatterns = [
         views.HomeTechnicalSkillsView.as_view(),
         name="home-technical-skills",
     ),
+    path(
+        "home-business-outcomes/",
+        views.HomeBusinessOutcomesView.as_view(),
+        name="home-business-outcomes",
+    ),
 ]

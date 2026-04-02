@@ -8,6 +8,8 @@ from .models import (
     Book,
     Contact,
     Experience,
+    HomeBusinessOutcomeCard,
+    HomeBusinessOutcomesIntro,
     HomeTechnicalSkillCard,
     HomeTechnicalSkillsIntro,
 )
@@ -78,6 +80,32 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ["email", "linkedin_url", "youtube_url"]
+
+
+@admin.register(HomeBusinessOutcomesIntro)
+class HomeBusinessOutcomesIntroAdmin(admin.ModelAdmin):
+    list_display = ["updated_at"]
+    fieldsets = (
+        ("English", {"fields": ("subtitle_en", "lead_en")}),
+        ("Русский", {"fields": ("subtitle_ru", "lead_ru")}),
+        ("Latviešu", {"fields": ("subtitle_lv", "lead_lv")}),
+    )
+
+    def has_add_permission(self, request):
+        return not HomeBusinessOutcomesIntro.objects.exists()
+
+
+@admin.register(HomeBusinessOutcomeCard)
+class HomeBusinessOutcomeCardAdmin(admin.ModelAdmin):
+    list_display = ["order", "title_en", "updated_at"]
+    ordering = ["order"]
+    search_fields = ["title_en", "title_ru", "description_en"]
+    fieldsets = (
+        (None, {"fields": ("order",)}),
+        ("English", {"fields": ("title_en", "description_en")}),
+        ("Русский", {"fields": ("title_ru", "description_ru")}),
+        ("Latviešu", {"fields": ("title_lv", "description_lv")}),
+    )
 
 
 @admin.register(HomeTechnicalSkillsIntro)

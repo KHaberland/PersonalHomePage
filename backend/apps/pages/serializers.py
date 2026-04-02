@@ -6,6 +6,7 @@ from .models import (
     Book,
     Contact,
     Experience,
+    HomeBusinessOutcomeCard,
     HomeTechnicalSkillCard,
 )
 
@@ -147,6 +148,23 @@ class HomeTechnicalSkillCardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HomeTechnicalSkillCard
+        fields = ["order", "title", "description"]
+
+    def get_title(self, obj):
+        lang = self.context.get("lang", "en")
+        return _localized_text(obj, "title", lang)
+
+    def get_description(self, obj):
+        lang = self.context.get("lang", "en")
+        return _localized_text(obj, "description", lang)
+
+
+class HomeBusinessOutcomeCardSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+
+    class Meta:
+        model = HomeBusinessOutcomeCard
         fields = ["order", "title", "description"]
 
     def get_title(self, obj):
