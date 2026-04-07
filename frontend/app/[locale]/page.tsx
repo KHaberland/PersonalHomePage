@@ -16,7 +16,6 @@ import {
   IconCompetencyMigMag,
   IconCompetencyTig,
   IconServiceConsulting,
-  IconServiceEquipment,
   IconServiceImplementation,
   IconServiceTraining,
   IconWhyBook,
@@ -124,31 +123,26 @@ const serviceItems = [
     descKey: 'serviceConsultingDesc',
   },
   {
-    Icon: IconServiceImplementation,
-    titleKey: 'serviceImplementation',
-    descKey: 'serviceImplementationDesc',
-  },
-  {
-    Icon: IconServiceEquipment,
-    titleKey: 'serviceEquipment',
-    descKey: 'serviceEquipmentDesc',
-  },
-  {
     Icon: IconServiceTraining,
     titleKey: 'serviceTraining',
     descKey: 'serviceTrainingDesc',
+  },
+  {
+    Icon: IconServiceImplementation,
+    titleKey: 'serviceProjectSupport',
+    descKey: 'serviceProjectSupportDesc',
   },
 ] as const;
 
 const caseItems = [
   {
-    Icon: IconServiceTraining,
+    Icon: IconCompetencyMigMag,
     titleKey: 'case1Title',
     descKey: 'case1Description',
     imageSrc: '/images/photos/small/Author_small.jpg',
   },
   {
-    Icon: IconCompetencyTig,
+    Icon: IconServiceTraining,
     titleKey: 'case2Title',
     descKey: 'case2Description',
     imageSrc: '/images/photos/author01.jpg',
@@ -436,10 +430,12 @@ export default async function HomePage({ params }: Props) {
         <h2 className="heading-2 mb-2 text-accent-orange">
           {t('servicesTitle')}
         </h2>
-        <p className="mb-8 max-w-3xl text-foreground/80">
-          {t('servicesSubtitle')}
-        </p>
-        <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {t('servicesSubtitle').trim() ? (
+          <p className="mb-8 max-w-3xl text-foreground/80">
+            {t('servicesSubtitle')}
+          </p>
+        ) : null}
+        <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {serviceItems.map(({ Icon, titleKey, descKey }) => (
             <li key={titleKey} className="h-full min-h-0">
               <CompetencyCard
@@ -465,9 +461,11 @@ export default async function HomePage({ params }: Props) {
         >
           {t('casesTitle')}
         </h2>
-        <p className="mb-8 max-w-3xl text-foreground/80">
-          {t('casesSubtitle')}
-        </p>
+        {t('casesSubtitle').trim() ? (
+          <p className="mb-8 max-w-3xl text-foreground/80">
+            {t('casesSubtitle')}
+          </p>
+        ) : null}
         <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {caseItems.map(({ Icon, titleKey, descKey, imageSrc }) => (
             <li key={titleKey} className="h-full min-h-0">
@@ -530,6 +528,9 @@ export default async function HomePage({ params }: Props) {
                   <p className="text-accent-orange">{tExp(`${key}.company`)}</p>
                   <p className="text-sm text-foreground/70">
                     {tExp(`${key}.period`)}
+                  </p>
+                  <p className="mt-1 text-sm text-foreground/75">
+                    {tExp(`${key}.homeOutline`)}
                   </p>
                 </div>
               ))}

@@ -51,7 +51,7 @@ export function CompetencyCard({
         <h3 className="heading-3 text-foreground">{title}</h3>
         {description ? (
           <p
-            className={`text-sm leading-relaxed ${isBusiness ? 'text-foreground/85' : 'text-foreground/80'}`}
+            className={`whitespace-pre-line text-sm leading-relaxed ${isBusiness ? 'text-foreground/85' : 'text-foreground/80'}`}
           >
             {description}
           </p>
