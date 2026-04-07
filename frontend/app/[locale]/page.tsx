@@ -38,6 +38,7 @@ import {
   buildFallbackTools,
 } from '@/lib/fallback-content';
 import type { Lang } from '@/lib/api-types';
+import { htmlToPlainText } from '@/lib/html-to-plain-text';
 import { createPageMetadata } from '@/lib/metadata';
 
 /** Технические навыки: процессы, оборудование, материалы */
@@ -427,7 +428,7 @@ export default async function HomePage({ params }: Props) {
 
       {/* Услуги */}
       <Section id="services" variant="surface">
-        <h2 className="heading-2 mb-2 text-accent-orange">
+        <h2 className="heading-2 mb-2 font-semibold tracking-tight text-white">
           {t('servicesTitle')}
         </h2>
         {t('servicesSubtitle').trim() ? (
@@ -457,7 +458,7 @@ export default async function HomePage({ params }: Props) {
       <Section id="cases" aria-labelledby="home-cases-heading">
         <h2
           id="home-cases-heading"
-          className="heading-2 mb-2 text-accent-orange"
+          className="heading-2 mb-2 font-semibold tracking-tight text-white"
         >
           {t('casesTitle')}
         </h2>
@@ -494,7 +495,7 @@ export default async function HomePage({ params }: Props) {
       >
         <h2
           id="home-experience-heading"
-          className="heading-2 mb-8 text-accent-orange"
+          className="heading-2 mb-8 font-semibold tracking-tight text-white"
         >
           {t('experienceTitle')}
         </h2>
@@ -512,7 +513,7 @@ export default async function HomePage({ params }: Props) {
                   </p>
                   {exp.description?.trim() ? (
                     <p className="mt-1 text-sm text-foreground/75">
-                      {exp.description}
+                      {htmlToPlainText(exp.description)}
                     </p>
                   ) : null}
                 </div>
@@ -574,7 +575,9 @@ export default async function HomePage({ params }: Props) {
 
       {/* Карточки инженерных калькуляторов */}
       <Section id="tools" variant="tools">
-        <h2 className="heading-2 mb-2 text-accent-orange">{t('toolsTitle')}</h2>
+        <h2 className="heading-2 mb-2 font-semibold tracking-tight text-white">
+          {t('toolsTitle')}
+        </h2>
         <p className="mb-2 max-w-3xl text-base font-medium text-accent-blue">
           {t('toolsSectionLead')}
         </p>
@@ -595,7 +598,9 @@ export default async function HomePage({ params }: Props) {
 
       {/* Последние статьи блога */}
       <Section id="blog">
-        <h2 className="heading-2 mb-2 text-accent-orange">{t('blogTitle')}</h2>
+        <h2 className="heading-2 mb-2 font-semibold tracking-tight text-white">
+          {t('blogTitle')}
+        </h2>
         <p className="mb-8 max-w-3xl text-foreground/80">{t('blogSubtitle')}</p>
         {latestPosts.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -672,7 +677,7 @@ export default async function HomePage({ params }: Props) {
 
       {/* CTA / Контакт */}
       <Section id="contact" variant="surface" containerClassName="text-center">
-        <h2 className="heading-2 mb-4 text-accent-orange">
+        <h2 className="mb-4 text-[18px] font-semibold leading-snug tracking-tight text-white">
           {t('ctaBannerTitle')}
         </h2>
         <p className="mx-auto mb-8 max-w-2xl text-foreground/85">

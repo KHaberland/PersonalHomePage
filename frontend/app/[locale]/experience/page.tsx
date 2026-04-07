@@ -7,6 +7,7 @@ import {
 } from '@/components/ExperienceCaseAccordion';
 import { getExperience } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
+import { htmlToPlainText } from '@/lib/html-to-plain-text';
 import { createPageMetadata } from '@/lib/metadata';
 
 const experiences = [
@@ -114,7 +115,7 @@ export default async function ExperiencePage({ params }: Props) {
                           i % 2 === 1 ? 'md:ml-auto' : ''
                         }`}
                       >
-                        {exp.description}
+                        {htmlToPlainText(exp.description)}
                       </p>
                     ) : null}
                   </div>
