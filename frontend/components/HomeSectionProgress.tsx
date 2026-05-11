@@ -72,7 +72,8 @@ export function HomeSectionProgress() {
 
   return (
     <nav
-      className="pointer-events-auto fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-2 xl:flex"
+      role="navigation"
+      className="pointer-events-auto fixed right-3 top-1/2 z-40 -translate-y-1/2 max-xl:hidden xl:flex flex-col gap-2 print:hidden"
       aria-label={t('homePageProgressLabel')}
     >
       {SECTION_IDS.map((id, i) => {
@@ -83,6 +84,7 @@ export function HomeSectionProgress() {
             key={id}
             href={`/#${id}`}
             title={t(labelKey)}
+            aria-current={active ? 'true' : undefined}
             className={`group flex items-center justify-end gap-2 outline-none ${
               active ? 'opacity-100' : 'opacity-55 hover:opacity-90'
             }`}

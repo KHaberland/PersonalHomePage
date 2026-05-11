@@ -16,7 +16,7 @@ export function WhyChooseCard({
     <article className="group flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-[background-color,border-color,box-shadow] duration-200 hover:border-white/[0.22] hover:bg-white/[0.07]">
       <div
         className="flex h-12 w-12 shrink-0 items-center justify-center text-[#FF7A00] transition-colors duration-200 group-hover:text-[#ff9a40]"
-        aria-hidden
+        aria-hidden={true}
       >
         <span className="block h-10 w-10 [&>svg]:block [&>svg]:h-full [&>svg]:w-full">
           {icon}

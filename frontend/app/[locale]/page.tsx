@@ -40,6 +40,7 @@ import {
 import type { Lang } from '@/lib/api-types';
 import { htmlToPlainText } from '@/lib/html-to-plain-text';
 import { createPageMetadata } from '@/lib/metadata';
+import { sanitizeAboutHtml } from '@/lib/sanitize-html';
 
 /** Технические навыки: процессы, оборудование, материалы */
 const competencyTechnicalItems = [
@@ -247,9 +248,9 @@ export default async function HomePage({ params }: Props) {
           created_at: '',
         }));
 
-  const aboutShortHtml = about?.bio_main?.trim()
-    ? about.bio_main
-    : t.raw('aboutText');
+  const aboutShortHtml = sanitizeAboutHtml(
+    about?.bio_main?.trim() ? about.bio_main : String(t.raw('aboutText'))
+  );
   /** Краткий блок главной: без увеличенного кегля развёрнутой биографии (/about). */
   const useNarrativeBioSize = false;
 
@@ -281,7 +282,7 @@ export default async function HomePage({ params }: Props) {
         >
           {t('whyChooseSectionHeading')}
         </h2>
-        <ul className="grid list-none grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid list-none grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-4 xl:gap-6">
           {whyChooseItems.map(({ Icon, titleKey, descKey }) => (
             <li key={titleKey} className="min-h-0">
               <WhyChooseCard
@@ -290,7 +291,8 @@ export default async function HomePage({ params }: Props) {
                 icon={
                   <Icon
                     className="text-inherit"
-                    aria-hidden
+                    aria-hidden={true}
+                    focusable={false}
                     title={undefined}
                   />
                 }
@@ -353,7 +355,7 @@ export default async function HomePage({ params }: Props) {
         <div className="space-y-2 border-b border-border pb-10">
           <h3
             id="competencies-technical"
-            className="heading-3 text-accent-orange"
+            className="heading-3 scroll-mt-24 competency-accent-orange"
           >
             {t('competenciesTechnicalSubtitle')}
           </h3>
@@ -393,7 +395,10 @@ export default async function HomePage({ params }: Props) {
         </div>
 
         <div className="mt-10 rounded-xl border border-accent-blue/25 bg-surface p-6 shadow-[inset_0_1px_0_0_rgba(59,130,246,0.08)] sm:p-8 md:p-10">
-          <h3 id="competencies-business" className="heading-3 text-accent-blue">
+          <h3
+            id="competencies-business"
+            className="heading-3 scroll-mt-24 competency-accent-blue"
+          >
             {businessSubtitle}
           </h3>
           <p className="mb-6 max-w-3xl text-sm text-foreground/75">
@@ -560,7 +565,7 @@ export default async function HomePage({ params }: Props) {
             <div
               className="mt-2 text-foreground/90 [&_p]:mt-1 [&_p:first-child]:mt-0"
               dangerouslySetInnerHTML={{
-                __html: book?.description ?? t('bookDescription'),
+                __html: book?.description ?? t.raw('bookDescription'),
               }}
             />
             <p className="mt-1 text-sm text-foreground/70">

@@ -5,6 +5,7 @@ import { DiplomaCertificates } from '@/components/DiplomaCertificates';
 import { getAbout } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { createPageMetadata } from '@/lib/metadata';
+import { sanitizeAboutHtml } from '@/lib/sanitize-html';
 
 /** PDF в `public/diplomas/` или снимок в `public/images/photos/small/`. Для фото `preview` по умолчанию совпадает с документом. */
 const diplomas: ReadonlyArray<{
@@ -92,10 +93,13 @@ export default async function AboutPage({ params }: Props) {
   ]);
 
   const photo = about?.photo ?? defaultPhoto;
-  const bio = about?.bio ?? t.raw('fallbackBio');
-  const education = about?.education ?? t.raw('fallbackEducation');
-  const qualifications =
-    about?.qualifications ?? t.raw('fallbackQualifications');
+  const bio = sanitizeAboutHtml(about?.bio ?? String(t.raw('fallbackBio')));
+  const education = sanitizeAboutHtml(
+    about?.education ?? String(t.raw('fallbackEducation'))
+  );
+  const qualifications = sanitizeAboutHtml(
+    about?.qualifications ?? String(t.raw('fallbackQualifications'))
+  );
 
   const diplomaItems = diplomas.map((d) => {
     const title = t(d.labelKey);

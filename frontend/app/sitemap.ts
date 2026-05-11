@@ -11,6 +11,7 @@ const STATIC_PATHS = [
   '/tools',
   '/knowledge',
   '/blog',
+  '/contact',
 ];
 
 const CALCULATOR_SLUGS = [

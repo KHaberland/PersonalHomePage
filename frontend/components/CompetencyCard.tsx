@@ -44,15 +44,13 @@ export function CompetencyCard({
         className={`flex min-h-0 flex-1 flex-col gap-3 ${hasImage ? 'p-5' : ''}`}
       >
         <div
-          className={`flex h-12 w-12 items-center justify-center rounded-lg ${isBusiness ? 'bg-accent-blue/15 text-accent-blue' : 'bg-accent-orange/10 text-accent-orange'}`}
+          className={`flex h-12 w-12 items-center justify-center rounded-lg ${isBusiness ? 'competency-accent-blue bg-accent-blue/15' : 'competency-accent-orange bg-accent-orange/10'}`}
         >
           {icon}
         </div>
         <h3 className="heading-3 text-foreground">{title}</h3>
         {description ? (
-          <p
-            className={`whitespace-pre-line text-sm leading-relaxed ${isBusiness ? 'text-foreground/85' : 'text-foreground/80'}`}
-          >
+          <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/90">
             {description}
           </p>
         ) : null}
