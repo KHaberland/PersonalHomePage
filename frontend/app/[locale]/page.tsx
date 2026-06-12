@@ -28,7 +28,6 @@ import {
   getBook,
   getContact,
   getExperience,
-  getHomeBusinessOutcomes,
   getHomeTechnicalSkills,
   getPosts,
   getTools,
@@ -46,52 +45,39 @@ import { sanitizeAboutHtml } from '@/lib/sanitize-html';
 const competencyTechnicalItems = [
   {
     Icon: IconCompetencyMigMag,
+    anchorId: 'expertise-mig-mag',
     titleKey: 'competencyIconMigMag',
     descKey: 'competencyCard1',
   },
   {
     Icon: IconCompetencyTig,
+    anchorId: 'expertise-tig',
     titleKey: 'competencyIconTigAl',
     descKey: 'competencyCard2',
   },
   {
     Icon: IconCompetencyGas,
+    anchorId: 'expertise-gases',
     titleKey: 'competencyIconGas',
     descKey: 'competencyCard3',
   },
   {
-    Icon: IconCompetencyGasSafety,
-    titleKey: 'competencyIconEquipment',
-    descKey: 'competencyCard4',
-  },
-  {
     Icon: IconCompetencyMetallurgy,
+    anchorId: 'expertise-metallurgy',
     titleKey: 'competencyIconMetallurgy',
     descKey: 'competencyCard5',
   },
   {
     Icon: IconCompetencyCutting,
+    anchorId: 'expertise-quality',
     titleKey: 'competencyIconCuttingGases',
     descKey: 'competencyCard6',
   },
-] as const;
-
-/** Результаты для бизнеса: KPI, затраты, команда (иконки из блока услуг) */
-const competencyBusinessItems = [
   {
-    Icon: IconServiceImplementation,
-    titleKey: 'competencyBusiness1Title',
-    descKey: 'competencyBusiness1Desc',
-  },
-  {
-    Icon: IconServiceTraining,
-    titleKey: 'competencyBusiness2Title',
-    descKey: 'competencyBusiness2Desc',
-  },
-  {
-    Icon: IconServiceConsulting,
-    titleKey: 'competencyBusiness3Title',
-    descKey: 'competencyBusiness3Desc',
+    Icon: IconCompetencyGasSafety,
+    anchorId: 'expertise-safety',
+    titleKey: 'competencyIconEquipment',
+    descKey: 'competencyCard4',
   },
 ] as const;
 
@@ -118,21 +104,46 @@ const whyChooseItems = [
   },
 ] as const;
 
-const serviceItems = [
+const solutionFlowItems = [
   {
     Icon: IconServiceConsulting,
+    anchorId: 'solutions-defect-reduction',
     titleKey: 'serviceConsulting',
     descKey: 'serviceConsultingDesc',
-  },
-  {
-    Icon: IconServiceTraining,
-    titleKey: 'serviceTraining',
-    descKey: 'serviceTrainingDesc',
+    impactKey: 'solutionsImpactDefects',
+    extraImpactKey: null,
   },
   {
     Icon: IconServiceImplementation,
+    anchorId: 'solutions-process-optimization',
+    titleKey: 'serviceImplementation',
+    descKey: 'serviceImplementationDesc',
+    impactKey: 'solutionsImpactStableProcesses',
+    extraImpactKey: 'solutionsImpactTraceability',
+  },
+  {
+    Icon: IconCompetencyGas,
+    anchorId: 'solutions-gas-selection',
+    titleKey: 'solutionGasSelectionTitle',
+    descKey: 'solutionGasSelectionDesc',
+    impactKey: 'solutionsImpactCosts',
+    extraImpactKey: null,
+  },
+  {
+    Icon: IconServiceTraining,
+    anchorId: 'solutions-training',
+    titleKey: 'serviceTraining',
+    descKey: 'serviceTrainingDesc',
+    impactKey: 'solutionsImpactTeam',
+    extraImpactKey: null,
+  },
+  {
+    Icon: IconServiceImplementation,
+    anchorId: 'solutions-wps-support',
     titleKey: 'serviceProjectSupport',
     descKey: 'serviceProjectSupportDesc',
+    impactKey: 'solutionsImpactKpi',
+    extraImpactKey: null,
   },
 ] as const;
 
@@ -208,7 +219,6 @@ export default async function HomePage({ params }: Props) {
     tools,
     postsResponse,
     homeTechnicalSkills,
-    homeBusinessOutcomes,
   ] = await Promise.all([
     getAbout(lang).catch(() => null),
     getBook(lang).catch(() => null),
@@ -217,7 +227,6 @@ export default async function HomePage({ params }: Props) {
     getTools().catch(() => []),
     getPosts(lang, { page: '1' }).catch(() => ({ results: [], count: 0 })),
     getHomeTechnicalSkills(lang).catch(() => null),
-    getHomeBusinessOutcomes(lang).catch(() => null),
   ]);
 
   const homeTechnicalByOrder = new Map(
@@ -226,16 +235,6 @@ export default async function HomePage({ params }: Props) {
   const technicalLeadParagraph =
     (homeTechnicalSkills?.technical_lead ?? '').trim() ||
     t('competenciesTechnicalLead');
-
-  const homeBusinessByOrder = new Map(
-    (homeBusinessOutcomes?.items ?? []).map((row) => [row.order, row])
-  );
-  const businessSubtitle =
-    (homeBusinessOutcomes?.business_subtitle ?? '').trim() ||
-    t('competenciesBusinessSubtitle');
-  const businessLead =
-    (homeBusinessOutcomes?.business_lead ?? '').trim() ||
-    t('competenciesBusinessLead');
 
   const latestPosts =
     postsResponse.results?.slice(0, HOME_BLOG_POSTS_LIMIT) ?? [];
@@ -343,16 +342,16 @@ export default async function HomePage({ params }: Props) {
         </div>
       </Section>
 
-      {/* Блок ключевых компетенций: технические навыки + результаты для бизнеса */}
-      <Section id="competencies" aria-labelledby="home-competencies-heading">
+      {/* Инженерная экспертиза: технические навыки */}
+      <Section id="expertise" aria-labelledby="home-expertise-heading">
         <h2
-          id="home-competencies-heading"
+          id="home-expertise-heading"
           className="heading-2 mb-8 max-w-4xl font-semibold tracking-tight text-white md:mb-10"
         >
           {t('competenciesTitle')}
         </h2>
 
-        <div className="space-y-2 border-b border-border pb-10">
+        <div className="space-y-2">
           <h3
             id="competencies-technical"
             className="heading-3 scroll-mt-24 competency-accent-orange"
@@ -367,14 +366,18 @@ export default async function HomePage({ params }: Props) {
             aria-labelledby="competencies-technical"
           >
             {competencyTechnicalItems.map(
-              ({ Icon, titleKey, descKey }, idx) => {
+              ({ Icon, anchorId, titleKey, descKey }, idx) => {
                 const order = idx + 1;
                 const fromApi = homeTechnicalByOrder.get(order);
                 const cardTitle = (fromApi?.title ?? '').trim() || t(titleKey);
                 const cardDescription =
                   (fromApi?.description ?? '').trim() || t(descKey);
                 return (
-                  <li key={titleKey} className="h-full min-h-0">
+                  <li
+                    key={titleKey}
+                    id={anchorId}
+                    className="h-full min-h-0 scroll-mt-24"
+                  >
                     <CompetencyCard
                       variant="technical"
                       title={cardTitle}
@@ -393,46 +396,10 @@ export default async function HomePage({ params }: Props) {
             )}
           </ul>
         </div>
-
-        <div className="mt-10 rounded-xl border border-accent-blue/25 bg-surface p-6 shadow-[inset_0_1px_0_0_rgba(59,130,246,0.08)] sm:p-8 md:p-10">
-          <h3
-            id="competencies-business"
-            className="heading-3 scroll-mt-24 competency-accent-blue"
-          >
-            {businessSubtitle}
-          </h3>
-          <p className="mb-6 max-w-3xl text-sm text-foreground/75">
-            {businessLead}
-          </p>
-          <ul
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            aria-labelledby="competencies-business"
-          >
-            {competencyBusinessItems.map(({ Icon, titleKey, descKey }, idx) => {
-              const order = idx + 1;
-              const fromApi = homeBusinessByOrder.get(order);
-              const cardTitle = (fromApi?.title ?? '').trim() || t(titleKey);
-              const cardDescription =
-                (fromApi?.description ?? '').trim() || t(descKey);
-              return (
-                <li key={titleKey}>
-                  <CompetencyCard
-                    variant="business"
-                    title={cardTitle}
-                    description={cardDescription}
-                    icon={
-                      <Icon className="h-6 w-6" aria-hidden title={undefined} />
-                    }
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        </div>
       </Section>
 
-      {/* Услуги */}
-      <Section id="services" variant="surface">
+      {/* Решения для производственных задач */}
+      <Section id="solutions" variant="surface">
         <h2 className="heading-2 mb-2 font-semibold tracking-tight text-white">
           {t('servicesTitle')}
         </h2>
@@ -441,19 +408,53 @@ export default async function HomePage({ params }: Props) {
             {t('servicesSubtitle')}
           </p>
         ) : null}
-        <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {serviceItems.map(({ Icon, titleKey, descKey }) => (
-            <li key={titleKey} className="h-full min-h-0">
-              <CompetencyCard
-                title={t(titleKey)}
-                description={t(descKey)}
-                icon={
-                  <Icon className="h-6 w-6" aria-hidden title={undefined} />
-                }
-              />
-            </li>
-          ))}
-        </ul>
+        <div className="rounded-2xl border border-border bg-background/35 p-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] sm:p-6 lg:p-8">
+          <ul className="list-none space-y-4">
+            {solutionFlowItems.map(
+              ({
+                Icon,
+                anchorId,
+                titleKey,
+                descKey,
+                impactKey,
+                extraImpactKey,
+              }) => (
+                <li
+                  key={titleKey}
+                  id={anchorId}
+                  className="group grid min-h-0 scroll-mt-24 gap-3 md:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)] md:items-stretch"
+                >
+                  <article className="card flex h-full min-h-0 flex-col gap-3 p-5 transition-colors group-hover:border-accent-orange/60 group-hover:bg-[var(--surface-elevated)] group-focus-within:border-accent-orange/60 group-focus-within:bg-[var(--surface-elevated)]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-orange/10 text-accent-orange transition-colors group-hover:bg-accent-orange/15">
+                      <Icon className="h-6 w-6" aria-hidden title={undefined} />
+                    </div>
+                    <h3 className="heading-3 text-foreground">{t(titleKey)}</h3>
+                    <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/90">
+                      {t(descKey)}
+                    </p>
+                  </article>
+                  <div
+                    className="flex items-center justify-center text-accent-blue/70"
+                    aria-hidden
+                  >
+                    <span className="md:hidden">↓</span>
+                    <span className="hidden h-px w-full bg-gradient-to-r from-accent-orange/25 via-accent-blue/80 to-accent-blue/25 transition-opacity group-hover:opacity-100 md:block" />
+                  </div>
+                  <article className="flex h-full min-h-0 flex-col justify-center rounded-xl border border-accent-blue/25 bg-surface px-5 py-4 transition-colors group-hover:border-accent-blue/70 group-hover:bg-accent-blue/10 group-focus-within:border-accent-blue/70 group-focus-within:bg-accent-blue/10">
+                    <p className="text-base font-semibold text-foreground">
+                      {t(impactKey)}
+                    </p>
+                    {extraImpactKey ? (
+                      <p className="mt-2 text-sm font-medium text-accent-blue">
+                        {t(extraImpactKey)}
+                      </p>
+                    ) : null}
+                  </article>
+                </li>
+              )
+            )}
+          </ul>
+        </div>
         <Link href="/contact" className="btn-primary mt-8 inline-block">
           {t('servicesCta')}
         </Link>
