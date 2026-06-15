@@ -3,11 +3,15 @@
     "defaultTitle": "Oleg Suvorov | Welding Engineer",
     "defaultDescription": "Professional welding engineer portfolio, technical blog, and engineering calculators. MIG/MAG, TIG welding. Shielding gases. Author of MAG/MIG welding book.",
     "homeTitle": "Oleg Suvorov | Welding Engineer",
-    "homeDescription": "Welding engineer (IWE): stabilizing MIG/MAG, TIG, and MMA processes, reducing defects, training production teams. A hands-on path from welder to engineer. Calculators, blog, book.",
+    "homeDescription": "Welding engineer (IWE): a concise entry point to welding process optimization, defect reduction, shielding gas selection, training, expertise, tools and articles.",
     "aboutTitle": "About Oleg Suvorov | Welding Engineer",
     "aboutDescription": "Biography, education and professional qualifications of welding engineer Oleg Suvorov. MMA/MAG, TIG certifications.",
     "experienceTitle": "Professional Experience | Oleg Suvorov",
-    "experienceDescription": "Career timeline: Elme Messer Gaas, BUTS training center. Welding engineer and instructor experience.",
+    "experienceDescription": "Welding engineer experience, cases, training background, and work with Elme Messer Gaas.",
+    "expertiseTitle": "Welding Expertise | MIG/MAG, TIG, Gases and Quality",
+    "expertiseDescription": "Engineering expertise in MIG/MAG and TIG welding, shielding gases, welding metallurgy, defect analysis, quality, and gas safety.",
+    "solutionsTitle": "Welding Solutions | Defect Reduction and Process Optimization",
+    "solutionsDescription": "Practical welding solutions: defect reduction, process optimization, shielding gas selection, personnel training, and WPS support.",
     "bookTitle": "MAG/MIG Welding Book | Oleg Suvorov",
     "bookDescription": "Comprehensive guide to MAG/MIG welding: equipment selection, shielding gas, welding methods. 2024. Contact for purchase.",
     "toolsTitle": "Engineering Calculators | Welding Tools",
@@ -81,13 +85,14 @@
     "title": "Oleg Suvorov",
     "subtitle": "Welding engineer (IWE) — from welder to engineer",
     "heroVideoDescription": "Hero background: dark gradient; when the media file loads, a silent looping video of industrial welding.",
-    "heroTitleLine1": "Welding engineer (IWE)\nHands-on path from welder to engineer",
-    "heroTitleLine2": "Stabilizing welding processes, reducing defects and costs, and training shop-floor teams",
+    "heroTitleLine1": "Welding engineer (IWE)",
+    "heroTitleLine2": "Welding process optimization / defect reduction / WPS implementation",
     "heroTitleLineHighlight": "10+ years in the field | MIG/MAG, TIG, MMA | Author of a welding book",
     "heroTitleLine3": "I understand welding end to end — from running the bead to customer requirements and project estimates",
     "heroCtaContact": "Get in touch",
+    "heroCtaSolutions": "Solutions",
     "heroCtaTools": "Engineering tools",
-    "heroScrollToCompetencies": "Explore key competencies",
+    "heroScrollToCompetencies": "Explore expertise",
     "whyChooseTitle": "Why work with me",
     "whyChooseSectionHeading": "Why work with me",
     "whyChooseCard1Title": "Hands-on experience",
@@ -99,8 +104,8 @@
     "whyChooseCard4Title": "End-to-end support",
     "whyChooseCard4Desc": "From selecting materials to aligning with the customer on requirements",
     "aboutTitle": "About me",
-    "aboutText": "<p class='home-about-lead'>I started as a welder, taking on hands-on jobs and working directly with the welding process. That built a practical view of real defect causes, metal behaviour, and equipment limits.</p><p class='home-about-p'>I then taught at a training centre, guiding welders from zero to a level where work is done with fewer defects and sensible time use.</p><p class='home-about-p'>As an engineer I handled end-to-end tasks: material selection, welding quality control, customer coordination, project sign-off, and cost estimates.</p><p class='home-about-p'>Together, that shaped one systems view of welding — from making the weld to customer expectations and project economics.</p><p class='home-about-p home-about-p--gap-lg'>My work has spanned production and training assignments in welding.</p>",
-    "aboutMoreCta": "More about me",
+    "aboutText": "<p class='home-about-lead'>Welding Engineer (IWE)</p><p class='home-about-p'>with practical experience as a welder, instructor, and technical consultant.</p><p class='home-about-p'>I have worked with production tasks, welder training, and welding process optimization. I specialize in MIG/MAG welding technologies, shielding gas selection, quality control, and practical implementation of solutions in production.</p><p class='home-about-p home-about-p--gap-lg'>Author of the book “MAG/MIG Welding — from equipment selection to gas selection” (2024).</p>",
+    "aboutMoreCta": "Journey and expertise",
     "competenciesTitle": "Expertise",
     "competenciesTechnicalSubtitle": "Technical skills",
     "competenciesTechnicalLead": "Processes, equipment, and materials — the engineering foundation behind the competencies",
@@ -131,11 +136,11 @@
     "competencyIconEquipment": "Gas safety",
     "competencyIconCutting": "Gas cutting",
     "competencyIconMetallurgy": "Welding metallurgy",
-    "servicesTitle": "Solutions",
+    "servicesTitle": "Welding solutions",
     "servicesSubtitle": "",
-    "serviceConsulting": "Consulting",
+    "serviceConsulting": "Defect reduction",
     "serviceConsultingDesc": "Analysis of defects, welding parameters, and technical solutions",
-    "serviceImplementation": "Process implementation",
+    "serviceImplementation": "Process optimization",
     "serviceImplementationDesc": "Structured rollout of welding processes at your facility — stable quality and traceability.",
     "serviceProjectSupport": "Project support",
     "serviceProjectSupportDesc": "Material selection, approvals support, and estimate inputs",
@@ -146,11 +151,24 @@
     "solutionGasSelectionTitle": "Gas selection",
     "solutionGasSelectionDesc": "Shielding and fuel gas selection for stable quality and controlled consumption",
     "servicesCta": "Discuss your needs",
+    "solutionsMoreCta": "More about solutions",
+    "expertiseMoreCta": "All expertise",
+    "solutionsPageIntro": "Focused engineering help for production teams: find the root cause of defects, stabilize parameters, choose shielding gases, train people, and document the process.",
+    "solutionsCtaTitle": "Need a practical welding solution?",
+    "solutionsCtaText": "Describe the production task, defect pattern, material, process, and constraints. I will help define the next technical step.",
+    "expertisePageIntro": "A full overview of the technical areas behind my work: welding processes, shielding gases, metallurgy, defects, quality control, and safe gas handling.",
+    "expertiseCtaTitle": "Need expertise for a specific task?",
+    "expertiseCtaText": "Send the process, material, defect or gas question, and I will suggest how to approach it.",
     "toolsSectionLead": "Practical tools for engineers and technologists",
     "experienceTitle": "Professional Experience",
     "casesTitle": "Cases",
     "casesSubtitle": "",
-    "casesCta": "Full experience & projects",
+    "casesCta": "All cases",
+    "experienceSummaryTitle": "Experience in brief",
+    "experienceSummaryIwe": "IWE welding engineer",
+    "experienceSummaryElme": "Elme Messer Gaas",
+    "experienceSummaryTeacher": "Welding instructor",
+    "experienceMoreCta": "Full experience",
     "case1Title": "Fewer defects in MAG welding",
     "case1Description": "Unstable MAG process with recurring defects\nRoot-cause review; parameter and mode optimization\n→ Fewer defects and a steadier process",
     "case2Title": "Training welders from zero",
@@ -163,7 +181,7 @@
     "bookMoreCta": "More about the book",
     "toolsTitle": "Engineering Calculators",
     "toolsDescription": "Professional calculators for welding. Used for calculations and engineering decisions",
-    "toolsCta": "Go to calculators",
+    "toolsCta": "All calculators",
     "blogTitle": "Latest Articles",
     "blogSubtitle": "Practical welding topics grounded in real shop experience — open a post or browse the full blog.",
     "blogReadMore": "Read more",
@@ -208,6 +226,151 @@
     "ctaBannerEmailWhatsapp": "Email / WhatsApp",
     "ctaBannerEmail": "Email",
     "ctaBannerWhatsapp": "WhatsApp"
+  },
+  "solutionsPage": {
+    "heroEyebrow": "Solutions",
+    "title": "Welding solutions for production",
+    "lead": "Engineering support for welding processes: defect analysis, parameter stabilization, shielding gas selection, personnel training, and WPS implementation.",
+    "ctaContact": "Get in touch",
+    "navAriaLabel": "Production solutions navigation",
+    "navTitle": "Choose a production task",
+    "navReadMore": "Go to section",
+    "problem": "Problems",
+    "analysis": "Analysis",
+    "result": "Result",
+    "expertiseLink": "View expertise",
+    "finalCtaTitle": "Need a practical welding solution?",
+    "finalCtaText": "Describe the production task, defect pattern, material, process, and constraints. I will help define the next technical step.",
+    "finalCtaContact": "Get in touch",
+    "nav": {
+      "defectReduction": {
+        "title": "Defect reduction",
+        "description": "Root-cause analysis of welding defects and process instability."
+      },
+      "processOptimization": {
+        "title": "Process optimization",
+        "description": "Analysis and adjustment of welding parameters and production modes."
+      },
+      "gasSelection": {
+        "title": "Shielding gas selection",
+        "description": "Gas mix selection matched to material, process, and quality requirements."
+      },
+      "training": {
+        "title": "Personnel training",
+        "description": "Training for welders and production personnel."
+      },
+      "wpsSupport": {
+        "title": "Project support / WPS",
+        "description": "Engineering support for implementing welding processes and WPS."
+      }
+    },
+    "sections": {
+      "defectReduction": {
+        "title": "Welding defect reduction",
+        "problems": [
+          "Porosity, lack of fusion, burn-through, undercut, or unstable weld shape.",
+          "Recurring rejects without a clear root cause.",
+          "Different results between shifts, welders, or batches.",
+          "Rework increases lead time and production cost."
+        ],
+        "analysisItems": [
+          "Checking welding parameters, gas flow, wire stickout, and edge preparation.",
+          "Reviewing base material, filler wire, shielding gas, and weld pool protection conditions.",
+          "Matching defect patterns to the real production environment.",
+          "Checking whether the work follows the process sheet or WPS, if one exists."
+        ],
+        "results": [
+          "A clear defect cause or a shortlist of likely causes.",
+          "Practical corrections to parameters and process steps.",
+          "Fewer rejects and less rework.",
+          "More stable quality between shifts and operators."
+        ]
+      },
+      "processOptimization": {
+        "title": "Welding process optimization",
+        "problems": [
+          "The process is unstable and depends on a specific welder.",
+          "Parameters are adjusted manually without a clear operating window.",
+          "Productivity is low or the workflow has unnecessary steps.",
+          "Quality is acceptable, but production cost is too high."
+        ],
+        "analysisItems": [
+          "Reviewing current welding parameters, operation sequence, and access to the joint.",
+          "Checking equipment, fixtures, consumables, and workplace organization.",
+          "Comparing the actual process with product and customer requirements.",
+          "Finding bottlenecks: arc time, preparation, cleaning, rework, gas use, and wire consumption."
+        ],
+        "results": [
+          "A more stable welding parameter window.",
+          "Less dependence on individual operator habits.",
+          "Reduced downtime, rework, and unnecessary material consumption.",
+          "Clear recommendations for production and technologists."
+        ]
+      },
+      "gasSelection": {
+        "title": "Shielding gas selection",
+        "problems": [
+          "Weld quality is unstable with the current gas mix.",
+          "Porosity, spatter, oxidation, or poor weld appearance occurs.",
+          "Gas consumption is high, but quality does not improve.",
+          "The gas is selected by habit, not by material and process."
+        ],
+        "analysisItems": [
+          "Checking material, MIG/MAG or TIG process, thickness, welding position, and weld requirements.",
+          "Reviewing the current gas mix, flow rate, nozzle, electrode stickout, and shielding conditions.",
+          "Comparing gas options by quality, speed, appearance, and cost.",
+          "Checking the effect of drafts, joint access, and equipment settings."
+        ],
+        "results": [
+          "A justified shielding gas choice or gas mix range.",
+          "More stable weld pool shielding and weld quality.",
+          "Reduced unnecessary gas consumption where possible.",
+          "A clearer link between gas, parameters, and result."
+        ]
+      },
+      "training": {
+        "title": "Personnel training",
+        "problems": [
+          "New welders do not produce stable quality.",
+          "Errors repeat because process causes are not explained.",
+          "Production depends on a few experienced employees.",
+          "Technical requirements exist, but personnel apply them unevenly."
+        ],
+        "analysisItems": [
+          "Assessing current welder skill level and typical mistakes.",
+          "Checking understanding of parameters, part preparation, torch technique, and weld inspection.",
+          "Defining training topics for the specific process and production tasks.",
+          "Connecting practical exercises with real defects and quality requirements."
+        ],
+        "results": [
+          "A more consistent skill level across employees.",
+          "Fewer recurring mistakes and defects.",
+          "Practical skills tied to real products and processes.",
+          "Understanding not only how to weld, but why defects appear."
+        ]
+      },
+      "wpsSupport": {
+        "title": "Project support / WPS implementation",
+        "problems": [
+          "The process needs a stable launch, but parameters are not documented yet.",
+          "WPS or pWPS exists formally, but production does not apply it consistently.",
+          "Customer requirements, audits, or projects require traceability.",
+          "Documentation, real parameters, and quality are not connected well enough."
+        ],
+        "analysisItems": [
+          "Checking project requirements, material, joints, equipment, and available processes.",
+          "Reviewing existing WPS/pWPS, process sheets, and actual parameters.",
+          "Comparing documentation with what happens at the workplace.",
+          "Defining which parameters should be fixed, checked, or validated on samples."
+        ],
+        "results": [
+          "A clearer WPS implementation in real production.",
+          "Aligned parameters and actions for welders, supervisors, and technologists.",
+          "Fewer gaps between documentation and practice.",
+          "Readiness for internal control, customer requirements, or audits."
+        ]
+      }
+    }
   },
   "about": {
     "title": "About Me",
@@ -472,7 +635,7 @@
     "cta": "Contact for purchase",
     "coverAlt": "Book cover: MAG/MIG welding",
     "purchaseTitle": "How to buy",
-    "purchaseIntro": "Print and digital editions are available on request. Order via the contact form or email.",
+    "purchaseIntro": "The digital edition is available on request.",
     "ctaEmail": "Email the author",
     "emailSubjectBook": "MAG/MIG book order",
     "buyOnline": "Buy in store",

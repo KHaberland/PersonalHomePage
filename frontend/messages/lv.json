@@ -3,11 +3,15 @@
     "defaultTitle": "Olegs Suvorovs | Metināšanas inženieris",
     "defaultDescription": "Metināšanas inženiera portfolio, tehniskā bloga un inženiertehnikas kalkulatori. MIG/MAG, TIG metināšana. Aizsarggāzes. Grāmatas \"MAG/MIG metināšana\" autors.",
     "homeTitle": "Olegs Suvorovs | Metināšanas inženieris",
-    "homeDescription": "Metināšanas inženieris (IWE): MIG/MAG, TIG un MMA procesu stabilizācija, defektu samazināšana, komandu apmācība. Praktisks ceļš no metinātāja līdz inženierim. Kalkulatori, blogs, grāmata.",
+    "homeDescription": "Metināšanas inženieris (IWE): īss ievads metināšanas procesu optimizācijā, defektu samazināšanā, aizsarggāzu izvēlē, apmācībā, ekspertīzē, rīkos un rakstos.",
     "aboutTitle": "Par mani | Olegs Suvorovs — metināšanas inženieris",
     "aboutDescription": "Biogrāfija, izglītība un kvalifikācijas metināšanas inženiera Oļega Suvorova. MMA/MAG, TIG sertifikāti.",
     "experienceTitle": "Profesionālā pieredze | Olegs Suvorovs",
-    "experienceDescription": "Karjera: Elme Messer Gaas, BUTS apmācības centrs. Metināšanas inženiera un instruktora pieredze.",
+    "experienceDescription": "Metināšanas inženiera pieredze, piemēri, apmācību darbs un pieredze Elme Messer Gaas.",
+    "expertiseTitle": "Metināšanas ekspertīze | MIG/MAG, TIG, gāzes un kvalitāte",
+    "expertiseDescription": "Inženiertehniska ekspertīze MIG/MAG un TIG metināšanā, aizsarggāzēs, metināšanas metalurģijā, defektu analīzē, kvalitātē un gāzu drošībā.",
+    "solutionsTitle": "Metināšanas risinājumi | Defektu samazināšana un procesu optimizācija",
+    "solutionsDescription": "Praktiski risinājumi metināšanas ražošanai: defektu samazināšana, procesu optimizācija, aizsarggāzu izvēle, personāla apmācība un WPS atbalsts.",
     "bookTitle": "Grāmata \"MAG/MIG metināšana\" | Olegs Suvorovs",
     "bookDescription": "Vadība par MAG/MIG metināšanu: iekārtu izvēle, aizsarggāze, metināšanas metodes. 2024. Kontakts iegādei.",
     "toolsTitle": "Inženiertehnikas kalkulatori | Metināšanas rīki",
@@ -81,13 +85,14 @@
     "title": "Olegs Suvorovs",
     "subtitle": "Metināšanas inženieris (IWE) — no metinātāja līdz inženierim",
     "heroVideoDescription": "Pirmā ekrāna fons: tumšs gradients; ja mediju fails ielādējas — kluss, atkārtojošs metināšanas video ražošanā.",
-    "heroTitleLine1": "Metināšanas inženieris (IWE)\nPraktiska pieredze no metinātāja līdz inženierim",
-    "heroTitleLine2": "Metināšanas procesu stabilizācija, defektu un izmaksu samazināšana un ražošanas komandu apmācība",
+    "heroTitleLine1": "Metināšanas inženieris (IWE)",
+    "heroTitleLine2": "Metināšanas procesu optimizācija / defektu samazināšana / WPS ieviešana",
     "heroTitleLineHighlight": "10+ gadu praksē | MIG/MAG, TIG, MMA | Metināšanas grāmatas autors",
     "heroTitleLine3": "Izprotu metināšanu visos līmeņos — no šuves izpildes līdz klienta prasībām un projekta aprēķiniem",
     "heroCtaContact": "Sazināties",
+    "heroCtaSolutions": "Risinājumi",
     "heroCtaTools": "Inženiertehnikas rīki",
-    "heroScrollToCompetencies": "Uz galvenajām kompetencēm",
+    "heroScrollToCompetencies": "Uz ekspertīzi",
     "whyChooseTitle": "Kāpēc sadarboties ar mani",
     "whyChooseSectionHeading": "Kāpēc sadarboties ar mani",
     "whyChooseCard1Title": "Praktiska pieredze",
@@ -99,8 +104,8 @@
     "whyChooseCard4Title": "Plašs pieeja",
     "whyChooseCard4Desc": "No materiālu izvēles līdz saskaņojumiem ar klientu",
     "aboutTitle": "Par mani",
-    "aboutText": "<p class='home-about-lead'>Profesionālo ceļu sāku kā metinātājs, risinot praktiskus uzdevumus un strādājot tieši ar metināšanas procesu. Tas deva izpratni par īstiem defektu cēloņiem, metāla uzvedību un iekārtu ierobežojumiem.</p><p class='home-about-p'>Vēlāk strādāju par pasniedzēju mācību centrā, apmācot metinātājus no nulles līdz līmenim, kurā darbs tiek veikts ar minimāliem defektiem un saprātīgu laika patēriņu.</p><p class='home-about-p'>Inženiera praksē nodarbojos ar kompleksiem uzdevumiem: materiālu izvēle, metināšanas kvalitātes kontrole, sadarbība ar klientu, projektu saskaņošana un tāmes aprēķins.</p><p class='home-about-p'>Šī pieredze salika vienotu izpratni par metināšanu kā sistēmu — no šuves izpildes līdz klienta prasībām un projekta ekonomikas rādītājiem.</p><p class='home-about-p home-about-p--gap-lg'>Pieredze ietver ražošanas un mācību uzdevumus metināšanas jomā.</p>",
-    "aboutMoreCta": "Vairāk par mani",
+    "aboutText": "<p class='home-about-lead'>Metināšanas inženieris (IWE)</p><p class='home-about-p'>ar praktisku pieredzi metinātāja, pasniedzēja un tehniskā konsultanta darbā.</p><p class='home-about-p'>Esmu strādājis gan ar ražošanas uzdevumiem, gan ar metinātāju apmācību un metināšanas procesu optimizāciju. Specializējos MIG/MAG metināšanas tehnoloģijās, aizsarggāzu izvēlē, kvalitātes kontrolē un praktiskā risinājumu ieviešanā ražošanā.</p><p class='home-about-p home-about-p--gap-lg'>Grāmatas «MAG/MIG metināšana — no iekārtu izvēles līdz aizsarggāzes izvēlei» autors (2024).</p>",
+    "aboutMoreCta": "Ceļš un ekspertīze",
     "competenciesTitle": "Ekspertīze",
     "competenciesTechnicalSubtitle": "Tehniskās prasmes",
     "competenciesTechnicalLead": "Procesi, iekārtas un materiāli — inženieru kompetences pamats",
@@ -133,9 +138,9 @@
     "competencyIconMetallurgy": "Metināšanas metalurģija",
     "servicesTitle": "Risinājumi ražošanai",
     "servicesSubtitle": "",
-    "serviceConsulting": "Konsultācijas",
+    "serviceConsulting": "Defektu samazināšana",
     "serviceConsultingDesc": "Defektu, metināšanas režīmu un tehnisko risinājumu analīze",
-    "serviceImplementation": "Procesu ieviešana",
+    "serviceImplementation": "Procesu optimizācija",
     "serviceImplementationDesc": "Strukturēta metināšanas procesu ieviešana jūsu uzņēmumā — stabila kvalitāte un izsekojamība.",
     "serviceProjectSupport": "Projektu atbalsts",
     "serviceProjectSupportDesc": "Materiālu izvēle, dalība saskaņojumos un aprēķinos",
@@ -146,11 +151,24 @@
     "solutionGasSelectionTitle": "Gāzu izvēle",
     "solutionGasSelectionDesc": "Aizsarggāzu un degvielas gāzu izvēle stabilai kvalitātei un kontrolētam patēriņam",
     "servicesCta": "Apspriest uzdevumu",
+    "solutionsMoreCta": "Vairāk par risinājumiem",
+    "expertiseMoreCta": "Visa ekspertīze",
+    "solutionsPageIntro": "Praktiska inženiertehniska palīdzība ražošanas komandām: atrast defektu cēloni, stabilizēt parametrus, izvēlēties aizsarggāzes, apmācīt cilvēkus un dokumentēt procesu.",
+    "solutionsCtaTitle": "Vajadzīgs praktisks metināšanas risinājums?",
+    "solutionsCtaText": "Aprakstiet ražošanas uzdevumu, defektu, materiālu, procesu un ierobežojumus. Es palīdzēšu noteikt nākamo tehnisko soli.",
+    "expertisePageIntro": "Pilns pārskats par manas darba tehniskajiem virzieniem: metināšanas procesi, aizsarggāzes, metalurģija, defekti, kvalitātes kontrole un drošs darbs ar gāzēm.",
+    "expertiseCtaTitle": "Vajadzīga ekspertīze konkrētam uzdevumam?",
+    "expertiseCtaText": "Nosūtiet procesu, materiālu, defektu vai jautājumu par gāzēm, un es ieteikšu pieeju risinājumam.",
     "toolsSectionLead": "Praktiski rīki inženieriem un tehnologiem",
     "experienceTitle": "Profesionālā pieredze",
     "casesTitle": "Piemēri",
     "casesSubtitle": "",
-    "casesCta": "Pilna pieredze un projekti",
+    "casesCta": "Visi piemēri",
+    "experienceSummaryTitle": "Pieredze īsumā",
+    "experienceSummaryIwe": "IWE metināšanas inženieris",
+    "experienceSummaryElme": "Elme Messer Gaas",
+    "experienceSummaryTeacher": "Metināšanas pasniedzējs",
+    "experienceMoreCta": "Pilna pieredze",
     "case1Title": "Defektu samazināšana MAG metināšanā",
     "case1Description": "Nestabils MAG process un atkārtoti defekti\nCēloņu analīze; režīmu un parametru optimizācija\n→ Mazāk defektu un stabilāks process",
     "case2Title": "Metinātāju apmācība no nulles",
@@ -163,7 +181,7 @@
     "bookMoreCta": "Vairāk par grāmatu",
     "toolsTitle": "Inženiertehnikas kalkulatori",
     "toolsDescription": "Profesionāli kalkulatori metināšanai. Izmanto aprēķiniem un inženierlēmumu pieņemšanai",
-    "toolsCta": "Doties pie kalkulatoriem",
+    "toolsCta": "Visi kalkulatori",
     "blogTitle": "Jaunākie raksti",
     "blogSubtitle": "Praktiski materiāli par metināšanu, kas balstīti uz reālu pieredzi — atveriet rakstu vai pārejiet uz pilnu blogu.",
     "blogReadMore": "Pilns raksts",
@@ -208,6 +226,151 @@
     "ctaBannerEmailWhatsapp": "E-pasts / WhatsApp",
     "ctaBannerEmail": "E-pasts",
     "ctaBannerWhatsapp": "WhatsApp"
+  },
+  "solutionsPage": {
+    "heroEyebrow": "Risinājumi",
+    "title": "Risinājumi ražošanai",
+    "lead": "Inženiertehnisks atbalsts metināšanas procesiem: defektu analīze, režīmu stabilizēšana, aizsarggāzu izvēle, personāla apmācība un WPS ieviešana.",
+    "ctaContact": "Sazināties",
+    "navAriaLabel": "Ražošanas risinājumu navigācija",
+    "navTitle": "Izvēlieties ražošanas uzdevumu",
+    "navReadMore": "Pāriet uz sadaļu",
+    "problem": "Problēmas",
+    "analysis": "Analīze",
+    "result": "Rezultāts",
+    "expertiseLink": "Apskatīt ekspertīzi",
+    "finalCtaTitle": "Vajadzīgs praktisks metināšanas risinājums?",
+    "finalCtaText": "Aprakstiet ražošanas uzdevumu, defektu, materiālu, procesu un ierobežojumus. Es palīdzēšu noteikt nākamo tehnisko soli.",
+    "finalCtaContact": "Sazināties",
+    "nav": {
+      "defectReduction": {
+        "title": "Defektu samazināšana",
+        "description": "Metināšanas defektu un procesa nestabilitātes cēloņu analīze."
+      },
+      "processOptimization": {
+        "title": "Procesu optimizācija",
+        "description": "Metināšanas parametru un ražošanas režīmu analīze un regulēšana."
+      },
+      "gasSelection": {
+        "title": "Aizsarggāzu izvēle",
+        "description": "Gāzu maisījumu izvēle pēc materiāla, procesa un kvalitātes prasībām."
+      },
+      "training": {
+        "title": "Personāla apmācība",
+        "description": "Metinātāju un ražošanas personāla sagatavošana."
+      },
+      "wpsSupport": {
+        "title": "Projektu atbalsts / WPS",
+        "description": "Inženiertehnisks atbalsts metināšanas procesu un WPS ieviešanai."
+      }
+    },
+    "sections": {
+      "defectReduction": {
+        "title": "Metināšanas defektu samazināšana",
+        "problems": [
+          "Poras, necaurmetinājumi, pārdegumi, iegriezumi vai nestabila šuves forma.",
+          "Atkārtots brāķis bez skaidra iemesla.",
+          "Atšķirīgs rezultāts starp maiņām, metinātājiem vai partijām.",
+          "Pārstrāde palielina termiņus un ražošanas izmaksas."
+        ],
+        "analysisItems": [
+          "Metināšanas režīmu, gāzes plūsmas, stieples izvirzījuma un malu sagatavošanas pārbaude.",
+          "Materiāla, piedevu stieples, aizsarggāzes un metināšanas vannas aizsardzības apstākļu analīze.",
+          "Defektu salīdzināšana ar reālajiem darba apstākļiem ražošanā.",
+          "Tehnoloģiskās kartes vai WPS ievērošanas pārbaude, ja tāda ir."
+        ],
+        "results": [
+          "Skaidrs defektu cēlonis vai iespējamo cēloņu saraksts.",
+          "Praktiskas parametru un procesa korekcijas.",
+          "Mazāk brāķa un atkārtotas pārstrādes.",
+          "Stabilāka kvalitāte starp maiņām un operatoriem."
+        ]
+      },
+      "processOptimization": {
+        "title": "Metināšanas procesu optimizācija",
+        "problems": [
+          "Process ir nestabils un atkarīgs no konkrēta metinātāja.",
+          "Režīmi tiek piemeklēti manuāli bez skaidra parametru loga.",
+          "Zema produktivitāte vai liekas operācijas.",
+          "Kvalitāte ir pieņemama, bet pašizmaksa ir pārāk augsta."
+        ],
+        "analysisItems": [
+          "Esošo metināšanas parametru, operāciju secības un piekļuves šuvei novērtēšana.",
+          "Iekārtu, palīgierīču, patēriņa materiālu un darba vietas organizācijas pārbaude.",
+          "Faktiskā procesa salīdzināšana ar izstrādājuma un klienta prasībām.",
+          "Šauro vietu meklēšana: loka laiks, sagatavošana, tīrīšana, pārstrāde, gāzes un stieples patēriņš."
+        ],
+        "results": [
+          "Stabilāks metināšanas parametru logs.",
+          "Mazāka atkarība no operatora individuālajiem ieradumiem.",
+          "Mazāk dīkstāves, pārstrādes un lieka materiālu patēriņa.",
+          "Skaidri ieteikumi ražošanai un tehnologam."
+        ]
+      },
+      "gasSelection": {
+        "title": "Aizsarggāzu izvēle",
+        "problems": [
+          "Šuves kvalitāte ar pašreizējo gāzu maisījumu ir nestabila.",
+          "Parādās porainība, šļakatas, oksidēšanās vai slikts šuves izskats.",
+          "Gāzes patēriņš ir augsts, bet kvalitāte neuzlabojas.",
+          "Gāze izvēlēta pēc ieraduma, nevis pēc materiāla un procesa."
+        ],
+        "analysisItems": [
+          "Materiāla, MIG/MAG vai TIG procesa, biezuma, metināšanas pozīcijas un šuves prasību pārbaude.",
+          "Esošā gāzu maisījuma, plūsmas, sprauslas, elektroda izvirzījuma un aizsardzības apstākļu analīze.",
+          "Gāzu variantu salīdzināšana pēc kvalitātes, ātruma, izskata un izmaksām.",
+          "Caurvēja, piekļuves šuvei un iekārtas iestatījumu ietekmes pārbaude."
+        ],
+        "results": [
+          "Pamatota aizsarggāzes vai gāzu maisījuma diapazona izvēle.",
+          "Stabilāka metināšanas vannas aizsardzība un šuves kvalitāte.",
+          "Lieka gāzes patēriņa samazināšana, kur tas ir iespējams.",
+          "Skaidrāka saikne starp gāzi, režīmiem un rezultātu."
+        ]
+      },
+      "training": {
+        "title": "Personāla apmācība",
+        "problems": [
+          "Jauni metinātāji nesasniedz stabilu kvalitāti.",
+          "Kļūdas atkārtojas, jo procesa cēloņi nav izskaidroti.",
+          "Ražošana ir atkarīga no dažiem pieredzējušiem darbiniekiem.",
+          "Tehnoloģiskās prasības ir, bet personāls tās pielieto nevienmērīgi."
+        ],
+        "analysisItems": [
+          "Esošā metinātāju līmeņa un tipisko kļūdu novērtēšana.",
+          "Režīmu, detaļu sagatavošanas, degļa vadīšanas tehnikas un šuves kontroles izpratnes pārbaude.",
+          "Apmācību tēmu noteikšana konkrētajam procesam un ražošanas uzdevumiem.",
+          "Praktisko vingrinājumu sasaistīšana ar reāliem defektiem un kvalitātes prasībām."
+        ],
+        "results": [
+          "Vienmērīgāks darba līmenis starp darbiniekiem.",
+          "Mazāk atkārtotu kļūdu un defektu.",
+          "Praktiskas prasmes, kas saistītas ar reāliem izstrādājumiem un procesiem.",
+          "Izpratne ne tikai par to, kā metināt, bet arī kāpēc rodas defekti."
+        ]
+      },
+      "wpsSupport": {
+        "title": "Projektu atbalsts / WPS ieviešana",
+        "problems": [
+          "Process jāpalaiž stabili, bet parametri vēl nav noformēti.",
+          "WPS vai pWPS ir formāli, bet ražošana pēc tiem nestrādā vienādi.",
+          "Klienta prasības, audits vai projekts prasa izsekojamību.",
+          "Trūkst saiknes starp dokumentāciju, reālajiem režīmiem un kvalitāti."
+        ],
+        "analysisItems": [
+          "Projekta prasību, materiāla, savienojumu, iekārtu un pieejamo procesu pārbaude.",
+          "Esošo WPS/pWPS, tehnoloģisko karšu un faktisko režīmu analīze.",
+          "Dokumentācijas salīdzināšana ar to, kas reāli notiek darba vietā.",
+          "Parametru noteikšana, kurus vajag fiksēt, pārbaudīt vai precizēt uz paraugiem."
+        ],
+        "results": [
+          "Skaidrāka WPS ieviešana reālā ražošanā.",
+          "Saskaņoti parametri un darbības metinātājiem, meistariem un tehnologiem.",
+          "Mazāk atšķirību starp dokumentāciju un praksi.",
+          "Gatavība iekšējai kontrolei, klienta prasībām vai auditam."
+        ]
+      }
+    }
   },
   "about": {
     "title": "Par mani",
@@ -472,7 +635,7 @@
     "cta": "Sazināties par iegādi",
     "coverAlt": "Grāmatas vāks «MAG/MIG metināšana»",
     "purchaseTitle": "Kā iegādāties",
-    "purchaseIntro": "Drukātā un elektroniskā versija pieejama pēc pieprasījuma. Pasūtiet caur kontaktu formu vai e-pastu.",
+    "purchaseIntro": "Elektroniskā versija ir pieejama pēc pieprasījuma.",
     "ctaEmail": "Rakstīt e-pastu",
     "emailSubjectBook": "Pasūtījums: grāmata MAG/MIG",
     "buyOnline": "Iegādāties veikalā",
