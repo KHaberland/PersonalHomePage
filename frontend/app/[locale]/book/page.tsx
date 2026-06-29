@@ -6,8 +6,11 @@ import { getTranslations } from 'next-intl/server';
 import { getBook, getContact } from '@/lib/api';
 import { createPageMetadata } from '@/lib/metadata';
 
-/** Локальная заглушка, если в API нет обложки (файл из `public/`) */
-const defaultCover = '/images/photos/author01.jpg';
+const localizedBookCovers = {
+  en: '/images/book/welding_en.jpg',
+  ru: '/images/book/MIG_MAG_welding_ru.jpg',
+  lv: '/images/book/MIG_MAG_metinasana.jpg',
+} as const;
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -41,7 +44,7 @@ export default async function BookPage({ params }: Props) {
   const title = book?.title ?? t('title');
   const description = book?.description || t('description');
   const year = book?.year ?? 2024;
-  const coverImage = book?.cover_image ?? defaultCover;
+  const coverImage = localizedBookCovers[lang];
   const purchaseUrl = process.env.NEXT_PUBLIC_BOOK_PURCHASE_URL?.trim();
   const downloadUrl = process.env.NEXT_PUBLIC_BOOK_DOWNLOAD_URL?.trim();
   const mailtoBook =

@@ -4,30 +4,19 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { CompetencyCard } from '@/components/CompetencyCard';
 import { Hero } from '@/components/Hero';
-import { WhyChooseCard } from '@/components/WhyChooseCard';
 import { HomeSectionProgress } from '@/components/HomeSectionProgress';
 import { Section } from '@/components/Section';
 import { ToolCardLink } from '@/components/ToolCardLink';
 import {
-  IconCompetencyCutting,
   IconCompetencyGas,
-  IconCompetencyGasSafety,
-  IconCompetencyMetallurgy,
   IconCompetencyMigMag,
   IconCompetencyTig,
   IconServiceConsulting,
   IconServiceImplementation,
   IconServiceTraining,
-  IconWhyBook,
-  IconWhyChartShield,
-  IconWhyDiploma,
-  IconWhyTeam,
 } from '@/components/icons';
 import {
-  getAbout,
-  getBook,
   getContact,
-  getExperience,
   getHomeTechnicalSkills,
   getPosts,
   getTools,
@@ -37,9 +26,7 @@ import {
   buildFallbackTools,
 } from '@/lib/fallback-content';
 import type { Lang } from '@/lib/api-types';
-import { htmlToPlainText } from '@/lib/html-to-plain-text';
 import { createPageMetadata } from '@/lib/metadata';
-import { sanitizeAboutHtml } from '@/lib/sanitize-html';
 
 /** Технические навыки: процессы, оборудование, материалы */
 const competencyTechnicalItems = [
@@ -60,47 +47,6 @@ const competencyTechnicalItems = [
     anchorId: 'expertise-gases',
     titleKey: 'competencyIconGas',
     descKey: 'competencyCard3',
-  },
-  {
-    Icon: IconCompetencyMetallurgy,
-    anchorId: 'expertise-metallurgy',
-    titleKey: 'competencyIconMetallurgy',
-    descKey: 'competencyCard5',
-  },
-  {
-    Icon: IconCompetencyCutting,
-    anchorId: 'expertise-quality',
-    titleKey: 'competencyIconCuttingGases',
-    descKey: 'competencyCard6',
-  },
-  {
-    Icon: IconCompetencyGasSafety,
-    anchorId: 'expertise-safety',
-    titleKey: 'competencyIconEquipment',
-    descKey: 'competencyCard4',
-  },
-] as const;
-
-const whyChooseItems = [
-  {
-    Icon: IconWhyDiploma,
-    titleKey: 'whyChooseCard1Title' as const,
-    descKey: 'whyChooseCard1Desc' as const,
-  },
-  {
-    Icon: IconWhyChartShield,
-    titleKey: 'whyChooseCard2Title' as const,
-    descKey: 'whyChooseCard2Desc' as const,
-  },
-  {
-    Icon: IconWhyTeam,
-    titleKey: 'whyChooseCard3Title' as const,
-    descKey: 'whyChooseCard3Desc' as const,
-  },
-  {
-    Icon: IconWhyBook,
-    titleKey: 'whyChooseCard4Title' as const,
-    descKey: 'whyChooseCard4Desc' as const,
   },
 ] as const;
 
@@ -137,14 +83,6 @@ const solutionFlowItems = [
     impactKey: 'solutionsImpactTeam',
     extraImpactKey: null,
   },
-  {
-    Icon: IconServiceImplementation,
-    anchorId: 'solutions-wps-support',
-    titleKey: 'serviceProjectSupport',
-    descKey: 'serviceProjectSupportDesc',
-    impactKey: 'solutionsImpactKpi',
-    extraImpactKey: null,
-  },
 ] as const;
 
 const caseItems = [
@@ -170,8 +108,6 @@ const caseItems = [
 
 /** Последние статьи на главной: строго топ-3 (site_rework §5) */
 const HOME_BLOG_POSTS_LIMIT = 3;
-
-const EXPERIENCE_FALLBACK_KEYS = ['elme', 'buts', 'production'] as const;
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -205,29 +141,15 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, tAbout, tExp] = await Promise.all([
-    getTranslations('home'),
-    getTranslations('about'),
-    getTranslations('experience'),
-  ]);
+  const t = await getTranslations('home');
 
-  const [
-    about,
-    book,
-    contact,
-    experience,
-    tools,
-    postsResponse,
-    homeTechnicalSkills,
-  ] = await Promise.all([
-    getAbout(lang).catch(() => null),
-    getBook(lang).catch(() => null),
-    getContact().catch(() => null),
-    getExperience(lang).catch(() => []),
-    getTools().catch(() => []),
-    getPosts(lang, { page: '1' }).catch(() => ({ results: [], count: 0 })),
-    getHomeTechnicalSkills(lang).catch(() => null),
-  ]);
+  const [contact, tools, postsResponse, homeTechnicalSkills] =
+    await Promise.all([
+      getContact().catch(() => null),
+      getTools().catch(() => []),
+      getPosts(lang, { page: '1' }).catch(() => ({ results: [], count: 0 })),
+      getHomeTechnicalSkills(lang).catch(() => null),
+    ]);
 
   const homeTechnicalByOrder = new Map(
     (homeTechnicalSkills?.items ?? []).map((row) => [row.order, row])
@@ -247,156 +169,10 @@ export default async function HomePage({ params }: Props) {
           created_at: '',
         }));
 
-  const aboutShortHtml = sanitizeAboutHtml(
-    about?.bio_main?.trim() ? about.bio_main : String(t.raw('aboutText'))
-  );
-  /** Краткий блок главной: без увеличенного кегля развёрнутой биографии (/about). */
-  const useNarrativeBioSize = false;
-
-  const defaultAboutPhoto = '/images/photos/small/Author_small.jpg';
-  const defaultBookCover = '/images/photos/author01.jpg';
-  const aboutPhotoSrc = about?.photo
-    ? getImageSrc(about.photo) || about.photo
-    : defaultAboutPhoto;
-  const aboutPhotoUnoptimized = aboutPhotoSrc.startsWith('http');
-  const bookCoverSrc = book?.cover_image
-    ? getImageSrc(book.cover_image) || book.cover_image
-    : defaultBookCover;
-  const bookCoverUnoptimized = bookCoverSrc.startsWith('http');
-
   return (
     <>
       <Hero />
       <HomeSectionProgress />
-
-      {/* Почему выбирают — макет why_me.md: чёрный фон, 4 карточки, сетка 4→2→1 */}
-      <Section
-        id="why-choose"
-        aria-labelledby="home-why-heading"
-        className="!border-white/10 bg-black text-white"
-      >
-        <h2
-          id="home-why-heading"
-          className="heading-2 mb-8 max-w-4xl whitespace-pre-line font-semibold tracking-tight text-white md:mb-10"
-        >
-          {t('whyChooseSectionHeading')}
-        </h2>
-        <ul className="grid list-none grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-4 xl:gap-6">
-          {whyChooseItems.map(({ Icon, titleKey, descKey }) => (
-            <li key={titleKey} className="min-h-0">
-              <WhyChooseCard
-                title={t(titleKey)}
-                description={t(descKey)}
-                icon={
-                  <Icon
-                    className="text-inherit"
-                    aria-hidden={true}
-                    focusable={false}
-                    title={undefined}
-                  />
-                }
-              />
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {/* Обо мне (краткий блок на главной) */}
-      <Section
-        id="about"
-        variant="default"
-        className="bg-[color-mix(in_srgb,var(--surface)_85%,black_15%)]"
-      >
-        <h2 className="heading-2 mb-8 max-w-4xl font-semibold tracking-tight text-white md:mb-10">
-          {t('aboutTitle')}
-        </h2>
-        <div className="grid w-full gap-8 md:grid-cols-2 md:items-center md:gap-12">
-          <div className="about-photo-glow-wrap relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] rounded-lg md:mx-0">
-            <div className="absolute inset-0 overflow-hidden rounded-lg border border-border">
-              <Image
-                src={aboutPhotoSrc}
-                alt={tAbout('photoAlt')}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, 26.88rem"
-                priority={false}
-                unoptimized={aboutPhotoUnoptimized}
-              />
-            </div>
-          </div>
-          <div className="flex w-full min-w-0 flex-col">
-            <div
-              className={
-                'home-about-copy w-full max-w-none text-left [&_b]:font-inherit [&_strong]:font-inherit' +
-                (useNarrativeBioSize ? ' about-bio-narrative' : '')
-              }
-              dangerouslySetInnerHTML={{ __html: aboutShortHtml }}
-            />
-            <Link
-              href="/about"
-              className="btn-primary mt-8 inline-block self-start"
-            >
-              {t('aboutMoreCta')}
-            </Link>
-          </div>
-        </div>
-      </Section>
-
-      {/* Инженерная экспертиза: технические навыки */}
-      <Section id="expertise" aria-labelledby="home-expertise-heading">
-        <h2
-          id="home-expertise-heading"
-          className="heading-2 mb-8 max-w-4xl font-semibold tracking-tight text-white md:mb-10"
-        >
-          {t('competenciesTitle')}
-        </h2>
-
-        <div className="space-y-2">
-          <h3
-            id="competencies-technical"
-            className="heading-3 scroll-mt-24 competency-accent-orange"
-          >
-            {t('competenciesTechnicalSubtitle')}
-          </h3>
-          <p className="mb-6 max-w-3xl text-sm text-foreground/70">
-            {technicalLeadParagraph}
-          </p>
-          <ul
-            className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            aria-labelledby="competencies-technical"
-          >
-            {competencyTechnicalItems.map(
-              ({ Icon, anchorId, titleKey, descKey }, idx) => {
-                const order = idx + 1;
-                const fromApi = homeTechnicalByOrder.get(order);
-                const cardTitle = (fromApi?.title ?? '').trim() || t(titleKey);
-                const cardDescription =
-                  (fromApi?.description ?? '').trim() || t(descKey);
-                return (
-                  <li
-                    key={titleKey}
-                    id={anchorId}
-                    className="h-full min-h-0 scroll-mt-24"
-                  >
-                    <CompetencyCard
-                      variant="technical"
-                      title={cardTitle}
-                      description={cardDescription}
-                      icon={
-                        <Icon
-                          className="h-6 w-6"
-                          aria-hidden
-                          title={undefined}
-                        />
-                      }
-                    />
-                  </li>
-                );
-              }
-            )}
-          </ul>
-        </div>
-      </Section>
 
       {/* Решения для производственных задач */}
       <Section id="solutions" variant="surface">
@@ -455,8 +231,67 @@ export default async function HomePage({ params }: Props) {
             )}
           </ul>
         </div>
-        <Link href="/contact" className="btn-primary mt-8 inline-block">
-          {t('servicesCta')}
+        <Link href="/solutions" className="btn-primary mt-8 inline-block">
+          {t('solutionsMoreCta')}
+        </Link>
+      </Section>
+
+      {/* Инженерная экспертиза: технические навыки */}
+      <Section id="expertise" aria-labelledby="home-expertise-heading">
+        <h2
+          id="home-expertise-heading"
+          className="heading-2 mb-8 max-w-4xl font-semibold tracking-tight text-white md:mb-10"
+        >
+          {t('competenciesTitle')}
+        </h2>
+
+        <div className="space-y-2">
+          <h3
+            id="competencies-technical"
+            className="heading-3 scroll-mt-24 competency-accent-orange"
+          >
+            {t('competenciesTechnicalSubtitle')}
+          </h3>
+          <p className="mb-6 max-w-3xl text-sm text-foreground/70">
+            {technicalLeadParagraph}
+          </p>
+          <ul
+            className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            aria-labelledby="competencies-technical"
+          >
+            {competencyTechnicalItems.map(
+              ({ Icon, anchorId, titleKey, descKey }, idx) => {
+                const order = idx + 1;
+                const fromApi = homeTechnicalByOrder.get(order);
+                const cardTitle = (fromApi?.title ?? '').trim() || t(titleKey);
+                const cardDescription =
+                  (fromApi?.description ?? '').trim() || t(descKey);
+                return (
+                  <li
+                    key={titleKey}
+                    id={anchorId}
+                    className="h-full min-h-0 scroll-mt-24"
+                  >
+                    <CompetencyCard
+                      variant="technical"
+                      title={cardTitle}
+                      description={cardDescription}
+                      icon={
+                        <Icon
+                          className="h-6 w-6"
+                          aria-hidden
+                          title={undefined}
+                        />
+                      }
+                    />
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </div>
+        <Link href="/expertise" className="btn-primary mt-8 inline-block">
+          {t('expertiseMoreCta')}
         </Link>
       </Section>
 
@@ -473,9 +308,12 @@ export default async function HomePage({ params }: Props) {
             {t('casesSubtitle')}
           </p>
         ) : null}
-        <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="flex list-none gap-4 overflow-x-auto pb-3 snap-x sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
           {caseItems.map(({ Icon, titleKey, descKey, imageSrc }) => (
-            <li key={titleKey} className="h-full min-h-0">
+            <li
+              key={titleKey}
+              className="h-full min-w-[82%] min-h-0 snap-start sm:min-w-0"
+            >
               <CompetencyCard
                 title={t(titleKey)}
                 description={t(descKey)}
@@ -491,91 +329,27 @@ export default async function HomePage({ params }: Props) {
         <Link href="/experience" className="btn-primary mt-8 inline-block">
           {t('casesCta')}
         </Link>
-      </Section>
-
-      {/* Краткий опыт: API или fallback из messages */}
-      <Section
-        id="experience"
-        variant="surface"
-        aria-labelledby="home-experience-heading"
-      >
-        <h2
-          id="home-experience-heading"
-          className="heading-2 mb-8 font-semibold tracking-tight text-white"
-        >
-          {t('experienceTitle')}
-        </h2>
-        <div className="space-y-4">
-          {experience.length > 0
-            ? experience.slice(0, 3).map((exp) => (
-                <div
-                  key={exp.id}
-                  className="flex flex-col gap-1 border-l-2 border-accent-orange pl-4"
-                >
-                  <h3 className="heading-3 text-foreground">{exp.title}</h3>
-                  <p className="text-accent-orange">{exp.company}</p>
-                  <p className="text-sm text-foreground/70">
-                    {exp.start_year} — {exp.end_year ?? tExp('present')}
-                  </p>
-                  {exp.description?.trim() ? (
-                    <p className="mt-1 text-sm text-foreground/75">
-                      {htmlToPlainText(exp.description)}
-                    </p>
-                  ) : null}
-                </div>
-              ))
-            : EXPERIENCE_FALLBACK_KEYS.map((key) => (
-                <div
-                  key={key}
-                  className="flex flex-col gap-1 border-l-2 border-accent-orange pl-4"
-                >
-                  <h3 className="heading-3 text-foreground">
-                    {tExp(`${key}.role`)}
-                  </h3>
-                  <p className="text-accent-orange">{tExp(`${key}.company`)}</p>
-                  <p className="text-sm text-foreground/70">
-                    {tExp(`${key}.period`)}
-                  </p>
-                  <p className="mt-1 text-sm text-foreground/75">
-                    {tExp(`${key}.homeOutline`)}
-                  </p>
-                </div>
-              ))}
-        </div>
-      </Section>
-
-      {/* Карточка книги */}
-      <Section id="book" aria-labelledby="home-book-heading">
-        <div className="card flex flex-col gap-6 p-6 md:flex-row md:items-center">
-          <div className="relative mx-auto h-48 w-36 shrink-0 overflow-hidden rounded md:mx-0">
-            <Image
-              src={bookCoverSrc}
-              alt={book?.title ?? t('bookTitle')}
-              fill
-              className="object-cover"
-              sizes="144px"
-              loading="lazy"
-              fetchPriority="low"
-              unoptimized={bookCoverUnoptimized}
-            />
-          </div>
-          <div className="flex-1">
-            <h2 id="home-book-heading" className="heading-3 text-accent-orange">
-              {t('bookTitle')}
-            </h2>
-            <div
-              className="mt-2 text-foreground/90 [&_p]:mt-1 [&_p:first-child]:mt-0"
-              dangerouslySetInnerHTML={{
-                __html: book?.description ?? t.raw('bookDescription'),
-              }}
-            />
-            <p className="mt-1 text-sm text-foreground/70">
-              {book?.year ?? '2024'}
-            </p>
-            <Link href="/book" className="btn-primary mt-4 inline-block">
-              {t('bookMoreCta')}
-            </Link>
-          </div>
+        <div className="mt-10 rounded-2xl border border-border bg-surface/70 p-5 sm:p-6">
+          <h3 className="heading-3 text-foreground">
+            {t('experienceSummaryTitle')}
+          </h3>
+          <ul className="mt-5 grid list-none gap-4 sm:grid-cols-3">
+            {[
+              'experienceSummaryIwe',
+              'experienceSummaryElme',
+              'experienceSummaryTeacher',
+            ].map((key) => (
+              <li
+                key={key}
+                className="rounded-xl border border-border bg-background/35 p-4 text-sm font-medium text-foreground/90"
+              >
+                {t(key)}
+              </li>
+            ))}
+          </ul>
+          <Link href="/experience" className="btn-secondary mt-6 inline-block">
+            {t('experienceMoreCta')}
+          </Link>
         </div>
       </Section>
 

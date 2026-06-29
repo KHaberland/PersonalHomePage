@@ -109,6 +109,12 @@ export function Hero() {
             {t('heroCtaContact')}
           </Link>
           <Link
+            href="/solutions"
+            className="btn-secondary inline-block min-w-[12rem] px-8 py-3 text-center"
+          >
+            {t('heroCtaSolutions')}
+          </Link>
+          <Link
             href="/tools"
             className="btn-secondary inline-block min-w-[12rem] px-8 py-3 text-center"
           >
@@ -116,7 +122,7 @@ export function Hero() {
           </Link>
         </div>
         <Link
-          href="/#competencies"
+          href="/#expertise"
           className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/90 underline-offset-4 transition hover:text-white hover:underline"
         >
           {t('heroScrollToCompetencies')}

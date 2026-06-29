@@ -24,16 +24,29 @@ type FooterProps = {
 };
 
 const homeSectionLinks = [
-  { href: '/#why-choose', key: 'homeSectionWhy' as const },
-  { href: '/#about', key: 'homeSectionAbout' as const },
-  { href: '/#competencies', key: 'expertiseCompetencies' as const },
-  { href: '/#services', key: 'expertiseServices' as const },
-  { href: '/#cases', key: 'expertiseCases' as const },
-  { href: '/#experience', key: 'homeSectionExperience' as const },
-  { href: '/#book', key: 'homeSectionBook' as const },
+  { href: '/#expertise', key: 'expertise' as const },
+  { href: '/#solutions', key: 'solutions' as const },
+  { href: '/#cases', key: 'cases' as const },
   { href: '/#tools', key: 'homeSectionTools' as const },
   { href: '/#blog', key: 'homeSectionBlog' as const },
   { href: '/#contact', key: 'homeSectionContact' as const },
+] as const;
+
+const primaryFooterLinks = [
+  { href: '/', key: 'home' as const },
+  { href: '/about', key: 'about' as const },
+  { href: '/experience', key: 'experience' as const },
+  { href: '/expertise', key: 'expertise' as const },
+  { href: '/solutions', key: 'solutions' as const },
+  { href: '/#cases', key: 'cases' as const },
+  { href: '/tools', key: 'toolsNav' as const },
+  { href: '/blog', key: 'blogKnowledge' as const },
+  { href: '/contact', key: 'contact' as const },
+] as const;
+
+const secondaryFooterLinks = [
+  { href: '/book', key: 'book' as const },
+  { href: '/knowledge', key: 'knowledgeNav' as const },
 ] as const;
 
 export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
@@ -130,33 +143,22 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
           className="mt-8 flex flex-wrap gap-6 border-t border-border pt-8"
           aria-label="Footer"
         >
-          <Link href="/" className={linkClass}>
-            {t('home')}
-          </Link>
-          <Link href="/#competencies" className={linkClass}>
-            {tc('expertise')}
-          </Link>
-          <Link href="/tools" className={linkClass}>
-            {tc('toolsNav')}
-          </Link>
-          <Link href="/blog" className={linkClass}>
-            {tc('blogNav')}
-          </Link>
-          <Link href="/book" className={linkClass}>
-            {t('book')}
-          </Link>
-          <Link href="/contact" className={linkClass}>
-            {t('contactLink')}
-          </Link>
-          <Link href="/about" className={linkClass}>
-            {t('about')}
-          </Link>
-          <Link href="/experience" className={linkClass}>
-            {t('experience')}
-          </Link>
-          <Link href="/knowledge" className={linkClass}>
-            {tc('knowledgeNav')}
-          </Link>
+          {primaryFooterLinks.map(({ href, key }) => (
+            <Link key={href} href={href} className={linkClass}>
+              {tc(key)}
+            </Link>
+          ))}
+        </nav>
+
+        <nav
+          className="mt-4 flex flex-wrap justify-center gap-6"
+          aria-label={t('homeSectionsNavLabel')}
+        >
+          {secondaryFooterLinks.map(({ href, key }) => (
+            <Link key={href} href={href} className={linkClass}>
+              {key === 'knowledgeNav' ? tc(key) : t(key)}
+            </Link>
+          ))}
         </nav>
 
         <p className="mt-8 text-center text-xs text-foreground/50">
