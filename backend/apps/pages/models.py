@@ -1,6 +1,48 @@
 from django.db import models
 
 
+class SiteTextBlock(models.Model):
+    """Universal multilingual CMS text entry for page sections and UI blocks."""
+
+    class Page(models.TextChoices):
+        HOME = "home", "Home"
+        ABOUT = "about", "About"
+        EXPERIENCE = "experience", "Experience"
+        EXPERTISE = "expertise", "Expertise"
+        SOLUTIONS = "solutions", "Solutions"
+        KNOWLEDGE = "knowledge", "Knowledge"
+        TOOLS = "tools", "Tools"
+        CONTACT = "contact", "Contact"
+        BOOK = "book", "Book"
+
+    page = models.CharField(max_length=50, choices=Page.choices)
+    block = models.SlugField(max_length=100)
+    key = models.SlugField(max_length=100)
+    text_en = models.TextField(blank=True)
+    text_ru = models.TextField(blank=True)
+    text_lv = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_site_text_blocks"
+        verbose_name = "Site text block"
+        verbose_name_plural = "Site text blocks"
+        ordering = ["page", "block", "key"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["page", "block", "key"],
+                name="unique_site_text_block_key",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["page", "block"]),
+            models.Index(fields=["page", "block", "key"]),
+        ]
+
+    def __str__(self):
+        return f"{self.page}.{self.block}.{self.key}"
+
+
 class AboutMain(models.Model):
     """Краткий «Обо мне» на главной; полная биография — отдельная страница /about."""
 

@@ -12,7 +12,26 @@ from .models import (
     HomeBusinessOutcomesIntro,
     HomeTechnicalSkillCard,
     HomeTechnicalSkillsIntro,
+    SiteTextBlock,
 )
+
+
+@admin.register(SiteTextBlock)
+class SiteTextBlockAdmin(admin.ModelAdmin):
+    list_display = ["page", "block", "key", "updated_at"]
+    list_filter = ["page", "block"]
+    search_fields = ["page", "block", "key", "text_en", "text_ru", "text_lv"]
+    readonly_fields = ["updated_at"]
+    ordering = ["page", "block", "key"]
+    formfield_overrides = {
+        models.TextField: {"widget": CKEditor5Widget(config_name="extends")},
+    }
+    fieldsets = (
+        (None, {"fields": ("page", "block", "key", "updated_at")}),
+        ("English", {"fields": ("text_en",)}),
+        ("Русский", {"fields": ("text_ru",)}),
+        ("Latviešu", {"fields": ("text_lv",)}),
+    )
 
 
 @admin.register(AboutMain)
