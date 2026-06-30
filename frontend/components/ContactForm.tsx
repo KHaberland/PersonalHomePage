@@ -11,13 +11,14 @@ export function ContactForm({ contactEmail }: Props) {
   const t = useTranslations('contact');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [requestType, setRequestType] = useState('');
   const [message, setMessage] = useState('');
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const subject = encodeURIComponent(t('formSubjectPrefix'));
     const body = encodeURIComponent(
-      `${t('formBodyName')}: ${name}\n${t('formBodyEmail')}: ${email}\n\n${message}`
+      `${t('formBodyName')}: ${name}\n${t('formBodyEmail')}: ${email}\n${t('formBodyRequestType')}: ${requestType}\n\n${message}`
     );
     window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
   }
@@ -63,6 +64,33 @@ export function ContactForm({ contactEmail }: Props) {
       </div>
       <div>
         <label
+          htmlFor="contact-request-type"
+          className="mb-1 block text-sm text-foreground/80"
+        >
+          {t('formRequestType')}
+        </label>
+        <select
+          id="contact-request-type"
+          name="requestType"
+          required
+          value={requestType}
+          onChange={(e) => setRequestType(e.target.value)}
+          className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground outline-none ring-accent-orange focus:ring-2"
+        >
+          <option value="">{t('formRequestTypePlaceholder')}</option>
+          <option value={t('requestTypeDefects')}>
+            {t('requestTypeDefects')}
+          </option>
+          <option value={t('requestTypeProcess')}>
+            {t('requestTypeProcess')}
+          </option>
+          <option value={t('requestTypeTraining')}>
+            {t('requestTypeTraining')}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label
           htmlFor="contact-message"
           className="mb-1 block text-sm text-foreground/80"
         >
@@ -80,7 +108,7 @@ export function ContactForm({ contactEmail }: Props) {
       </div>
       <p className="text-xs text-foreground/60">{t('formHint')}</p>
       <button type="submit" className="btn-primary w-full sm:w-auto">
-        {t('formSubmit')}
+        {t('requestConsultation')}
       </button>
     </form>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
+import { decisionSystemLayers, supportNavLinks } from '@/lib/ia';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
@@ -22,32 +23,6 @@ type FooterProps = {
   linkedinUrl?: string | null;
   youtubeUrl?: string | null;
 };
-
-const homeSectionLinks = [
-  { href: '/#expertise', key: 'expertise' as const },
-  { href: '/#solutions', key: 'solutions' as const },
-  { href: '/#cases', key: 'cases' as const },
-  { href: '/#tools', key: 'homeSectionTools' as const },
-  { href: '/#blog', key: 'homeSectionBlog' as const },
-  { href: '/#contact', key: 'homeSectionContact' as const },
-] as const;
-
-const primaryFooterLinks = [
-  { href: '/', key: 'home' as const },
-  { href: '/about', key: 'about' as const },
-  { href: '/experience', key: 'experience' as const },
-  { href: '/expertise', key: 'expertise' as const },
-  { href: '/solutions', key: 'solutions' as const },
-  { href: '/#cases', key: 'cases' as const },
-  { href: '/tools', key: 'toolsNav' as const },
-  { href: '/blog', key: 'blogKnowledge' as const },
-  { href: '/contact', key: 'contact' as const },
-] as const;
-
-const secondaryFooterLinks = [
-  { href: '/book', key: 'book' as const },
-  { href: '/knowledge', key: 'knowledgeNav' as const },
-] as const;
 
 export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
   const t = useTranslations('footer');
@@ -116,49 +91,44 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
           <div className="mt-4 flex justify-center">
             <Link
               href="/contact"
-              className="btn-primary inline-block px-8 py-3"
+              className="btn-secondary inline-block px-8 py-3"
             >
-              {th('ctaBannerContact')}
+              {th('heroCtaContact')}
             </Link>
           </div>
         </div>
 
         <nav
-          className="mt-8 border-t border-border pt-8"
-          aria-label={t('homeSectionsNavLabel')}
+          className="mt-8 grid gap-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4"
+          aria-label={t('navigationAriaLabel')}
         >
-          <p className="mb-4 text-xs font-medium uppercase tracking-wide text-foreground/50">
-            {tc('homePageSections')}
-          </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {homeSectionLinks.map(({ href, key }) => (
-              <Link key={href} href={href} className={linkClass}>
-                {tc(key)}
-              </Link>
-            ))}
+          {decisionSystemLayers.map((group) => (
+            <div key={group.id}>
+              <p className="text-sm font-medium text-foreground">
+                {t(group.titleKey)}
+              </p>
+              <div className="mt-3 flex flex-col gap-2">
+                {group.links.map(({ href, key }) => (
+                  <Link key={href} href={href} className={linkClass}>
+                    {tc(key)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              {t('supportTitle')}
+            </p>
+            <div className="mt-3 flex flex-col gap-2">
+              {supportNavLinks.map(({ href, key }) => (
+                <Link key={href} href={href} className={linkClass}>
+                  {tc(key)}
+                </Link>
+              ))}
+            </div>
           </div>
-        </nav>
-
-        <nav
-          className="mt-8 flex flex-wrap gap-6 border-t border-border pt-8"
-          aria-label="Footer"
-        >
-          {primaryFooterLinks.map(({ href, key }) => (
-            <Link key={href} href={href} className={linkClass}>
-              {tc(key)}
-            </Link>
-          ))}
-        </nav>
-
-        <nav
-          className="mt-4 flex flex-wrap justify-center gap-6"
-          aria-label={t('homeSectionsNavLabel')}
-        >
-          {secondaryFooterLinks.map(({ href, key }) => (
-            <Link key={href} href={href} className={linkClass}>
-              {key === 'knowledgeNav' ? tc(key) : t(key)}
-            </Link>
-          ))}
         </nav>
 
         <p className="mt-8 text-center text-xs text-foreground/50">

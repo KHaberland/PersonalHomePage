@@ -2,10 +2,11 @@ import Image from 'next/image';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { DiplomaCertificates } from '@/components/DiplomaCertificates';
-import { getAbout } from '@/lib/api';
+import { getAbout, getContact } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { createPageMetadata } from '@/lib/metadata';
 import { sanitizeAboutHtml } from '@/lib/sanitize-html';
+import { createAboutJsonLd } from '@/lib/seo';
 
 /** PDF в `public/diplomas/` или снимок в `public/images/photos/small/`. Для фото `preview` по умолчанию совпадает с документом. */
 const diplomas: ReadonlyArray<{
@@ -52,6 +53,7 @@ const diplomas: ReadonlyArray<{
 ];
 
 const defaultPhoto = '/images/photos/small/author01_small.jpg';
+const defaultLinkedinUrl = 'https://linkedin.com/in/olegsuvorov';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -87,9 +89,10 @@ export default async function AboutPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, about] = await Promise.all([
+  const [t, about, contact] = await Promise.all([
     getTranslations('about'),
     getAbout(lang).catch(() => null),
+    getContact().catch(() => null),
   ]);
 
   const photo = about?.photo ?? defaultPhoto;
@@ -119,6 +122,18 @@ export default async function AboutPage({ params }: Props) {
       previewSrc,
     };
   });
+  const profileProofs = t.raw('profileProofs') as string[];
+  const cvUrl = process.env.NEXT_PUBLIC_CV_URL?.trim();
+  const linkedinUrl = contact?.linkedin_url ?? defaultLinkedinUrl;
+  const sameAs = [linkedinUrl, contact?.youtube_url].filter(
+    Boolean
+  ) as string[];
+  const jsonLd = createAboutJsonLd({
+    locale,
+    description: t('profileSummaryLead'),
+    image: photo,
+    sameAs,
+  });
 
   const diplomaLabels = {
     openInModal: t('diplomaOpenInModal'),
@@ -129,7 +144,58 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <div className="container-wide section">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <h1 className="heading-2 mb-6 text-accent-orange">{t('title')}</h1>
+
+      <section className="card mb-10 grid gap-6 p-6 md:grid-cols-[1.5fr_1fr] md:p-8">
+        <div>
+          <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-accent-orange">
+            {t('profileSummaryEyebrow')}
+          </p>
+          <h2 className="heading-3 mb-3 text-foreground">
+            {t('profileSummaryTitle')}
+          </h2>
+          <p className="max-w-3xl text-foreground/80">
+            {t('profileSummaryLead')}
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <ul className="space-y-2 text-sm text-foreground/80">
+            {profileProofs.map((proof) => (
+              <li key={proof} className="flex gap-2">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-orange" />
+                <span>{proof}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-wrap gap-3">
+            {linkedinUrl ? (
+              <a
+                href={linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                {t('linkedinCta')}
+              </a>
+            ) : null}
+            {cvUrl ? (
+              <a
+                href={cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary"
+              >
+                {t('cvCta')}
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </section>
 
       <div className="grid w-full items-start gap-8 md:grid-cols-2 md:gap-12">
         {/* Фотография — те же пропорции ширины, что блок «Обо мне» на главной */}

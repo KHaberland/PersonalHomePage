@@ -44,13 +44,23 @@ const sectionColumns = [
     className: 'border-accent-orange/25 bg-accent-orange/10',
   },
   {
-    labelKey: 'analysis',
+    labelKey: 'cause',
+    listKey: 'causes',
+    className: 'border-border bg-background/35',
+  },
+  {
+    labelKey: 'engineeringAnalysis',
     listKey: 'analysisItems',
     className: 'border-accent-blue/25 bg-accent-blue/10',
   },
   {
-    labelKey: 'result',
-    listKey: 'results',
+    labelKey: 'solution',
+    listKey: 'solutionSteps',
+    className: 'border-border bg-background/35',
+  },
+  {
+    labelKey: 'expectedResult',
+    listKey: 'expectedResults',
     className: 'border-border bg-background/35',
   },
 ] as const;
@@ -84,8 +94,24 @@ export default async function SolutionsPage({ params }: Props) {
         <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
           {t('lead')}
         </p>
-        <Link href="/contact" className="btn-primary mt-8 inline-block">
-          {t('ctaContact')}
+      </section>
+
+      <section className="mt-8 rounded-2xl border border-accent-blue/30 bg-accent-blue/10 p-5 sm:p-6">
+        <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
+          {t('validationEyebrow')}
+        </p>
+        <h2 className="heading-3 mt-2 text-foreground">
+          {t('validationTitle')}
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/80">
+          {t('validationText')}
+        </p>
+        <Link
+          href="/experience"
+          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange underline-offset-4 hover:underline"
+        >
+          {t('validationCta')}
+          <span aria-hidden>→</span>
         </Link>
       </section>
 
@@ -122,7 +148,7 @@ export default async function SolutionsPage({ params }: Props) {
             id={anchorId}
             className="scroll-mt-28 rounded-2xl border border-border bg-surface/70 p-6 sm:p-8"
           >
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
               <div>
                 <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
                   {String(index + 1).padStart(2, '0')}
@@ -131,12 +157,9 @@ export default async function SolutionsPage({ params }: Props) {
                   {t(`sections.${itemKey}.title`)}
                 </h2>
               </div>
-              <Link href="/contact" className="btn-secondary w-fit">
-                {t('ctaContact')}
-              </Link>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
               {sectionColumns.map(({ labelKey, listKey, className }) => {
                 const items = t.raw(
                   `sections.${itemKey}.${listKey}`
@@ -169,14 +192,9 @@ export default async function SolutionsPage({ params }: Props) {
       <section className="mt-12 rounded-2xl border border-accent-orange/30 bg-accent-orange/10 p-6 sm:p-8">
         <h2 className="heading-3 text-foreground">{t('finalCtaTitle')}</h2>
         <p className="mt-3 max-w-3xl text-foreground/80">{t('finalCtaText')}</p>
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Link href="/contact" className="btn-primary w-fit">
-            {t('finalCtaContact')}
-          </Link>
-          <Link href="/expertise" className="btn-secondary w-fit">
-            {t('expertiseLink')}
-          </Link>
-        </div>
+        <Link href="/contact" className="btn-primary mt-6 inline-block">
+          {t('finalCtaContact')}
+        </Link>
       </section>
     </div>
   );

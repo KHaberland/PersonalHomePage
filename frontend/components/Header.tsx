@@ -2,26 +2,16 @@
 
 import { useState } from 'react';
 import { Link } from '@/i18n/navigation';
+import { primaryNavLinks } from '@/lib/ia';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from './LanguageSwitcher';
-
-const primaryNavLinks = [
-  { href: '/', key: 'home' as const, dropdown: null },
-  { href: '/about', key: 'about' as const, dropdown: null },
-  { href: '/experience', key: 'experience' as const, dropdown: null },
-  { href: '/expertise', key: 'expertise' as const, dropdown: null },
-  { href: '/solutions', key: 'solutions' as const, dropdown: null },
-  { href: '/tools', key: 'toolsNav' as const, dropdown: null },
-  { href: '/blog', key: 'blogKnowledge' as const, dropdown: null },
-  { href: '/knowledge', key: 'knowledgeNav' as const, dropdown: null },
-  { href: '/contact', key: 'contact' as const, dropdown: null },
-] as const;
 
 const navLinkClass =
   'block py-2 text-sm text-foreground/80 transition-colors hover:text-accent-orange md:inline-block md:py-0';
 
 export function Header() {
   const t = useTranslations('common');
+  const th = useTranslations('header');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobile = () => {
@@ -31,12 +21,17 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <nav className="container-wide flex items-center px-4 py-4 md:px-6">
-        <Link
-          href="/"
-          className="shrink-0 text-xl font-bold text-accent-orange transition-colors hover:text-accent-orange/90"
-        >
-          Oleg Suvorov
-        </Link>
+        <div className="shrink-0">
+          <Link
+            href="/"
+            className="block text-xl font-bold text-accent-orange transition-colors hover:text-accent-orange/90"
+          >
+            Oleg Suvorov
+          </Link>
+          <p className="hidden text-xs font-medium uppercase tracking-wide text-foreground/55 sm:block">
+            {th('systemLabel')}
+          </p>
+        </div>
 
         <div className="ml-4 hidden min-h-0 flex-1 items-center justify-between gap-4 md:flex">
           <div className="flex min-w-0 flex-wrap items-center gap-6">
@@ -56,7 +51,7 @@ export function Header() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="rounded p-2 text-foreground/80 hover:bg-surface hover:text-accent-orange"
             aria-expanded={mobileMenuOpen}
-            aria-label={mobileMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
+            aria-label={mobileMenuOpen ? th('menuClose') : th('menuOpen')}
           >
             {mobileMenuOpen ? (
               <svg
@@ -104,6 +99,9 @@ export function Header() {
                 {t(item.key)}
               </Link>
             ))}
+            <p className="mt-3 border-t border-border pt-3 text-xs font-medium uppercase tracking-wide text-foreground/55">
+              {th('systemFlow')}
+            </p>
           </div>
         </div>
       )}

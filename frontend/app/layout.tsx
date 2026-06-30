@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    'Professional welding engineer portfolio, technical blog, and engineering calculators. MIG/MAG, TIG welding. Shielding gases.',
+    'Engineering Decision System for welding: solution patterns, real-world validation, structured knowledge, and calculation tools for MIG/MAG, TIG, shielding gases, and defects.',
   openGraph: {
     type: 'website',
     locale: 'en_US',

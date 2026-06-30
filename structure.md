@@ -1,20 +1,157 @@
-# Структура сайта
+# Структура программы PersonalHomePage
 
-Документ описывает текущую структуру фронтенда сайта Oleg Suvorov Personal Home Page: страницы, основные блоки, якоря и ссылки.
+Документ описывает фактическую структуру проекта `PersonalHomePage` на текущем состоянии репозитория: frontend на Next.js, backend на Django REST Framework, маршруты сайта, API, ключевые компоненты, источники данных, локализацию, SEO и медиа.
 
-## Общие правила маршрутов
+## 1. Общая Архитектура
 
-- Сайт локализован на 3 языка: `en`, `ru`, `lv`.
-- В коде внутренние ссылки указаны без языкового префикса, например `/about`; `next-intl` добавляет текущую локаль. Итоговый URL выглядит как `/{locale}/about`, например `/ru/about`.
-- Главная страница доступна как `/{locale}`.
-- Переключатель языка ведёт на текущий путь в выбранной локали: `EN`, `RU`, `LV`.
-- Фактические статические маршруты frontend: `/`, `/about`, `/experience`, `/expertise`, `/solutions`, `/book`, `/tools`, `/knowledge`, `/blog`, `/contact`.
-- Динамические страницы: `/tools/{slug}` и `/blog/{slug}`.
-- В текущем `frontend/app/sitemap.ts` в `STATIC_PATHS` добавлены `/`, `/about`, `/experience`, `/book`, `/tools`, `/knowledge`, `/blog`, `/contact`; страницы `/expertise` и `/solutions` существуют как маршруты, но в `STATIC_PATHS` sitemap пока не указаны.
+Проект состоит из двух основных частей:
 
-## Сквозная структура
+- `frontend/` — публичный сайт на Next.js App Router, React 19, `next-intl`, Tailwind CSS.
+- `backend/` — Django REST API и админка для контента, блога, калькуляторов и контактов.
 
-### Header
+Основной сценарий работы:
+
+- Frontend получает контент из Django API через `frontend/lib/api.ts`.
+- Если API недоступен, часть страниц использует fallback-контент из локализационных JSON или статических массивов.
+- Backend хранит данные в SQLite в локальной разработке: `backend/db.sqlite3`.
+- Медиа и публичные статические файлы лежат в `frontend/public/` и `backend/media/`.
+
+Текущая смысловая модель сайта — `Engineering Decision System`.
+
+Главная цепочка восприятия:
+
+```text
+Problem -> Analysis -> Solution Pattern -> Real-world Validation -> Knowledge -> Tools
+```
+
+Доменная модель состоит из 3 слоёв:
+
+- `Decision Layer` — инженерная логика и паттерны решений: `/solutions`, `/expertise`.
+- `Evidence Layer` — подтверждение практикой и расчётами: `/experience`, `/tools`.
+- `Knowledge Layer` — объяснения, публикации и авторский артефакт: `/knowledge`, `/blog`, `/book`.
+
+Роли ключевых разделов:
+
+- Home — engineering entry page: кто специалист и какой путь выбрать дальше.
+- `/solutions` — solution patterns: типовые производственные проблемы, инженерный подход и модель решения без реальных кейсов.
+- `/expertise` — engineering capabilities: карта компетенций, за счёт которых возможны решения.
+- `/experience` — real cases and timeline: практическое подтверждение, действия и Engineering Impact.
+- `/tools` — deterministic calculators: расчёты и проверка параметров.
+- `/knowledge` — structured explanations: статьи, объяснения процессов и разборы дефектов.
+- `/blog` — chronological publications: CMS/content layer для публикаций.
+- `/book` — static authority artifact: авторский материал.
+- `/contact` — conversion.
+
+## 2. Frontend
+
+Корень frontend:
+
+- `frontend/app/` — App Router страницы, layout, sitemap, robots.
+- `frontend/app/layout.tsx` — корневой HTML layout, шрифт Inter, базовые metadata.
+- `frontend/components/` — переиспользуемые UI-компоненты.
+- `frontend/components/calculators/` — интерактивные калькуляторы.
+- `frontend/components/icons/` — SVG-иконки компетенций, сервисов и блока `WhyChoose`.
+- `frontend/i18n/` — маршрутизация и helpers `next-intl`.
+- `frontend/lib/` — API-клиент, типы, SEO helpers, fallback-контент, sanitizers.
+- `frontend/messages/` — переводы `en`, `ru`, `lv`.
+- `frontend/proxy.ts` — `next-intl` middleware/proxy для локализованных маршрутов.
+- `frontend/public/` — изображения, дипломы, видео, публичные ассеты.
+
+Ключевые файлы `frontend/lib/`:
+
+- `api.ts` — HTTP-клиент Django REST API и функции получения данных.
+- `api-types.ts` — TypeScript-типы ответов API и калькуляторов.
+- `fallback-content.ts` — fallback для инструментов и карточек блога.
+- `html-to-plain-text.ts` — очистка HTML до plain text для коротких CMS-полей.
+- `ia.ts` — канонический IA mapping: primary navigation, 3 слоя `Engineering Decision System` и support links.
+- `metadata.ts` — helpers для `generateMetadata`.
+- `sanitize-html.ts` — DOMPurify-конфигурация для HTML из CMS/переводов.
+- `seo.ts` — base URL, canonical, Open Graph, Twitter Card, JSON-LD.
+
+Команды:
+
+```powershell
+Set-Location "D:\Work_Cursor\PersonalHomePage\frontend"
+npm run dev
+npm run lint
+npm run build
+```
+
+## 3. Локализация И Маршруты
+
+Локализация:
+
+- Файл маршрутизации: `frontend/i18n/routing.ts`.
+- Локали: `en`, `ru`, `lv`.
+- Default locale: `en`.
+- Все публичные страницы живут под префиксом локали: `/en`, `/ru`, `/lv`.
+- В коде ссылки задаются без языкового префикса через `Link` из `@/i18n/navigation`.
+- `frontend/proxy.ts` применяет `next-intl` к маршрутам и исключает `api`, `trpc`, `_next`, `_vercel` и файлы со статическим расширением.
+
+Layout локали:
+
+- Файл: `frontend/app/[locale]/layout.tsx`.
+- Проверяет валидность локали через `hasLocale`.
+- Загружает сообщения `next-intl`.
+- Загружает контактные данные через `getContact()`.
+- Оборачивает страницы в `NextIntlClientProvider` и `Layout`.
+
+Физически доступные статические маршруты frontend:
+
+- `/`
+- `/about`
+- `/experience`
+- `/expertise`
+- `/solutions`
+- `/book`
+- `/tools`
+- `/knowledge`
+- `/blog`
+- `/contact`
+
+`/blog` и `/blog/{slug}` остаются content routes. `/blog` входит в Footer IA и sitemap как часть `Knowledge System`; `/blog/{slug}` остаётся динамическим маршрутом статей.
+
+`/book` входит в Footer IA и sitemap как часть `Knowledge System`, но не выводится в primary Header.
+
+Публичная UX-навигация сайта:
+
+- `/`;
+- `/solutions`;
+- `/experience`;
+- `/expertise`;
+- `/tools`;
+- `/knowledge`;
+- `/blog` — secondary link в Footer/Knowledge System;
+- `/book` — secondary link в Footer/Knowledge System;
+- `/about` — доступен из Footer/внутренних ссылок, но не primary nav;
+- `/contact`.
+
+Динамические маршруты:
+
+- `/tools/{slug}`
+- `/blog/{slug}`
+
+## 4. Сквозной Layout
+
+### 4.1. `Layout`
+
+Файл: `frontend/components/Layout.tsx`.
+
+Состав:
+
+- `Header`
+- `<main>`
+- `Footer`
+
+`Layout` получает `contact` из API и передает в `Footer`:
+
+- email;
+- LinkedIn;
+- YouTube.
+
+### 4.2. Header
+
+Файл: `frontend/components/Header.tsx`.
 
 Логотип:
 
@@ -22,545 +159,893 @@
 
 Основное меню:
 
-- `Главная` → `/`
-- `Обо мне` → `/about`
+- `Решения` → `/solutions`
 - `Опыт` → `/experience`
 - `Экспертиза` → `/expertise`
-- `Решения` → `/solutions`
 - `Инструменты` → `/tools`
-- `Блог / знания` → `/blog`
-- `База знаний — справочник` → `/knowledge`
+- `База знаний` → `/knowledge`
 - `Контакты` → `/contact`
 
-Мобильное меню повторяет основное меню.
+Особенности:
 
-### Footer
+- Список primary navigation берётся из `frontend/lib/ia.ts`.
+- Header sticky.
+- Desktop меню — горизонтальное.
+- Mobile меню открывается кнопкой и повторяет основной список.
+- Переключатель языка расположен в desktop и mobile вариантах.
 
-Бренд и подпись:
+### 4.3. Footer
 
-- `Oleg Suvorov`
-- `Инженер по сварке | Эксперт MIG/MAG, TIG, защитные газы`
+Файл: `frontend/components/Footer.tsx`.
 
-Контактные ссылки, если есть данные из API:
+Содержит:
 
-- Email → `mailto:{email}`
-- LinkedIn → внешний URL из API
-- YouTube → внешний URL из API
+- бренд `Oleg Suvorov`;
+- tagline из `footer.tagline`;
+- email, LinkedIn, YouTube, если они есть в API;
+- переключатель языка;
+- soft CTA `Контакт` → `/contact` (`btn-secondary`);
+- сгруппированную IA-карту `Engineering Decision System`;
+- support links.
 
-CTA:
+IA-группы Footer берутся из `frontend/lib/ia.ts`:
 
-- `Связаться` → `/contact`
+- `Engineering Reasoning`: `/solutions`, `/expertise`;
+- `Engineering Proof`: `/experience`, `/tools`;
+- `Knowledge System`: `/knowledge`, `/blog`, `/book`.
 
-Разделы главной:
+Support links Footer:
 
-- `Экспертиза` → `/#expertise`
-- `Решения` → `/#solutions`
-- `Кейсы` → `/#cases`
-- `Инструменты` → `/#tools`
-- `Блог` → `/#blog`
-- `Контакты` → `/#contact`
+- `/`;
+- `/about`;
+- `/contact`.
 
-Основные ссылки футера:
-
-- `Главная` → `/`
-- `Обо мне` → `/about`
-- `Опыт` → `/experience`
-- `Экспертиза` → `/expertise`
-- `Решения` → `/solutions`
-- `Кейсы` → `/#cases`
-- `Инструменты` → `/tools`
-- `Блог / знания` → `/blog`
-- `Контакты` → `/contact`
-
-Дополнительные ссылки футера:
-
-- `Книга` → `/book`
-- `База знаний — справочник` → `/knowledge`
-
-## Главная страница `/`
+## 5. Главная Страница `/`
 
 Файл: `frontend/app/[locale]/page.tsx`.
 
-Порядок блоков: Hero → `#solutions` → `#expertise` → `#cases` с краткой карточкой опыта → `#tools` → `#blog` → `#contact`.
+Главная — короткая `engineering entry page`, а не preview всех разделов сайта.
 
-### Hero
+Порядок блоков:
+
+1. `Hero`
+2. `EngineerIdentityStrip`
+3. `#decision-system`
+4. `#user-paths`
+5. `#proof`
+6. `#contact`
+
+### 5.1. Hero
 
 Файл: `frontend/components/Hero.tsx`.
 
-Содержимое:
+Содержит:
 
-- Видео/градиентный фон.
-- Заголовок: `Инженер по сварке (IWE)`.
-- Подзаголовок про оптимизацию сварочных процессов, снижение дефектов и внедрение WPS.
-- Акцент: `10+ лет практики | MIG/MAG, TIG, MMA | Автор книги по сварке`.
+- видео или градиентный фон;
+- заголовок `International Welding Engineer (IWE)`;
+- подзаголовок `Industrial welding process optimization & defect reduction`;
+- акцент `10+ лет практики | MIG/MAG, TIG, MMA | Автор книги по сварке`;
+- CTA:
+  - primary `Смотреть решения` → `/solutions`;
+  - secondary `Проверить расчёты` → `/tools`.
 
-Ссылки:
+Медиа и настройки:
 
-- `Связаться` → `/contact`
-- `Решения` → `/solutions`
-- `Инженерные инструменты` → `/tools`
-- `К экспертизе` → `/#expertise`
+- default видео: `/Video/welding-bg.MP4`.
+- `NEXT_PUBLIC_HERO_VIDEO_URL` — основной MP4 URL, если нужно переопределить default.
+- `NEXT_PUBLIC_HERO_VIDEO_WEBM` — дополнительный WebM source.
+- `NEXT_PUBLIC_HERO_VIDEO_POSTER` — poster для видео.
+- `NEXT_PUBLIC_HERO_OVERLAY_OPACITY` — затемнение видео на desktop, значение `0..1`, default `0.55`.
+- Если видео не загрузилось, остаётся CSS-градиент.
 
-### Мини-навигация по главной
+### 5.2. Блок `#decision-system`
 
-Файл: `frontend/components/HomeSectionProgress.tsx`.
+Коротко объясняет 3 слоя `Engineering Decision System`:
 
-Фиксированная навигация справа на больших экранах:
+- `Reasoning` → `/solutions`, `/expertise`;
+- `Proof` → `/experience`, `/tools`;
+- `Knowledge` → `/knowledge`, `/blog`, `/book`.
 
-- `Экспертиза` → `/#expertise`
-- `Решения` → `/#solutions`
-- `Кейсы` → `/#cases`
-- `Инструменты` → `/#tools`
-- `Блог` → `/#blog`
-- `Контакты` → `/#contact`
+### 5.3. Блок `#user-paths`
 
-### Решения для производства `#solutions`
+Главный UX-хаб из четырёх путей:
 
-Блок построен как связка `задача/действие → результат`.
+- `Solve my problem` → `/solutions`;
+- `See experience` → `/experience`;
+- `Understand the process` → `/knowledge`;
+- `Check engineering` → `/tools`.
 
-Подблоки и якоря:
+Назначение блока — направить пользователя к одному из четырёх ответов: что решается, чем подтверждается опыт, где понять процесс, где расчётная проверка.
 
-- `Снижение дефектов` → `#solutions-defect-reduction`
-- `Оптимизация процессов` → `#solutions-process-optimization`
-- `Подбор газов` → `#solutions-gas-selection`
-- `Обучение` → `#solutions-training`
+### 5.4. Блок `#proof`
 
-Ссылка:
+Короткая proof strip:
 
-- `Подробнее о решениях` → `/solutions`
+- `10+ years`;
+- `IWE`;
+- `Book author`;
+- `Industry experience`.
 
-### Экспертиза `#expertise`
+### 5.5. Блок `#contact`
 
-Preview технических навыков:
+Короткий CTA на `/contact` для реальной производственной задачи после выбора соответствующего слоя системы.
 
-- `MIG/MAG сварка` → якорь `#expertise-mig-mag`
-- `TIG сварка алюминия / нержавеющей стали` → якорь `#expertise-tig`
-- `Защитные газы для MIG/MAG/TIG` → якорь `#expertise-gases`
+На главной больше нет preview-блоков `solutions`, `experience`, `expertise`, `tools`, `knowledge` и нет локальной навигации `HomeSectionProgress`.
 
-Ссылка:
-
-- `Вся экспертиза` → `/expertise`
-
-### Кейсы `#cases`
-
-Карточки на главной:
-
-- `Снижение дефектов при MAG-сварке`
-- `Обучение сварщиков с нуля`
-- `Подбор защитного газа`
-
-Ссылка:
-
-- `Все кейсы` → `/experience`
-
-Компактная карточка опыта внутри блока:
-
-- `IWE инженер по сварке`.
-- `Elme Messer Gaas`.
-- `Преподаватель сварки`.
-
-Ссылка карточки:
-
-- `Полный опыт` → `/experience`
-
-### Инженерные калькуляторы `#tools`
-
-На главной показываются до 6 карточек инструментов.
-
-Ссылки карточек:
-
-- `Калькулятор защитного газа` → `/tools/shielding-gas`
-- `Калькулятор тепловложения` → `/tools/heat-input`
-- `Калькулятор расхода газа` → `/tools/gas-flow`
-- `Калькулятор газовой резки` → `/tools/gas-cutting`
-- `Калькулятор стоимости сварки` → `/tools/welding-cost`
-- `Калькулятор параметров сварки` → `/tools/welding-parameters`
-
-Ссылка блока:
-
-- `Все калькуляторы` → `/tools`
-
-### Последние статьи `#blog`
-
-Содержимое:
-
-- До 3 последних статей из API.
-- Если API недоступен, показываются 3 fallback-карточки.
-
-Ссылки:
-
-- Карточка статьи → `/blog/{slug}`
-- Fallback-карточки → `/blog`
-- `Все статьи` → `/blog`
-
-### CTA / Контакт `#contact`
-
-Содержимое:
-
-- Финальный призыв обсудить проблемы качества сварки, дефекты или затраты.
-
-Ссылки:
-
-- `Связаться` → `/contact`
-- `Email` → `mailto:{email}`, если email есть в API
-- `WhatsApp` → `https://wa.me/{NEXT_PUBLIC_WHATSAPP_NUMBER}`, если задана переменная окружения
-- `LinkedIn` → внешний URL из API, если есть
-- `YouTube` → внешний URL из API, если есть
-
-## Страница `/solutions`
+## 6. Страница `/solutions`
 
 Файл: `frontend/app/[locale]/solutions/page.tsx`.
 
-### Основные блоки
+Namespace переводов:
 
-- Hero-блок с заголовком `Решения для производства`, описанием инженерной поддержки сварочных процессов и CTA `Связаться` → `/contact`.
-- Навигационные карточки с якорями на подробные секции.
-- Подробные якорные секции решений в структуре `Проблемы` → `Анализ` → `Результат`.
-- Финальный CTA на контакт и вторичная ссылка на `/expertise`.
+- `solutionsPage`.
 
-### Навигационные карточки
+Назначение: outcome-страница. Это единственное место сайта, где подробно раскрываются производственные задачи: проблема, возможная причина, инженерный анализ, решение и ожидаемый результат.
 
-- `Снижение дефектов` → `#solutions-defect-reduction`.
-- `Оптимизация процессов` → `#solutions-process-optimization`.
-- `Подбор газов` → `#solutions-gas-selection`.
-- `Обучение` → `#solutions-training`.
-- `Поддержка проектов` → `#solutions-wps-support`.
+Блоки:
 
-### Якорные секции
+- Hero с H1 `Решения`.
+- Навигационные карточки-якоря.
+- Подробные секции решений.
+- Один финальный hard CTA `Контакт` → `/contact`.
 
-Каждая секция содержит:
+Навигационные карточки:
 
-- `Проблемы` — что идет не так на производстве.
-- `Анализ` — что инженер проверяет.
-- `Результат` — что получает клиент.
+- `Снижение дефектов` → `#solutions-defect-reduction`;
+- `Стабильность процесса` → `#solutions-process-optimization`;
+- `Подбор защитных газов` → `#solutions-gas-selection`;
+- `Обучение персонала` → `#solutions-training`;
+- `Поддержка проектов / WPS` → `#solutions-wps-support`.
 
-Секции:
+Якорные секции:
 
-- `Снижение дефектов сварки` → `#solutions-defect-reduction`.
-- `Оптимизация сварочных процессов` → `#solutions-process-optimization`.
-- `Подбор защитных газов` → `#solutions-gas-selection`.
-- `Обучение персонала` → `#solutions-training`.
+- `Снижение дефектов сварки` → `#solutions-defect-reduction`;
+- `Стабильность сварочного процесса` → `#solutions-process-optimization`;
+- `Подбор защитных газов` → `#solutions-gas-selection`;
+- `Обучение персонала` → `#solutions-training`;
 - `Поддержка проектов / внедрение WPS` → `#solutions-wps-support`.
 
-### Ссылки
+Каждая секция содержит 5 карточек этапов:
 
-- `Связаться` → `/contact`.
-- `Посмотреть экспертизу` → `/expertise`.
+- `Проблема`;
+- `Причина`;
+- `Инженерный анализ`;
+- `Решение`;
+- `Ожидаемый результат`.
 
-## Страница `/expertise`
+## 7. Страница `/expertise`
 
 Файл: `frontend/app/[locale]/expertise/page.tsx`.
 
-### Основные блоки
+Назначение: static capability layer. Это карта инженерных компетенций без кейсов, историй и продаж.
 
-- Заголовок `Экспертиза`.
-- Вводный текст о технических направлениях.
-- Полная сетка компетенций.
-- Финальный CTA на контакт.
+Блоки:
 
-### Компетенции
+- H1 `Экспертиза`.
+- Вводный текст `home.expertisePageIntro`.
+- Сетка компетенций с capability-only описаниями.
+- Групповые labels: `Processes`, `Materials`, `Gases`, `Metallurgy`, `Safety`.
+- CTA в `/solutions` как применение компетенций.
+- CTA в `/experience` как практическое подтверждение.
 
-- `MIG/MAG сварка` → `#expertise-mig-mag`.
-- `TIG сварка алюминия / нержавеющей стали` → `#expertise-tig`.
-- `Защитные газы для MIG/MAG/TIG` → `#expertise-gases`.
-- `Металлургия сварки` → `#expertise-metallurgy`.
-- `Газы для резки` → `#expertise-quality`.
+Компетенции и якоря:
+
+- `MIG/MAG сварка` → `#expertise-mig-mag`;
+- `TIG сварка алюминия / нержавеющей стали` → `#expertise-tig`;
+- `Защитные газы для MIG/MAG/TIG` → `#expertise-gases`;
+- `Металлургия сварки` → `#expertise-metallurgy`;
+- `Газы для резки` → `#expertise-quality`;
 - `Техника безопасности с газами` → `#expertise-safety`.
 
-### Ссылки
-
-- `Связаться` → `/contact`.
-
-## Страница `/about`
+## 8. Страница `/about`
 
 Файл: `frontend/app/[locale]/about/page.tsx`.
 
-### Основные блоки
+Данные:
 
-- Заголовок `Обо мне`.
-- Фото.
+- API `GET /api/about/?lang={locale}`;
+- fallback из `messages/{locale}.json` namespace `about`.
+
+Блоки:
+
+- H1 `Обо мне`.
+- Engineering profile summary.
+- LinkedIn CTA.
+- CV CTA, если задан `NEXT_PUBLIC_CV_URL`.
+- Основное фото.
 - Биография.
-- `Образование`, если есть текст из API или fallback.
-- `Профессиональные квалификации`, если есть текст из API или fallback.
+- `Образование`, если есть видимый текст.
+- `Профессиональные квалификации`, если есть видимый текст.
 - `Дипломы и сертификаты`.
 - Галерея фотографий с работы.
 
-### Дипломы и сертификаты
+Безопасность HTML:
 
-Карточки документов:
+- HTML биографии, образования и квалификаций проходит через `sanitizeAboutHtml`.
 
-- `Бакалавр` → `/images/photos/small/IMG_bakalv_165628.jpg`
-- `Магистр (РТУ)` → `/images/photos/small/magist1.jpg`
-- `Сертификат международного инженера по сварке (IWE)` → `/diplomas/IWE_diploms.pdf`
-- `Сварка MMA/MAG` → `/images/photos/small/MMA_dipl.jpg`
-- `Сварка TIG` → `/images/photos/small/BUTS1_dipl.jpg`
+Документы:
 
-Ссылки и действия:
+- `Бакалавр` → `/images/photos/small/IMG_bakalv_165628.jpg`;
+- `Магистр (РТУ)` → `/images/photos/small/magist1.jpg`;
+- `Сертификат международного инженера по сварке (IWE)` → `/diplomas/IWE_diploms.pdf`;
+- `Сварка MMA/MAG` → `/images/photos/small/MMA_dipl.jpg`;
+- `Сварка TIG` → `/images/photos/small/BUTS1_dipl.jpg`.
 
-- `Просмотреть` → открывает документ в модальном окне.
-- `В новой вкладке` → открывает активный документ по прямому URL.
-- `Закрыть` → закрывает модальное окно.
+Текущее замечание по ассетам:
 
-### Галерея
+- Файл `/diplomas/IWE_diploms.pdf` ожидается кодом страницы `/about`; если его нет в `frontend/public/diplomas/`, ссылка на документ откроет 404.
+- Для документов-изображений preview совпадает с документом.
+- Для PDF без `preview` показывается placeholder.
 
-Изображения:
+Компонент документов:
 
-- `/images/photos/small/FB_IMG_gas.jpg`
-- `/images/photos/small/IMG_20250714_MAG.jpg`
-- `/images/photos/small/mag_weld2.jpg`
-- `/images/photos/small/tig_weld.jpg`
+- `frontend/components/DiplomaCertificates.tsx`.
 
-## Страница `/experience`
+## 9. Страница `/experience`
 
 Файл: `frontend/app/[locale]/experience/page.tsx`.
 
-### Основные блоки
+Данные:
 
-- Заголовок `Профессиональный опыт`.
-- Таймлайн опыта из API или fallback.
-- `Кейсы` с аккордеоном.
-- `Проекты и направления`.
-- `Результаты`.
-- `Отзывы и форматы работы`.
-- `Фотографии с работы`.
+- API `GET /api/experience/?lang={locale}`;
+- fallback из namespace `experience`.
 
-### Таймлайн
+Блоки:
 
-Fallback-записи:
+- H1 `Профессиональный опыт`.
+- Таймлайн опыта.
+- `#cases` с аккордеоном в структуре `Контекст` / `Проблема` / `Что было сделано` / `Результат`.
+- `#engineering-impact` — единый блок `Engineering Impact`.
+- Галерея фотографий.
 
-- `Elme Messer Gaas` / `Инженер по сварке` / `2015 — настоящее время`
-- `Учебный центр BUTS` / `Преподаватель сварки` / `2013 — 2015`
-- `Производственный опыт` / `Сварщик` / `До 2013`
+Блок `Engineering Impact`:
 
-Если API возвращает записи, используются данные из API.
+- реализован локальными компонентами `EngineeringImpactSection` и `ImpactCard` в `frontend/app/[locale]/experience/page.tsx`;
+- заменяет прежние отдельные секции `Проекты и направления` и `Результаты`;
+- на desktop выводится сеткой из 2 колонок, на mobile карточки идут друг под другом;
+- содержит 2 карточки:
+  - `Engineering Approach` — короткие инженерные тезисы о подходе к процессу;
+  - `Engineering Impact` — короткие тезисы о наблюдаемом производственном эффекте;
+- контент хранится в `messages/{locale}.json` namespace `experience`:
+  - `engineeringImpactTitle`;
+  - `engineeringApproachTitle`;
+  - `engineeringImpactCardTitle`;
+  - `engineeringApproachItems`;
+  - `engineeringImpactItems`.
 
-### Кейсы `#cases`
+Fallback-записи таймлайна:
 
-Аккордеон:
+- `Elme Messer Gaas` / `Инженер по сварке` / `2015 — настоящее время`;
+- `Учебный центр BUTS` / `Преподаватель сварки` / `2013 — 2015`;
+- `Производственный опыт` / `Сварщик` / `До 2013`.
 
-- `Защитный газ и режимы MAG для металлоцеха`
-- `TIG по алюминию — тепловложение и контроль валика`
-- `Обучение и документация «под аудит»`
+Компонент кейсов:
 
-Ссылки внутри раскрытых кейсов:
+- `frontend/components/ExperienceCaseAccordion.tsx`.
 
-- `Блог — статьи и заметки` → `/blog`
-- `Калькулятор тепловложения` → `/tools/heat-input`
-- `Обсудить похожий запрос` → `/contact`
+Кейсы:
 
-### Фотографии
+- `Защитный газ и режимы MAG для металлоцеха`;
+- `TIG по алюминию — тепловложение и контроль валика`;
+- `Обучение и документация «под аудит»`.
 
-Изображения:
+Ссылки из кейсов:
 
-- `/images/photos/DSC_2992.jpg`
-- `/images/photos/DSC_3010.jpg`
-- `/images/photos/IMG20250618100959.jpg`
+- `/knowledge`;
+- `/tools/heat-input`;
+- `/contact`.
 
-## Страница `/book`
+## 10. Техническая Страница `/book`
 
 Файл: `frontend/app/[locale]/book/page.tsx`.
 
-### Основные блоки
+Статус: страница физически доступна, использует API книги и входит в `Knowledge System` как static authority artifact. Страница присутствует в Footer IA и sitemap, но не в primary Header.
 
-- Заголовок книги.
-- Локализованная обложка:
-  - `en` → `/images/book/welding_en.jpg`.
-  - `ru` → `/images/book/MIG_MAG_welding_ru.jpg`.
-  - `lv` → `/images/book/MIG_MAG_metinasana.jpg`.
+Данные:
+
+- API `GET /api/book/?lang={locale}`;
+- fallback из namespace `book`.
+- контакты через `GET /api/contact/`.
+
+Блоки:
+
+- H1 с названием книги.
+- Локализованная обложка.
 - Подзаголовок.
 - Год.
-- Описание книги.
-- Превью разворота.
+- HTML-описание.
+- Превью разворота книги.
 - Цитата/социальное подтверждение.
-- Блок `Как приобрести` с текстом:
-  - `ru`: `Электронная версия доступна по запросу.`
-  - `en`: `The digital edition is available on request.`
-  - `lv`: `Elektroniskā versija ir pieejama pēc pieprasījuma.`
+- Блок покупки.
 
-### Ссылки
+Локализованные обложки:
 
-- `Связаться для приобретения` → `/contact`
-- `Написать на email` → `mailto:{email}?subject=Заказ книги MAG/MIG`, если email есть в API
-- `Купить в магазине` → внешний URL из `NEXT_PUBLIC_BOOK_PURCHASE_URL`, если задан
-- `Скачать фрагмент` → внешний URL из `NEXT_PUBLIC_BOOK_DOWNLOAD_URL`, если задан
+- `en` → `/images/book/welding_en.jpg`;
+- `ru` → `/images/book/MIG_MAG_welding_ru.jpg`;
+- `lv` → `/images/book/MIG_MAG_metinasana.jpg`.
 
-## Страница `/tools`
+Компоненты:
+
+- `frontend/components/BookSpreadPreview.tsx`.
+
+Ссылки:
+
+- `Связаться для приобретения` → `/contact`;
+- `Написать на email` → `mailto:{email}?subject=...`, если email есть в API;
+- `Купить в магазине` → `NEXT_PUBLIC_BOOK_PURCHASE_URL`, если задан;
+- `Скачать фрагмент` → `NEXT_PUBLIC_BOOK_DOWNLOAD_URL`, если задан.
+
+## 11. Страница `/tools`
 
 Файл: `frontend/app/[locale]/tools/page.tsx`.
 
-### Основные блоки
+Назначение: truth layer. Раздел не является маркетинговой страницей, методологией или обучающим хабом; он показывает только расчёты и проверку параметров.
 
-- Заголовок `Инженерные калькуляторы`.
-- Описание.
+Данные:
+
+- API `GET /api/tools/`;
+- fallback через `buildFallbackTools()`.
+
+Блоки:
+
+- Eyebrow `Truth layer` / `Слой расчётов`.
+- H1 `Инструменты`.
+- Описание в стиле `calculator / parameter checks`.
 - Сетка карточек инструментов.
 
-### Ссылки карточек
+Карточка инструмента:
 
-- `Калькулятор защитного газа` → `/tools/shielding-gas`
-- `Калькулятор тепловложения` → `/tools/heat-input`
-- `Калькулятор расхода газа` → `/tools/gas-flow`
-- `Калькулятор газовой резки` → `/tools/gas-cutting`
-- `Калькулятор стоимости сварки` → `/tools/welding-cost`
-- `Калькулятор параметров сварки` → `/tools/welding-parameters`
+- Компонент `frontend/components/ToolCardLink.tsx`.
 
-Если API возвращает другой список инструментов, карточки строятся по данным API, но URL остаётся формата `/tools/{slug}`.
+Ссылки:
 
-## Страница калькулятора `/tools/{slug}`
+- `/tools/shielding-gas`;
+- `/tools/heat-input`;
+- `/tools/gas-flow`;
+- `/tools/gas-cutting`;
+- `/tools/welding-cost`;
+- `/tools/welding-parameters`.
+
+## 12. Страница Калькулятора `/tools/{slug}`
 
 Файл: `frontend/app/[locale]/tools/[slug]/page.tsx`.
 
+Реестр slug:
+
+- `frontend/components/calculators/index.tsx`.
+
+Динамическая загрузка:
+
+- `frontend/components/calculators/loadCalculator.ts`.
+
 Доступные slug:
 
-- `shielding-gas`
-- `heat-input`
-- `gas-flow`
-- `gas-cutting`
-- `welding-cost`
-- `welding-parameters`
+- `heat-input`;
+- `gas-flow`;
+- `shielding-gas`;
+- `gas-cutting`;
+- `welding-cost`;
+- `welding-parameters`.
 
-### Общие блоки
+Структура страницы:
 
-- Заголовок инструмента.
-- Описание назначения калькулятора.
+- H1 с названием калькулятора.
+- Lead из `calculators.pages.{slug}.lead`.
 - Блок `Пример результата (иллюстрация)`.
-- Интерактивная карточка калькулятора.
+- Блок `Инженерное применение` с пояснением, что расчёт является отправной точкой и проверяется по материалу, WPS, оборудованию и пробным швам.
+- Интерактивный калькулятор.
 
-### Конкретные страницы
+Компоненты калькуляторов:
 
-- `/tools/shielding-gas` — калькулятор защитного газа.
-- `/tools/heat-input` — калькулятор тепловложения.
-- `/tools/gas-flow` — калькулятор расхода газа.
-- `/tools/gas-cutting` — калькулятор газовой резки.
-- `/tools/welding-cost` — калькулятор стоимости сварки.
-- `/tools/welding-parameters` — калькулятор параметров сварки.
+- `HeatInputCalculator.tsx`;
+- `GasFlowCalculator.tsx`;
+- `ShieldingGasCalculator.tsx`;
+- `GasCuttingCalculator.tsx`;
+- `WeldingCostCalculator.tsx`;
+- `WeldingParametersCalculator.tsx`.
 
-Если slug не входит в список доступных калькуляторов, открывается 404.
+Общие компоненты:
 
-## Страница `/knowledge`
+- `CalculatorField.tsx`;
+- `CalculatorStaticExample.tsx`.
+
+Если slug не входит в `CALCULATOR_SLUGS`, открывается 404.
+
+## 13. Страница `/knowledge`
 
 Файл: `frontend/app/[locale]/knowledge/page.tsx`.
 
-### Основные блоки
+Назначение: reference layer / structured explanations. Раздел содержит тематические объяснения процессов и разборы дефектов; он не является источником static expertise, вторым blog или sales page книги.
 
-- Заголовок `База знаний по сварке`.
-- Описание.
-- Ссылка на блог как хронологическую ленту.
-- Разделы базы знаний по категориям.
+Данные:
 
-### Ссылка в описании
+- `GET /api/categories/`;
+- `GET /api/posts/?category_slug={slug}&lang={locale}&page=1`.
 
-- `Блог — статьи` → `/blog`
+Блоки:
 
-### Разделы базы знаний
+- Локализованный eyebrow knowledge/reference layer.
+- H1 `База знаний по сварке`.
+- Описание content hub.
+- Тематические разделы статей.
 
-- `Сварка MIG/MAG` → категория `welding-technology`
-- `Сварка TIG` → категория `welding-equipment`
-- `Защитные газы` → категория `shielding-gases`
-- `Газовая резка` → категория `gas-cutting`
-- `Сварочная металлургия` → категория `welding-metallurgy`
-- `Дефекты сварки` → категория `welding-defects`
+Разделы:
 
-В каждом разделе:
+- `Сварка MIG/MAG` → category slug `welding-technology`;
+- `Сварка TIG` → category slug `welding-equipment`;
+- `Защитные газы` → category slug `shielding-gases`;
+- `Газовая резка` → category slug `gas-cutting`;
+- `Сварочная металлургия` → category slug `welding-metallurgy`;
+- `Дефекты сварки` → category slug `welding-defects`.
 
-- Карточки статей → `/blog/{slug}`
-- `Все статьи раздела` → `/blog?category_slug={categorySlug}`
+Ссылки:
 
-## Страница `/blog`
+- статья → `/blog/{slug}`;
+
+`/knowledge` является reference layer: тематические группы, process logic и technical background. Карточки ведут на `/blog/{slug}`, но microcopy отделяет structured explanations от хронологического `/blog`. `/blog` и `/book` доступны как secondary routes в `Knowledge System`.
+
+## 14. Страница `/blog`
 
 Файл: `frontend/app/[locale]/blog/page.tsx`.
 
-### Основные блоки
+Данные:
 
-- Заголовок `Блог`.
+- `GET /api/posts/?lang={locale}&page={page}`;
+- `GET /api/categories/`;
+- `GET /api/tags/`.
+
+Фильтры query string:
+
+- `category_slug`;
+- `tag_slug`;
+- `page`.
+
+Блоки:
+
+- H1 `Блог`.
 - Описание.
-- Ссылка на базу знаний.
-- Фильтр по категориям.
-- Фильтр по тегам, если теги есть в API.
+- Ссылка на `/knowledge`.
+- Фильтр категорий.
+- Фильтр тегов, если теги есть.
 - Сетка статей.
 - Пагинация.
 
-### Ссылки
+Ссылки:
 
-- `База знаний — справочник` → `/knowledge`
-- `Все` категории → `/blog` или `/blog?tag_slug={tagSlug}`
-- Категория → `/blog?category_slug={categorySlug}` с сохранением тега, если он выбран
-- `Все теги` → `/blog` или `/blog?category_slug={categorySlug}`
-- Тег → `/blog?tag_slug={tagSlug}` с сохранением категории, если она выбрана
-- Карточка статьи → `/blog/{slug}`
-- `Назад` в пагинации → `/blog?...&page={page - 1}`
-- `Вперёд` в пагинации → `/blog?...&page={page + 1}`
+- категория → `/blog?category_slug={slug}`;
+- тег → `/blog?tag_slug={slug}`;
+- статья → `/blog/{slug}`;
+- пагинация → `/blog?...&page={n}`.
 
-## Страница статьи `/blog/{slug}`
+## 15. Страница Статьи `/blog/{slug}`
 
 Файл: `frontend/app/[locale]/blog/[slug]/page.tsx`.
 
-### Основные блоки
+Данные:
 
-- Ссылка возврата к блогу.
-- Категория статьи, если есть.
-- Заголовок.
-- Автор и дата публикации.
-- Обложка, если есть.
-- HTML-контент статьи.
-- Дополнительные изображения из статьи.
-- Теги.
-- Похожие статьи по категории.
-- JSON-LD `Article` для SEO.
+- `GET /api/posts/{slug}/?lang={locale}`.
 
-### Ссылки
+Блоки:
 
-- `Назад к блогу` → `/blog`
-- Категория статьи → `/blog?category_slug={categorySlug}`
-- Похожие статьи → `/blog/{relatedSlug}`
+- ссылка возврата к блогу;
+- категория;
+- H1 статьи;
+- автор и дата публикации;
+- обложка;
+- HTML-контент;
+- дополнительные изображения;
+- теги;
+- похожие статьи;
+- JSON-LD `Article`.
 
-Если статья не найдена в API, открывается 404.
+Если статья не найдена, открывается 404.
 
-## Страница `/contact`
+## 16. Страница `/contact`
 
 Файл: `frontend/app/[locale]/contact/page.tsx`.
 
-### Основные блоки
+Данные:
 
-- Заголовок `Контакты`.
+- `GET /api/contact/`.
+
+Блоки:
+
+- H1 `Запросить консультацию`.
 - Описание.
-- Форма сообщения, если email есть в API.
+- `ContactForm`, если email есть.
 - Контактные карточки.
 - Карта.
 
-### Форма сообщения
+Форма:
 
-Поля:
+- Компонент `frontend/components/ContactForm.tsx`.
+- Формирует `mailto:{email}` с subject/body.
+- Содержит максимум 3 типа запроса:
+  - `Дефекты / качество шва`;
+  - `Процесс / поддержка WPS`;
+  - `Обучение / навыки`.
 
-- `Имя`
-- `Ваш email`
-- `Сообщение`
+Контактные ссылки:
 
-Действие:
+- email → `mailto:{email}`;
+- LinkedIn → внешний URL;
+- YouTube → внешний URL.
 
-- `Открыть почтовый клиент` → формирует `mailto:{email}?subject=Запрос с сайта&body=...`
+Карта:
 
-### Контактные ссылки
+- `NEXT_PUBLIC_MAP_EMBED_URL`, если задан;
+- fallback OpenStreetMap с точкой в районе Риги.
 
-- Email → `mailto:{email}`, если email есть в API
-- LinkedIn → внешний URL из API, если есть
-- YouTube → внешний URL из API, если есть
+## 17. Frontend API-Клиент
 
-### Карта
+Файл: `frontend/lib/api.ts`.
 
-- `iframe` с URL из `NEXT_PUBLIC_MAP_EMBED_URL`, если задан.
-- Fallback-карта: OpenStreetMap с точкой в районе Риги.
+Base URL:
 
-## SEO и sitemap
+- `NEXT_PUBLIC_API_URL`;
+- fallback: `http://localhost:8000/api`.
 
-В sitemap добавляются:
+Основные методы:
 
-- Страницы из `STATIC_PATHS` файла `frontend/app/sitemap.ts` для каждой локали: `/`, `/about`, `/experience`, `/book`, `/tools`, `/knowledge`, `/blog`, `/contact`.
-- Все страницы калькуляторов для каждой локали.
-- Страницы статей `/blog/{slug}` для каждой локали, если API доступен при генерации sitemap.
+- `getPosts(lang, params)` → `/posts/`;
+- `getPost(slug, lang)` → `/posts/{slug}/`;
+- `getCategories()` → `/categories/`;
+- `getTags()` → `/tags/`;
+- `getAbout(lang)` → `/about/`;
+- `getExperience(lang)` → `/experience/`;
+- `getBook(lang)` → `/book/`;
+- `getContact()` → `/contact/`;
+- `getTools()` → `/tools/`.
+
+Legacy/резервные методы, которые API сохраняет, но новая главная v3.0 не использует:
+
+- `getHomeTechnicalSkills(lang)` → `/home-technical-skills/`;
+- `getHomeBusinessOutcomes(lang)` → `/home-business-outcomes/`.
+
+POST-методы калькуляторов:
+
+- `calculateHeatInput()` → `/calculate/heat-input/`;
+- `calculateGasFlow()` → `/calculate/gas-flow/`;
+- `calculateShieldingGas()` → `/calculate/shielding-gas/`;
+- `calculateGasCutting()` → `/calculate/gas-cutting/`;
+- `calculateWeldingCost()` → `/calculate/welding-cost/`;
+- `calculateWeldingParameters()` → `/calculate/welding-parameters/`.
+
+Типы API:
+
+- `frontend/lib/api-types.ts`.
+
+## 18. Backend
+
+Корень backend:
+
+- `backend/manage.py`;
+- `backend/config/settings.py`;
+- `backend/config/urls.py`;
+- `backend/apps/pages/`;
+- `backend/apps/blog/`;
+- `backend/apps/calculators/`;
+- `backend/apps/users/`;
+- `backend/media/`;
+- `backend/staticfiles/`.
+
+Команды:
+
+```powershell
+Set-Location "D:\Work_Cursor\PersonalHomePage\backend"
+.\.venv\Scripts\python.exe manage.py runserver
+```
+
+Главный URLConf:
+
+- `backend/config/urls.py`.
+
+Подключенные routes:
+
+- `/admin/`;
+- `/ckeditor5/`;
+- `/api/` → users;
+- `/api/` → blog;
+- `/api/` → pages;
+- `/api/` → calculators;
+- `/api/` → media.
+
+## 19. Backend App `pages`
+
+Файлы:
+
+- `backend/apps/pages/models.py`;
+- `backend/apps/pages/views.py`;
+- `backend/apps/pages/serializers.py`;
+- `backend/apps/pages/urls.py`;
+- `backend/apps/pages/admin.py`.
+
+Endpoints:
+
+- `GET /api/about/`;
+- `GET /api/experience/`;
+- `GET /api/book/`;
+- `GET /api/contact/`;
+- `GET /api/home-technical-skills/`;
+- `GET /api/home-business-outcomes/`.
+
+Модели:
+
+- `AboutMain` — legacy/резервный краткий блок `Обо мне`.
+- `About` — полная страница `/about`.
+- `Experience` — записи таймлайна.
+- `Book` — контент страницы книги.
+- `HomeTechnicalSkillsIntro` — legacy/резервный lead технических навыков.
+- `HomeTechnicalSkillCard` — legacy/резервные карточки технических навыков.
+- `HomeBusinessOutcomesIntro` — legacy/резервный intro business outcomes.
+- `HomeBusinessOutcomeCard` — legacy/резервные карточки business outcomes.
+- `Contact` — email, LinkedIn, YouTube.
+
+## 20. Backend App `blog`
+
+Файлы:
+
+- `backend/apps/blog/models.py`;
+- `backend/apps/blog/views.py`;
+- `backend/apps/blog/serializers.py`;
+- `backend/apps/blog/filters.py`;
+- `backend/apps/blog/urls.py`;
+- `backend/apps/blog/admin.py`.
+
+Endpoints:
+
+- `GET /api/posts/`;
+- `GET /api/posts/{slug}/`;
+- `GET /api/categories/`;
+- `GET /api/tags/`.
+
+Модели:
+
+- `Author`;
+- `Category`;
+- `Tag`;
+- `Post`;
+- `PostImage`.
+
+Особенности:
+
+- Посты мультиязычные: `title_en/ru/lv`, `content_en/ru/lv`, `excerpt_en/ru/lv`.
+- Статусы постов: `draft`, `published`.
+- Список постов поддерживает фильтрацию по category/tag.
+
+## 21. Backend App `calculators`
+
+Файлы:
+
+- `backend/apps/calculators/models.py`;
+- `backend/apps/calculators/views.py`;
+- `backend/apps/calculators/serializers.py`;
+- `backend/apps/calculators/services.py`;
+- `backend/apps/calculators/urls.py`;
+- `backend/apps/calculators/admin.py`.
+
+Endpoints:
+
+- `GET /api/tools/`;
+- `POST /api/calculate/heat-input/`;
+- `POST /api/calculate/gas-flow/`;
+- `POST /api/calculate/shielding-gas/`;
+- `POST /api/calculate/gas-cutting/`;
+- `POST /api/calculate/welding-cost/`;
+- `POST /api/calculate/welding-parameters/`.
+
+Модель:
+
+- `Calculator` — имя, описание, slug.
+
+Расчётные функции:
+
+- `calculate_heat_input`;
+- `calculate_gas_flow`;
+- `calculate_shielding_gas`;
+- `calculate_gas_cutting`;
+- `calculate_welding_cost`;
+- `calculate_welding_parameters`.
+
+## 22. Backend App `users`
+
+Файлы:
+
+- `backend/apps/users/models.py`;
+- `backend/apps/users/views.py`;
+- `backend/apps/users/serializers.py`;
+- `backend/apps/users/backends.py`;
+- `backend/apps/users/admin_forms.py`;
+- `backend/apps/users/urls.py`;
+- `backend/apps/users/management/commands/create_superuser.py`.
+
+Endpoints:
+
+- `POST /api/login`;
+- `POST /api/refresh`.
+
+Особенности:
+
+- Используется JWT через `djangorestframework-simplejwt`.
+- В админке подключена форма входа `EmailOrUsernameAdminAuthenticationForm`.
+
+## 23. Backend App `media`
+
+Файлы:
+
+- `backend/apps/media/apps.py`;
+- `backend/apps/media/urls.py`;
+- `backend/apps/media/views.py`;
+- `backend/apps/media/utils.py`.
+
+Endpoint:
+
+- `POST /api/upload`.
+
+Назначение:
+
+- загрузка изображений для админки/API;
+- требует JWT-аутентификации;
+- принимает multipart поле `file`;
+- поддерживает `image/jpeg`, `image/png`, `image/gif`, `image/webp`;
+- максимальный размер файла: 10 MB;
+- сохраняет файл в `folder` из request data или в `uploads`;
+- возвращает `url`, `path`, `thumbnails`.
+
+## 24. Локализация Текстов
+
+Файлы переводов:
+
+- `frontend/messages/en.json`;
+- `frontend/messages/ru.json`;
+- `frontend/messages/lv.json`.
+
+Основные namespaces:
+
+- `seo`;
+- `footer`;
+- `common`;
+- `home`;
+- `solutionsPage`;
+- `about`;
+- `experience`;
+- `calculators`;
+- `knowledge`;
+- `blog`;
+- `contact`;
+- `book`.
+
+Правило:
+
+- При добавлении ключа он должен быть синхронизирован во всех трех локалях.
+- Страницы с `next-intl` падают при отсутствии обязательного ключа.
+
+## 25. SEO, Robots И Sitemap
+
+SEO helper:
+
+- `frontend/lib/metadata.ts`;
+- `frontend/lib/seo.ts`.
+
+Root metadata:
+
+- `frontend/app/layout.tsx`;
+- использует `getBaseUrl()` и `SITE_NAME` из `frontend/lib/seo`;
+- подключает шрифт Inter с latin/cyrillic subsets.
+
+Robots:
+
+- `frontend/app/robots.ts`;
+- `allow: /`;
+- `disallow: /api/`, `/_next/`;
+- sitemap URL: `{getBaseUrl()}/sitemap.xml`.
+
+Sitemap:
+
+- `frontend/app/sitemap.ts`.
+
+Текущий `STATIC_PATHS`:
+
+- `/`;
+- `/about`;
+- `/experience`;
+- `/expertise`;
+- `/solutions`;
+- `/tools`;
+- `/knowledge`;
+- `/blog`;
+- `/book`;
+- `/contact`.
+
+Также sitemap добавляет:
+
+- все страницы калькуляторов `/tools/{slug}` для каждой локали.
+
+Важное текущее замечание:
+
+- `/blog` и `/book` входят в sitemap как routes `Knowledge System`.
+- `/blog/{slug}` остаётся динамическим маршрутом статей и не добавляется в sitemap без отдельного решения по CMS/индексации.
 
 Приоритеты:
 
-- Главная: `1`
-- Остальные статические страницы: `0.8`
-- Калькуляторы: `0.7`
-- Статьи блога: `0.6`
+- главная: `1`;
+- статические страницы: `0.8`;
+- калькуляторы: `0.7`.
+
+## 26. Медиа И Публичные Файлы
+
+Frontend public:
+
+- `frontend/public/images/` — изображения страниц, фотографий и книги.
+- `frontend/public/images/photos/` — основные фотографии.
+- `frontend/public/images/photos/small/` — оптимизированные/малые изображения и документы-изображения.
+- `frontend/public/images/book/` — локализованные обложки книги.
+- `frontend/public/Video/welding-bg.MP4` — default MP4 для Hero.
+- `frontend/public/diplomas/` — ожидаемое место для PDF-документов дипломов, включая `/diplomas/IWE_diploms.pdf`.
+
+Книга:
+
+- `/images/book/welding_en.jpg`;
+- `/images/book/MIG_MAG_welding_ru.jpg`;
+- `/images/book/MIG_MAG_metinasana.jpg`.
+
+Backend media:
+
+- `backend/media/` — загружаемые изображения из Django admin/API.
+
+Преобразование относительных URL API:
+
+- Функция `getImageSrc()` на frontend дополняет относительный путь базовым URL из `NEXT_PUBLIC_API_URL`.
+
+## 27. Важные Переменные Окружения
+
+Frontend:
+
+- `NEXT_PUBLIC_API_URL` — базовый URL API, fallback `http://localhost:8000/api`.
+- `NEXT_PUBLIC_SITE_URL` — публичный URL сайта для canonical, OG, robots и sitemap.
+- `NEXT_PUBLIC_MAP_EMBED_URL` — карта на странице контактов.
+- `NEXT_PUBLIC_BOOK_PURCHASE_URL` — внешняя ссылка покупки книги.
+- `NEXT_PUBLIC_BOOK_DOWNLOAD_URL` — ссылка на скачивание фрагмента книги.
+- `NEXT_PUBLIC_CV_URL` — ссылка на CV на странице `/about`.
+- `NEXT_PUBLIC_HERO_VIDEO_URL` — MP4 Hero-видео, fallback `/Video/welding-bg.MP4`.
+- `NEXT_PUBLIC_HERO_VIDEO_WEBM` — WebM Hero-видео.
+- `NEXT_PUBLIC_HERO_VIDEO_POSTER` — poster Hero-видео.
+- `NEXT_PUBLIC_HERO_OVERLAY_OPACITY` — затемнение Hero-видео `0..1`.
+
+SEO:
+
+- base URL берется через `frontend/lib/seo`.
+
+## 28. Проверка Работы
+
+Frontend:
+
+```powershell
+Set-Location "D:\Work_Cursor\PersonalHomePage\frontend"
+npm run lint
+npm run build
+```
+
+Backend:
+
+```powershell
+Set-Location "D:\Work_Cursor\PersonalHomePage\backend"
+.\.venv\Scripts\python.exe manage.py check
+```
+
+Dev-серверы:
+
+```powershell
+Set-Location "D:\Work_Cursor\PersonalHomePage\backend"
+.\.venv\Scripts\python.exe manage.py runserver
+```
+
+```powershell
+Set-Location "D:\Work_Cursor\PersonalHomePage\frontend"
+npm run dev
+```
+
+Ожидаемые локальные адреса:
+
+- Backend: `http://localhost:8000`;
+- Frontend: `http://localhost:3000`.

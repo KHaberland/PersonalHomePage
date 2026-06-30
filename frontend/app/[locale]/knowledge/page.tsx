@@ -57,10 +57,8 @@ export default async function KnowledgePage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, tBlog, tCommon, categories, postsByCategory] = await Promise.all([
+  const [t, categories, postsByCategory] = await Promise.all([
     getTranslations('knowledge'),
-    getTranslations('blog'),
-    getTranslations('common'),
     getCategories().catch(() => []),
     Promise.all(
       KNOWLEDGE_SECTIONS.map(({ slug }) =>
@@ -76,13 +74,13 @@ export default async function KnowledgePage({ params }: Props) {
 
   return (
     <div className="container-wide section">
+      <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+        {t('eyebrow')}
+      </p>
       <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
       <p className="mb-3 max-w-3xl text-foreground/80">{t('description')}</p>
       <p className="mb-12 max-w-3xl text-sm text-foreground/70">
-        {t('schemaNote')}{' '}
-        <Link href="/blog" className="link-accent font-medium hover:underline">
-          {tCommon('blogNav')}
-        </Link>
+        {t('schemaNote')}
       </p>
 
       <div className="space-y-16">
@@ -92,7 +90,11 @@ export default async function KnowledgePage({ params }: Props) {
           const sectionTitle = t(translationKey);
 
           return (
-            <section key={slug} className="border-t border-border pt-8">
+            <section
+              key={slug}
+              id={slug}
+              className="scroll-mt-24 border-t border-border pt-8"
+            >
               <h2 className="heading-2 mb-6 text-accent-orange">
                 {sectionTitle}
               </h2>
@@ -141,7 +143,7 @@ export default async function KnowledgePage({ params }: Props) {
                           )}
                         </p>
                         <span className="mt-3 inline-block text-sm font-medium text-accent-orange group-hover:underline">
-                          {tBlog('readMore')}
+                          {t('readMore')}
                         </span>
                       </div>
                     </Link>
@@ -152,16 +154,41 @@ export default async function KnowledgePage({ params }: Props) {
                   {t('noArticles')}
                 </p>
               )}
-              <Link
-                href={`/blog?category_slug=${slug}`}
-                className="link-accent mt-4 inline-block text-sm hover:underline"
-              >
-                {t('viewAllInCategory')} →
-              </Link>
             </section>
           );
         })}
       </div>
+
+      <section className="mt-16 border-t border-border pt-8">
+        <h2 className="heading-2 mb-4 text-accent-orange">
+          {t('systemLinksTitle')}
+        </h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Link href="/solutions" className="card block p-6">
+            <h3 className="heading-3 text-foreground">
+              {t('solutionCtaTitle')}
+            </h3>
+            <p className="mt-2 text-sm text-foreground/75">
+              {t('solutionCtaText')}
+            </p>
+            <span className="link-accent mt-4 inline-block text-sm">
+              {t('solutionCta')} →
+            </span>
+          </Link>
+          <Link href="/blog" className="card block p-6">
+            <h3 className="heading-3 text-foreground">{t('blogLinkTitle')}</h3>
+            <p className="mt-2 text-sm text-foreground/75">
+              {t('blogLinkText')}
+            </p>
+          </Link>
+          <Link href="/book" className="card block p-6">
+            <h3 className="heading-3 text-foreground">{t('bookLinkTitle')}</h3>
+            <p className="mt-2 text-sm text-foreground/75">
+              {t('bookLinkText')}
+            </p>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

@@ -5,20 +5,20 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 const SECTION_IDS = [
-  'expertise',
+  'problem-value',
   'solutions',
   'cases',
+  'expertise',
   'tools',
-  'blog',
   'contact',
 ] as const;
 
 const SECTION_LABEL_KEYS = [
-  'expertise',
+  'homeSectionProblemValue',
   'solutions',
   'cases',
+  'expertise',
   'homeSectionTools',
-  'homeSectionBlog',
   'homeSectionContact',
 ] as const;
 

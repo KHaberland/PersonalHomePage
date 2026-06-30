@@ -103,14 +103,8 @@ export function Hero() {
         </div>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
           <Link
-            href="/contact"
-            className="btn-primary inline-block min-w-[12rem] px-8 py-3 text-center"
-          >
-            {t('heroCtaContact')}
-          </Link>
-          <Link
             href="/solutions"
-            className="btn-secondary inline-block min-w-[12rem] px-8 py-3 text-center"
+            className="btn-primary inline-block min-w-[12rem] px-8 py-3 text-center"
           >
             {t('heroCtaSolutions')}
           </Link>
@@ -121,12 +115,6 @@ export function Hero() {
             {t('heroCtaTools')}
           </Link>
         </div>
-        <Link
-          href="/#expertise"
-          className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/90 underline-offset-4 transition hover:text-white hover:underline"
-        >
-          {t('heroScrollToCompetencies')}
-        </Link>
       </div>
     </section>
   );

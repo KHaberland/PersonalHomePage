@@ -1,7 +1,7 @@
-import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { CompetencyCard } from '@/components/CompetencyCard';
+import { Link } from '@/i18n/navigation';
 import {
   IconCompetencyCutting,
   IconCompetencyGas,
@@ -16,36 +16,42 @@ const expertiseItems = [
   {
     Icon: IconCompetencyMigMag,
     anchorId: 'expertise-mig-mag',
+    groupKey: 'expertiseGroupProcesses',
     titleKey: 'competencyIconMigMag',
     descKey: 'competencyCard1',
   },
   {
     Icon: IconCompetencyTig,
     anchorId: 'expertise-tig',
+    groupKey: 'expertiseGroupProcesses',
     titleKey: 'competencyIconTigAl',
     descKey: 'competencyCard2',
   },
   {
     Icon: IconCompetencyGas,
     anchorId: 'expertise-gases',
+    groupKey: 'expertiseGroupGases',
     titleKey: 'competencyIconGas',
     descKey: 'competencyCard3',
   },
   {
     Icon: IconCompetencyMetallurgy,
     anchorId: 'expertise-metallurgy',
+    groupKey: 'expertiseGroupMetallurgy',
     titleKey: 'competencyIconMetallurgy',
     descKey: 'competencyCard5',
   },
   {
     Icon: IconCompetencyCutting,
     anchorId: 'expertise-quality',
+    groupKey: 'expertiseGroupMaterials',
     titleKey: 'competencyIconCuttingGases',
     descKey: 'competencyCard6',
   },
   {
     Icon: IconCompetencyGasSafety,
     anchorId: 'expertise-safety',
+    groupKey: 'expertiseGroupSafety',
     titleKey: 'competencyIconEquipment',
     descKey: 'competencyCard4',
   },
@@ -74,7 +80,7 @@ export default async function ExpertisePage({ params }: Props) {
     <div className="container-wide section">
       <div className="max-w-4xl">
         <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {t('competenciesTechnicalSubtitle')}
+          {t('expertiseDecisionEyebrow')}
         </p>
         <h1 className="heading-1 text-accent-orange">
           {t('competenciesTitle')}
@@ -85,27 +91,57 @@ export default async function ExpertisePage({ params }: Props) {
       </div>
 
       <ul className="mt-12 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {expertiseItems.map(({ Icon, anchorId, titleKey, descKey }) => (
-          <li key={anchorId} id={anchorId} className="scroll-mt-24">
-            <CompetencyCard
-              variant="technical"
-              title={t(titleKey)}
-              description={t(descKey)}
-              icon={<Icon className="h-6 w-6" aria-hidden title={undefined} />}
-            />
-          </li>
-        ))}
+        {expertiseItems.map(
+          ({ Icon, anchorId, groupKey, titleKey, descKey }) => (
+            <li key={anchorId} id={anchorId} className="scroll-mt-24">
+              <div className="flex h-full flex-col gap-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-accent-blue">
+                  {t(groupKey)}
+                </p>
+                <CompetencyCard
+                  variant="technical"
+                  title={t(titleKey)}
+                  description={t(descKey)}
+                  icon={
+                    <Icon className="h-6 w-6" aria-hidden title={undefined} />
+                  }
+                />
+              </div>
+            </li>
+          )
+        )}
       </ul>
 
-      <div className="mt-12 rounded-2xl border border-border bg-surface/70 p-6">
-        <h2 className="heading-3 text-foreground">{t('expertiseCtaTitle')}</h2>
-        <p className="mt-3 max-w-3xl text-foreground/80">
-          {t('expertiseCtaText')}
-        </p>
-        <Link href="/contact" className="btn-primary mt-6 inline-block">
-          {t('ctaBannerContact')}
+      <section className="mt-12 grid gap-4 md:grid-cols-2">
+        <Link
+          href="/solutions"
+          className="card block p-6 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)]"
+        >
+          <h2 className="heading-3 text-foreground">
+            {t('expertiseSolutionsCtaTitle')}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+            {t('expertiseSolutionsCtaText')}
+          </p>
+          <span className="mt-4 inline-flex text-sm font-semibold text-accent-orange">
+            {t('expertiseSolutionsCta')} →
+          </span>
         </Link>
-      </div>
+        <Link
+          href="/experience"
+          className="card block p-6 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)]"
+        >
+          <h2 className="heading-3 text-foreground">
+            {t('expertiseExperienceCtaTitle')}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+            {t('expertiseExperienceCtaText')}
+          </p>
+          <span className="mt-4 inline-flex text-sm font-semibold text-accent-orange">
+            {t('expertiseExperienceCta')} →
+          </span>
+        </Link>
+      </section>
     </div>
   );
 }

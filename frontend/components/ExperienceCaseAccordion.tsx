@@ -8,7 +8,10 @@ export type ExperienceCaseItem = {
   id: string;
   title: string;
   summary: string;
-  detail: string;
+  context: string;
+  problem: string;
+  engineeringAction: string;
+  result: string;
   moreHref?: string;
   moreLabel?: string;
 };
@@ -65,7 +68,38 @@ export function ExperienceCaseAccordion({ items }: Props) {
                 className="border-t border-border/80 px-4 pb-4 pt-3"
               >
                 <div className="space-y-4 text-sm leading-relaxed text-foreground/90">
-                  <p>{item.detail}</p>
+                  <dl className="grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <dt className="font-semibold text-accent-orange">
+                        {t('caseContextLabel')}
+                      </dt>
+                      <dd className="mt-1 text-foreground/85">
+                        {item.context}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold text-accent-orange">
+                        {t('caseProblemLabel')}
+                      </dt>
+                      <dd className="mt-1 text-foreground/85">
+                        {item.problem}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold text-accent-orange">
+                        {t('caseEngineeringActionLabel')}
+                      </dt>
+                      <dd className="mt-1 text-foreground/85">
+                        {item.engineeringAction}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold text-accent-orange">
+                        {t('caseResultLabel')}
+                      </dt>
+                      <dd className="mt-1 text-foreground/85">{item.result}</dd>
+                    </div>
+                  </dl>
                   {item.moreHref && item.moreLabel ? (
                     <Link
                       href={item.moreHref}

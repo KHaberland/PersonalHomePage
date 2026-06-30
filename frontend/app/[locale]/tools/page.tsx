@@ -39,6 +39,9 @@ export default async function ToolsPage({ params }: Props) {
 
   return (
     <Section bordered={false} scrollMargin={false}>
+      <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+        {t('toolsEyebrow')}
+      </p>
       <h1 className="heading-1 mb-4 text-accent-orange">{t('toolsTitle')}</h1>
       <p className="mb-12 text-foreground/80">{t('toolsDescription')}</p>
 

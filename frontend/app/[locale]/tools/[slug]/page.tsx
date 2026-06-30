@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getTools } from '@/lib/api';
@@ -68,6 +69,11 @@ export default async function CalculatorPage({ params }: Props) {
     `${pageBase}.exampleCaption` as 'pages.heat-input.exampleCaption'
   );
   const exampleSectionTitle = tCalc('exampleSectionTitle');
+  const engineeringNoteTitle = tCalc('engineeringNoteTitle');
+  const engineeringNote = tCalc('engineeringNote');
+  const validationCtaTitle = tCalc('validationCtaTitle');
+  const validationCtaText = tCalc('validationCtaText');
+  const validationCta = tCalc('validationCta');
 
   return (
     <div className="container-narrow section">
@@ -95,9 +101,34 @@ export default async function CalculatorPage({ params }: Props) {
         <CalculatorStaticExample slug={slug} />
       </section>
 
+      <section
+        className="mb-8 rounded-xl border border-accent-orange/25 bg-accent-orange/5 p-5"
+        aria-labelledby="calc-engineering-note-heading"
+      >
+        <h2
+          id="calc-engineering-note-heading"
+          className="heading-3 mb-2 text-foreground"
+        >
+          {engineeringNoteTitle}
+        </h2>
+        <p className="text-sm leading-relaxed text-foreground/80">
+          {engineeringNote}
+        </p>
+      </section>
+
       <div className="card p-6">
         <CalculatorComponent />
       </div>
+
+      <section className="mt-8 rounded-xl border border-border bg-foreground/[0.02] p-5">
+        <h2 className="heading-3 mb-2 text-foreground">{validationCtaTitle}</h2>
+        <p className="text-sm leading-relaxed text-foreground/75">
+          {validationCtaText}
+        </p>
+        <Link href="/contact" className="link-accent mt-4 inline-block text-sm">
+          {validationCta} →
+        </Link>
+      </section>
     </div>
   );
 }

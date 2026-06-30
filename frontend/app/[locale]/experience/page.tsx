@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import {
@@ -51,7 +52,10 @@ function buildCaseItems(t: (key: string) => string): ExperienceCaseItem[] {
       id: `${id}-slot`,
       title: t(`${id}Title`),
       summary: t(`${id}Summary`),
-      detail: t(`${id}Detail`),
+      context: t(`${id}Context`),
+      problem: t(`${id}Problem`),
+      engineeringAction: t(`${id}EngineeringAction`),
+      result: t(`${id}Result`),
       moreHref: href || undefined,
       moreLabel: href && label ? label : undefined,
     };
@@ -73,7 +77,15 @@ export default async function ExperiencePage({ params }: Props) {
 
   return (
     <div className="container-narrow section">
-      <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
+      <section className="mb-12 rounded-2xl border border-border bg-surface/60 p-6 sm:p-8 lg:p-10">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+          {t('layerEyebrow')}
+        </p>
+        <h1 className="heading-1 text-accent-orange">{t('title')}</h1>
+        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
+          {t('lead')}
+        </p>
+      </section>
 
       <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-surface/45 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-6 md:p-10">
         <div
@@ -140,28 +152,23 @@ export default async function ExperiencePage({ params }: Props) {
         <ExperienceCaseAccordion items={caseItems} />
       </section>
 
-      <section className="mt-16 space-y-4">
-        <h2 className="heading-2 text-foreground">{t('projectsTitle')}</h2>
-        <p className="max-w-3xl text-foreground/85 leading-relaxed">
-          {t('projectsIntro')}
+      <section className="mt-16 rounded-2xl border border-accent-blue/30 bg-accent-blue/10 p-6 sm:p-8">
+        <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
+          {t('relatedPatternsEyebrow')}
         </p>
-      </section>
-
-      <section className="mt-12 space-y-4">
-        <h2 className="heading-2 text-foreground">{t('resultsTitle')}</h2>
-        <p className="max-w-3xl text-foreground/85 leading-relaxed">
-          {t('resultsIntro')}
+        <h2 className="heading-3 mt-2 text-foreground">
+          {t('relatedPatternsTitle')}
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/80">
+          {t('relatedPatternsText')}
         </p>
-      </section>
-
-      <section className="mt-12 space-y-4">
-        <h2 className="heading-2 text-foreground">{t('testimonialsTitle')}</h2>
-        <blockquote className="card border-l-4 border-l-accent-orange p-6 text-foreground/90">
-          <p className="italic leading-relaxed">{t('testimonial1')}</p>
-          <footer className="mt-4 text-sm text-foreground/65">
-            {t('testimonialAttribution')}
-          </footer>
-        </blockquote>
+        <Link
+          href="/solutions"
+          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange underline-offset-4 hover:underline"
+        >
+          {t('relatedPatternsCta')}
+          <span aria-hidden>→</span>
+        </Link>
       </section>
 
       <section className="mt-16">
