@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
 
@@ -29,8 +28,21 @@ function getHeroOverlayOpacityMobile(desktopOpacity: number): number {
   return Math.max(0, capped);
 }
 
-export function Hero() {
-  const t = useTranslations('home');
+export type HeroText = {
+  videoDescription: string;
+  titleLine1: string;
+  titleLine2: string;
+  titleLineHighlight: string;
+  titleLine3: string;
+  ctaSolutions: string;
+  ctaTools: string;
+};
+
+type HeroProps = {
+  text: HeroText;
+};
+
+export function Hero({ text }: HeroProps) {
   const [videoFailed, setVideoFailed] = useState(false);
   const overlayLg = getHeroOverlayOpacity();
   const overlaySm = getHeroOverlayOpacityMobile(overlayLg);
@@ -78,22 +90,22 @@ export function Hero() {
       {/* Контент — крупные заголовки, сварочные акценты */}
       <div className="relative z-10 flex min-h-[75vh] flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[80vh] sm:px-6">
         <p id="hero-video-desc" className="sr-only">
-          {t('heroVideoDescription')}
+          {text.videoDescription}
         </p>
         <h1
           id="hero-heading"
           className="heading-1 hero-title-line1 max-w-4xl text-white drop-shadow-lg leading-tight sm:leading-snug"
         >
-          {t('heroTitleLine1')}
+          {text.titleLine1}
         </h1>
         <p className="hero-title-line2 mt-6 max-w-2xl text-foreground/90 drop-shadow-md leading-tight sm:leading-snug">
-          {t('heroTitleLine2')}
+          {text.titleLine2}
         </p>
         <p className="mt-4 max-w-3xl text-sm font-medium tracking-wide text-white drop-shadow-md sm:text-base leading-tight sm:leading-snug">
-          {t('heroTitleLineHighlight')}
+          {text.titleLineHighlight}
         </p>
         <p className="hero-title-line3 hero-title-accent mt-3 font-semibold drop-shadow-md">
-          {t('heroTitleLine3')}
+          {text.titleLine3}
         </p>
         {/* Декор: линии и точка — нативный CSS, без SVG */}
         <div className="mt-8 flex items-center gap-4" aria-hidden>
@@ -106,13 +118,13 @@ export function Hero() {
             href="/solutions"
             className="btn-primary inline-block min-w-[12rem] px-8 py-3 text-center"
           >
-            {t('heroCtaSolutions')}
+            {text.ctaSolutions}
           </Link>
           <Link
             href="/tools"
             className="btn-secondary inline-block min-w-[12rem] px-8 py-3 text-center"
           >
-            {t('heroCtaTools')}
+            {text.ctaTools}
           </Link>
         </div>
       </div>

@@ -13,6 +13,7 @@ from .models import (
     HomeBusinessOutcomesIntro,
     HomeTechnicalSkillCard,
     HomeTechnicalSkillsIntro,
+    SiteTextBlock,
 )
 from .serializers import (
     AboutSerializer,
@@ -81,6 +82,36 @@ class ContactView(generics.RetrieveAPIView):
         if obj is None:
             raise Http404("Contact info not found")
         return obj
+
+
+class PageContentView(APIView):
+    """GET /api/content/page/{page}/ — CMS text grouped by page section."""
+
+    allowed_languages = {"en", "ru", "lv"}
+
+    def get(self, request, page):
+        lang = request.query_params.get("lang", "en")
+        if lang not in self.allowed_languages:
+            lang = "en"
+
+        content = {}
+        blocks = SiteTextBlock.objects.filter(page=page).order_by("block", "key")
+
+        for block in blocks:
+            section = content.setdefault(block.block, {})
+            section[block.key] = self._localized_text(block, lang)
+
+        return Response(content)
+
+    def _localized_text(self, block, lang):
+        en_text = block.text_en or ""
+        if lang == "en":
+            return en_text
+
+        localized_text = getattr(block, f"text_{lang}", "") or ""
+        if localized_text.strip():
+            return localized_text
+        return en_text
 
 
 class HomeTechnicalSkillsView(APIView):

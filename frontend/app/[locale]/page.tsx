@@ -3,7 +3,10 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { EngineerIdentityStrip } from '@/components/EngineerIdentityStrip';
 import { Hero } from '@/components/Hero';
+import type { HeroText } from '@/components/Hero';
 import { Section } from '@/components/Section';
+import { getCmsPageOrFallback } from '@/lib/cms-content';
+import type { PageContent } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const userPathItems = [
@@ -94,10 +97,70 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations('home');
+  const fallbackContent: PageContent = {
+    hero: {
+      heroVideoDescription: t('heroVideoDescription'),
+      heroTitleLine1: t('heroTitleLine1'),
+      heroTitleLine2: t('heroTitleLine2'),
+      heroTitleLineHighlight: t('heroTitleLineHighlight'),
+      heroTitleLine3: t('heroTitleLine3'),
+      heroCtaSolutions: t('heroCtaSolutions'),
+      heroCtaTools: t('heroCtaTools'),
+    },
+    decision_system: {
+      decisionSystemEyebrow: t('decisionSystemEyebrow'),
+      decisionSystemTitle: t('decisionSystemTitle'),
+      decisionSystemLead: t('decisionSystemLead'),
+      ...Object.fromEntries(
+        decisionSystemItems.flatMap(({ titleKey, descriptionKey, links }) => [
+          [titleKey, t(titleKey)],
+          [descriptionKey, t(descriptionKey)],
+          ...links.map(({ labelKey }) => [labelKey, t(labelKey)]),
+        ])
+      ),
+    },
+    entry_paths: {
+      entryPathsEyebrow: t('entryPathsEyebrow'),
+      entryPathsTitle: t('entryPathsTitle'),
+      entryPathsLead: t('entryPathsLead'),
+      ...Object.fromEntries(
+        userPathItems.flatMap(({ titleKey, descriptionKey, ctaKey }) => [
+          [titleKey, t(titleKey)],
+          [descriptionKey, t(descriptionKey)],
+          [ctaKey, t(ctaKey)],
+        ])
+      ),
+    },
+    proof: {
+      proofTitle: t('proofTitle'),
+      ...Object.fromEntries(proofItems.map((key) => [key, t(key)])),
+    },
+    contact_cta: {
+      contactCtaTitle: t('contactCtaTitle'),
+      contactCtaText: t('contactCtaText'),
+      contactCta: t('contactCta'),
+    },
+  };
+  const content = await getCmsPageOrFallback(
+    'home',
+    locale,
+    () => fallbackContent
+  );
+  const homeText = (section: keyof typeof fallbackContent, key: string) =>
+    content[section]?.[key] || fallbackContent[section]?.[key] || '';
+  const heroText: HeroText = {
+    videoDescription: homeText('hero', 'heroVideoDescription'),
+    titleLine1: homeText('hero', 'heroTitleLine1'),
+    titleLine2: homeText('hero', 'heroTitleLine2'),
+    titleLineHighlight: homeText('hero', 'heroTitleLineHighlight'),
+    titleLine3: homeText('hero', 'heroTitleLine3'),
+    ctaSolutions: homeText('hero', 'heroCtaSolutions'),
+    ctaTools: homeText('hero', 'heroCtaTools'),
+  };
 
   return (
     <>
-      <Hero />
+      <Hero text={heroText} />
       <EngineerIdentityStrip
         ariaLabel={t('aboutTeaserAriaLabel')}
         photoAlt={t('aboutTeaserPhotoAlt')}
@@ -114,16 +177,16 @@ export default async function HomePage({ params }: Props) {
         aria-labelledby="home-decision-system-heading"
       >
         <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {t('decisionSystemEyebrow')}
+          {homeText('decision_system', 'decisionSystemEyebrow')}
         </p>
         <h2
           id="home-decision-system-heading"
           className="heading-2 max-w-4xl font-semibold tracking-tight text-white"
         >
-          {t('decisionSystemTitle')}
+          {homeText('decision_system', 'decisionSystemTitle')}
         </h2>
         <p className="mt-4 max-w-3xl text-foreground/80">
-          {t('decisionSystemLead')}
+          {homeText('decision_system', 'decisionSystemLead')}
         </p>
 
         <ol className="mt-8 grid list-none gap-4 md:grid-cols-3">
@@ -137,9 +200,11 @@ export default async function HomePage({ params }: Props) {
                   {String(index + 1).padStart(2, '0')}
                 </p>
                 <div>
-                  <h3 className="heading-3 text-foreground">{t(titleKey)}</h3>
+                  <h3 className="heading-3 text-foreground">
+                    {homeText('decision_system', titleKey)}
+                  </h3>
                   <p className="mt-3 text-sm leading-relaxed text-foreground/80">
-                    {t(descriptionKey)}
+                    {homeText('decision_system', descriptionKey)}
                   </p>
                 </div>
                 <div className="mt-auto flex flex-wrap gap-2">
@@ -149,7 +214,7 @@ export default async function HomePage({ params }: Props) {
                       href={href}
                       className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground/80 transition-colors hover:border-accent-orange hover:text-accent-orange"
                     >
-                      {t(labelKey)}
+                      {homeText('decision_system', labelKey)}
                     </Link>
                   ))}
                 </div>
@@ -161,16 +226,16 @@ export default async function HomePage({ params }: Props) {
 
       <Section id="user-paths" aria-labelledby="home-user-paths-heading">
         <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {t('entryPathsEyebrow')}
+          {homeText('entry_paths', 'entryPathsEyebrow')}
         </p>
         <h2
           id="home-user-paths-heading"
           className="heading-2 max-w-4xl font-semibold tracking-tight text-white"
         >
-          {t('entryPathsTitle')}
+          {homeText('entry_paths', 'entryPathsTitle')}
         </h2>
         <p className="mt-4 max-w-3xl text-foreground/80">
-          {t('entryPathsLead')}
+          {homeText('entry_paths', 'entryPathsLead')}
         </p>
 
         <ul className="mt-8 grid list-none gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -180,12 +245,14 @@ export default async function HomePage({ params }: Props) {
                 href={href}
                 className="card flex h-full min-h-0 flex-col gap-4 p-5 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)] focus-visible:border-accent-orange/60 focus-visible:bg-[var(--surface-elevated)]"
               >
-                <h3 className="heading-3 text-foreground">{t(titleKey)}</h3>
+                <h3 className="heading-3 text-foreground">
+                  {homeText('entry_paths', titleKey)}
+                </h3>
                 <p className="text-sm leading-relaxed text-foreground/80">
-                  {t(descriptionKey)}
+                  {homeText('entry_paths', descriptionKey)}
                 </p>
                 <span className="mt-auto text-sm font-semibold text-accent-orange">
-                  {t(ctaKey)}
+                  {homeText('entry_paths', ctaKey)}
                 </span>
               </Link>
             </li>
@@ -199,7 +266,7 @@ export default async function HomePage({ params }: Props) {
         aria-labelledby="home-proof-heading"
       >
         <h2 id="home-proof-heading" className="sr-only">
-          {t('proofTitle')}
+          {homeText('proof', 'proofTitle')}
         </h2>
         <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {proofItems.map((key) => (
@@ -207,7 +274,7 @@ export default async function HomePage({ params }: Props) {
               key={key}
               className="rounded-2xl border border-border bg-background/35 p-5 text-center text-sm font-semibold uppercase tracking-wide text-foreground/90"
             >
-              {t(key)}
+              {homeText('proof', key)}
             </li>
           ))}
         </ul>
@@ -216,13 +283,13 @@ export default async function HomePage({ params }: Props) {
       <Section id="contact" aria-labelledby="home-contact-heading">
         <div className="rounded-2xl border border-accent-orange/30 bg-accent-orange/10 p-6 sm:p-8">
           <h2 id="home-contact-heading" className="heading-3 text-foreground">
-            {t('contactCtaTitle')}
+            {homeText('contact_cta', 'contactCtaTitle')}
           </h2>
           <p className="mt-3 max-w-3xl text-foreground/80">
-            {t('contactCtaText')}
+            {homeText('contact_cta', 'contactCtaText')}
           </p>
           <Link href="/contact" className="btn-primary mt-6 inline-block">
-            {t('contactCta')}
+            {homeText('contact_cta', 'contactCta')}
           </Link>
         </div>
       </Section>

@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { getBook, getContact } from '@/lib/api';
+import { getCmsPageOrFallback } from '@/lib/cms-content';
+import type { PageContent } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const localizedBookCovers = {
@@ -41,6 +43,34 @@ export default async function BookPage({ params }: Props) {
     getContact().catch(() => null),
   ]);
 
+  const fallbackContent: PageContent = {
+    hero: {
+      subtitle: t('subtitle'),
+    },
+    authority: {
+      authorityTitle: t('authorityTitle'),
+      authorityQuote: t('authorityQuote'),
+      authorityAttribution: t('authorityAttribution'),
+    },
+    purchase: {
+      purchaseTitle: t('purchaseTitle'),
+      purchaseIntro: t('purchaseIntro'),
+    },
+    cta: {
+      cta: t('cta'),
+      ctaEmail: t('ctaEmail'),
+      buyOnline: t('buyOnline'),
+      downloadSample: t('downloadSample'),
+    },
+  };
+  const content = await getCmsPageOrFallback(
+    'book',
+    locale,
+    () => fallbackContent
+  );
+  const bookText = (section: keyof typeof fallbackContent, key: string) =>
+    content[section]?.[key] || fallbackContent[section]?.[key] || '';
+
   const title = book?.title ?? t('title');
   const description = book?.description || t('description');
   const year = book?.year ?? 2024;
@@ -75,7 +105,7 @@ export default async function BookPage({ params }: Props) {
         <div className="flex-1 space-y-6">
           <div>
             <p className="text-lg font-medium text-accent-orange">
-              {t('subtitle')}
+              {bookText('hero', 'subtitle')}
             </p>
             <p className="mt-1 text-sm text-foreground/70">{year}</p>
           </div>
@@ -92,35 +122,39 @@ export default async function BookPage({ params }: Props) {
             />
             <figure className="card border-l-4 border-l-accent-orange p-6">
               <h2 className="heading-3 mb-3 text-foreground">
-                {t('authorityTitle')}
+                {bookText('authority', 'authorityTitle')}
               </h2>
               <blockquote>
                 <p className="text-foreground/90 leading-relaxed">
-                  {t('authorityQuote')}
+                  {bookText('authority', 'authorityQuote')}
                 </p>
                 <footer className="mt-4 text-sm text-foreground/65">
-                  {t('authorityAttribution')}
+                  {bookText('authority', 'authorityAttribution')}
                 </footer>
               </blockquote>
             </figure>
           </div>
 
           <div className="space-y-4 border-t border-border pt-6">
-            <h2 className="heading-3 text-foreground">{t('purchaseTitle')}</h2>
-            <p className="text-sm text-foreground/80">{t('purchaseIntro')}</p>
+            <h2 className="heading-3 text-foreground">
+              {bookText('purchase', 'purchaseTitle')}
+            </h2>
+            <p className="text-sm text-foreground/80">
+              {bookText('purchase', 'purchaseIntro')}
+            </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/contact"
                 className="btn-primary inline-block px-6 py-3"
               >
-                {t('cta')}
+                {bookText('cta', 'cta')}
               </Link>
               {mailtoBook && (
                 <a
                   href={mailtoBook}
                   className="btn-secondary inline-block px-6 py-3 text-center"
                 >
-                  {t('ctaEmail')}
+                  {bookText('cta', 'ctaEmail')}
                 </a>
               )}
               {purchaseUrl && (
@@ -130,7 +164,7 @@ export default async function BookPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="btn-secondary inline-block px-6 py-3 text-center"
                 >
-                  {t('buyOnline')}
+                  {bookText('cta', 'buyOnline')}
                 </a>
               )}
               {downloadUrl && (
@@ -140,7 +174,7 @@ export default async function BookPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="btn-secondary inline-block px-6 py-3 text-center"
                 >
-                  {t('downloadSample')}
+                  {bookText('cta', 'downloadSample')}
                 </a>
               )}
             </div>

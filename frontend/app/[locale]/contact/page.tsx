@@ -1,7 +1,10 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { ContactForm } from '@/components/ContactForm';
+import type { ContactFormLabels } from '@/components/ContactForm';
 import { getContact } from '@/lib/api';
+import { getCmsPageOrFallback } from '@/lib/cms-content';
+import type { PageContent } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const DEFAULT_MAP_EMBED =
@@ -30,18 +33,87 @@ export default async function ContactPage({ params }: Props) {
     getContact().catch(() => null),
   ]);
 
+  const fallbackContent: PageContent = {
+    hero: {
+      title: t('title'),
+      description: t('description'),
+    },
+    form: {
+      formTitle: t('formTitle'),
+      formName: t('formName'),
+      formEmail: t('formEmail'),
+      formRequestType: t('formRequestType'),
+      formRequestTypePlaceholder: t('formRequestTypePlaceholder'),
+      formMessage: t('formMessage'),
+      formHint: t('formHint'),
+      formSubjectPrefix: t('formSubjectPrefix'),
+      formBodyName: t('formBodyName'),
+      formBodyEmail: t('formBodyEmail'),
+      formBodyRequestType: t('formBodyRequestType'),
+      requestConsultation: t('requestConsultation'),
+    },
+    request_types: {
+      requestTypeDefects: t('requestTypeDefects'),
+      requestTypeProcess: t('requestTypeProcess'),
+      requestTypeTraining: t('requestTypeTraining'),
+    },
+    contact_methods: {
+      email: t('email'),
+      linkedin: t('linkedin'),
+      youtube: t('youtube'),
+    },
+    empty: {
+      noContact: t('noContact'),
+    },
+    map: {
+      mapTitle: t('mapTitle'),
+      mapDescription: t('mapDescription'),
+    },
+  };
+  const content = await getCmsPageOrFallback(
+    'contact',
+    locale,
+    () => fallbackContent
+  );
+  const contactText = (section: keyof typeof fallbackContent, key: string) =>
+    content[section]?.[key] || fallbackContent[section]?.[key] || '';
+  const formLabels: ContactFormLabels = {
+    formTitle: contactText('form', 'formTitle'),
+    formName: contactText('form', 'formName'),
+    formEmail: contactText('form', 'formEmail'),
+    formRequestType: contactText('form', 'formRequestType'),
+    formRequestTypePlaceholder: contactText(
+      'form',
+      'formRequestTypePlaceholder'
+    ),
+    requestTypeDefects: contactText('request_types', 'requestTypeDefects'),
+    requestTypeProcess: contactText('request_types', 'requestTypeProcess'),
+    requestTypeTraining: contactText('request_types', 'requestTypeTraining'),
+    formMessage: contactText('form', 'formMessage'),
+    formHint: contactText('form', 'formHint'),
+    formSubjectPrefix: contactText('form', 'formSubjectPrefix'),
+    formBodyName: contactText('form', 'formBodyName'),
+    formBodyEmail: contactText('form', 'formBodyEmail'),
+    formBodyRequestType: contactText('form', 'formBodyRequestType'),
+    requestConsultation: contactText('form', 'requestConsultation'),
+  };
+
   const mapSrc =
     process.env.NEXT_PUBLIC_MAP_EMBED_URL?.trim() || DEFAULT_MAP_EMBED;
 
   return (
     <div className="container-narrow section">
-      <h1 className="heading-1 mb-12 text-accent-orange">{t('title')}</h1>
+      <h1 className="heading-1 mb-12 text-accent-orange">
+        {contactText('hero', 'title')}
+      </h1>
 
-      <p className="mb-12 max-w-2xl text-foreground/90">{t('description')}</p>
+      <p className="mb-12 max-w-2xl text-foreground/90">
+        {contactText('hero', 'description')}
+      </p>
 
       {contact?.email && (
         <div className="mb-12">
-          <ContactForm contactEmail={contact.email} />
+          <ContactForm contactEmail={contact.email} labels={formLabels} />
         </div>
       )}
 
@@ -57,7 +129,9 @@ export default async function ContactPage({ params }: Props) {
               </svg>
             </span>
             <div>
-              <p className="font-medium text-foreground">{t('email')}</p>
+              <p className="font-medium text-foreground">
+                {contactText('contact_methods', 'email')}
+              </p>
               <p className="text-accent-orange">{contact.email}</p>
             </div>
           </a>
@@ -77,7 +151,9 @@ export default async function ContactPage({ params }: Props) {
             </span>
             <div>
               <p className="font-medium text-foreground">LinkedIn</p>
-              <p className="text-sm text-foreground/70">{t('linkedin')}</p>
+              <p className="text-sm text-foreground/70">
+                {contactText('contact_methods', 'linkedin')}
+              </p>
             </div>
           </a>
         )}
@@ -96,24 +172,30 @@ export default async function ContactPage({ params }: Props) {
             </span>
             <div>
               <p className="font-medium text-foreground">YouTube</p>
-              <p className="text-sm text-foreground/70">{t('youtube')}</p>
+              <p className="text-sm text-foreground/70">
+                {contactText('contact_methods', 'youtube')}
+              </p>
             </div>
           </a>
         )}
       </div>
 
-      {!contact && <p className="mt-8 text-foreground/70">{t('noContact')}</p>}
+      {!contact && (
+        <p className="mt-8 text-foreground/70">
+          {contactText('empty', 'noContact')}
+        </p>
+      )}
 
       <section className="mt-16" aria-labelledby="contact-map-heading">
         <h2 id="contact-map-heading" className="heading-2 mb-2 text-foreground">
-          {t('mapTitle')}
+          {contactText('map', 'mapTitle')}
         </h2>
         <p className="mb-4 max-w-2xl text-sm text-foreground/70">
-          {t('mapDescription')}
+          {contactText('map', 'mapDescription')}
         </p>
         <div className="overflow-hidden rounded-lg border border-border">
           <iframe
-            title={t('mapTitle')}
+            title={contactText('map', 'mapTitle')}
             src={mapSrc}
             className="aspect-[16/9] h-[min(22rem,50vh)] w-full border-0"
             loading="lazy"

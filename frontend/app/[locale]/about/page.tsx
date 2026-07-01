@@ -34,7 +34,8 @@ const diplomas: ReadonlyArray<{
     summaryKey: 'masterSummary',
   },
   {
-    file: 'IWE_diploms.pdf',
+    file: 'IWE_diploma.jpg',
+    mediaFolder: 'images/photos/small',
     labelKey: 'iwe',
     summaryKey: 'iweSummary',
   },

@@ -8,6 +8,11 @@ urlpatterns = [
     path("book/", views.BookView.as_view(), name="book"),
     path("contact/", views.ContactView.as_view(), name="contact"),
     path(
+        "content/page/<slug:page>/",
+        views.PageContentView.as_view(),
+        name="page-content",
+    ),
+    path(
         "home-technical-skills/",
         views.HomeTechnicalSkillsView.as_view(),
         name="home-technical-skills",
