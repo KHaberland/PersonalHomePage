@@ -108,32 +108,103 @@ function GasFlowExample() {
 }
 
 function ShieldingGasExample() {
+  const steps = [
+    { x: 32, label: 'Material', state: 'completed' as const },
+    { x: 88, label: 'Process', state: 'completed' as const },
+    { x: 144, label: 'Thickness', state: 'active' as const },
+    { x: 200, label: 'Gas', state: 'pending' as const },
+    { x: 256, label: 'Result', state: 'pending' as const },
+  ];
+
   return (
     <svg
-      viewBox="0 0 320 100"
+      viewBox="0 0 320 132"
       className="h-auto w-full max-w-md"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line
-        x1="24"
-        y1="56"
-        x2="296"
-        y2="56"
-        className="stroke-foreground/35"
-        strokeWidth="4"
-        strokeLinecap="round"
+      <rect
+        x="16"
+        y="16"
+        width="288"
+        height="6"
+        rx="3"
+        className="fill-foreground/10"
       />
-      <circle cx="80" cy="56" r="6" className="fill-emerald-500" />
-      <circle cx="160" cy="56" r="8" className="fill-orange-500" />
-      <circle cx="240" cy="56" r="6" className="fill-emerald-500" />
-      <text x="56" y="84" className="fill-foreground/65 text-[9px]">
-        min
-      </text>
-      <text x="132" y="84" className="fill-foreground/65 text-[9px]">
-        typ
-      </text>
-      <text x="216" y="84" className="fill-foreground/65 text-[9px]">
-        max
+      <rect
+        x="16"
+        y="16"
+        width="172"
+        height="6"
+        rx="3"
+        className="fill-orange-500/80"
+      />
+      {steps.map((step, index) => {
+        const next = steps[index + 1];
+        const circleClass =
+          step.state === 'active'
+            ? 'fill-orange-500/20 stroke-orange-500'
+            : step.state === 'completed'
+              ? 'fill-emerald-500/25 stroke-emerald-500'
+              : 'fill-foreground/5 stroke-foreground/25';
+        const textClass =
+          step.state === 'active'
+            ? 'fill-orange-500 font-medium'
+            : step.state === 'completed'
+              ? 'fill-foreground/70'
+              : 'fill-foreground/45';
+        return (
+          <g key={step.label}>
+            {next && (
+              <line
+                x1={step.x + 14}
+                y1="52"
+                x2={next.x - 14}
+                y2="52"
+                className={
+                  step.state === 'completed'
+                    ? 'stroke-emerald-500/50'
+                    : 'stroke-foreground/15'
+                }
+                strokeWidth="1.5"
+              />
+            )}
+            <circle
+              cx={step.x}
+              cy="52"
+              r="14"
+              className={circleClass}
+              strokeWidth="1.5"
+            />
+            <text
+              x={step.x}
+              y="56"
+              textAnchor="middle"
+              className={`text-[10px] font-semibold ${textClass}`}
+            >
+              {index + 1}
+            </text>
+            <text
+              x={step.x}
+              y="82"
+              textAnchor="middle"
+              className={`text-[8px] ${textClass}`}
+            >
+              {step.label}
+            </text>
+          </g>
+        );
+      })}
+      <rect
+        x="196"
+        y="96"
+        width="108"
+        height="24"
+        rx="4"
+        className="fill-foreground/5 stroke-foreground/12"
+        strokeWidth="1"
+      />
+      <text x="206" y="112" className="fill-foreground/55 text-[8px]">
+        ISO · score 1–5
       </text>
     </svg>
   );

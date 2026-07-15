@@ -1,0 +1,883 @@
+{
+  "materials": {
+    "fe-steel": {
+      "id": "fe-steel",
+      "name": "Fe steel",
+      "fullName": "",
+      "processes": [
+        "MAG",
+        "TIG"
+      ]
+    },
+    "cr-ni-steel": {
+      "id": "cr-ni-steel",
+      "name": "Cr-Ni steel",
+      "fullName": "",
+      "processes": [
+        "MAG",
+        "TIG"
+      ]
+    },
+    "al-alloys": {
+      "id": "al-alloys",
+      "name": "Al alloy",
+      "fullName": "",
+      "processes": [
+        "TIG",
+        "MIG"
+      ]
+    }
+  },
+  "thicknessOptions": {
+    "fe-steel": {
+      "MAG": [
+        {
+          "id": "thin",
+          "label": "<10 mm"
+        },
+        {
+          "id": "thick",
+          "label": ">10 mm"
+        }
+      ],
+      "TIG": [
+        {
+          "id": "thin",
+          "label": "<5 mm"
+        },
+        {
+          "id": "thick",
+          "label": ">5 mm"
+        }
+      ]
+    },
+    "cr-ni-steel": {
+      "MAG": [
+        {
+          "id": "thin",
+          "label": "<5 mm"
+        },
+        {
+          "id": "thick",
+          "label": ">5 mm"
+        }
+      ],
+      "TIG": [
+        {
+          "id": "thin",
+          "label": "<5 mm"
+        },
+        {
+          "id": "thick",
+          "label": ">5 mm"
+        }
+      ]
+    },
+    "al-alloys": {
+      "MIG": [
+        {
+          "id": "thin",
+          "label": "<5 mm"
+        },
+        {
+          "id": "thick",
+          "label": ">5 mm"
+        }
+      ],
+      "TIG": [
+        {
+          "id": "thin",
+          "label": "<5 mm"
+        },
+        {
+          "id": "thick",
+          "label": ">5 mm"
+        }
+      ]
+    }
+  },
+  "gases": {
+    "fe-steel": {
+      "MAG": {
+        "thin": [
+          {
+            "id": "ferroline-c6x1",
+            "name": "Ferroline C6X1"
+          },
+          {
+            "id": "ferroline-c8",
+            "name": "Ferroline C8"
+          }
+        ],
+        "thick": [
+          {
+            "id": "ferroline-c25",
+            "name": "Ferroline C25"
+          },
+          {
+            "id": "ferroline-c18",
+            "name": "Ferroline C18"
+          },
+          {
+            "id": "ferroline-c12x2",
+            "name": "Ferroline C12X2"
+          }
+        ]
+      },
+      "TIG": {
+        "thin": [
+          {
+            "id": "ar",
+            "name": {
+              "en": "welding Ar",
+              "ru": "сварочный Ar",
+              "lv": "metināšanas Ar"
+            }
+          }
+        ],
+        "thick": [
+          {
+            "id": "aluline-he30",
+            "name": "Aluline He30"
+          }
+        ]
+      }
+    },
+    "cr-ni-steel": {
+      "MAG": {
+        "thin": [
+          {
+            "id": "inoxline-c3h1",
+            "name": "Inoxline C3H1"
+          },
+          {
+            "id": "inoxline-c2",
+            "name": "Inoxline C2"
+          },
+          {
+            "id": "inoxline-x2",
+            "name": "Inoxline X2"
+          }
+        ],
+        "thick": [
+          {
+            "id": "inoxline-he15c2",
+            "name": "Inoxline He15C2"
+          }
+        ]
+      },
+      "TIG": {
+        "thin": [
+          {
+            "id": "ar",
+            "name": {
+              "en": "welding Ar",
+              "ru": "сварочный Ar",
+              "lv": "metināšanas Ar"
+            }
+          },
+          {
+            "id": "inoxline-he3h1",
+            "name": "Inoxline He3H1"
+          }
+        ],
+        "thick": [
+          {
+            "id": "inoxline-he3h1",
+            "name": "Inoxline He3H1"
+          },
+          {
+            "id": "inoxline-h5",
+            "name": "Inoxline H5"
+          }
+        ]
+      }
+    },
+    "al-alloys": {
+      "MIG": {
+        "thin": [
+          {
+            "id": "ar",
+            "name": {
+              "en": "welding Ar",
+              "ru": "сварочный Ar",
+              "lv": "metināšanas Ar"
+            }
+          },
+          {
+            "id": "aluline-he30",
+            "name": "Aluline He30"
+          }
+        ],
+        "thick": [
+          {
+            "id": "aluline-he30",
+            "name": "Aluline He30"
+          },
+          {
+            "id": "aluline-he50",
+            "name": "Aluline He50"
+          },
+          {
+            "id": "aluline-he70",
+            "name": "Aluline He70"
+          }
+        ]
+      },
+      "TIG": {
+        "thin": [
+          {
+            "id": "ar",
+            "name": {
+              "en": "welding Ar",
+              "ru": "сварочный Ar",
+              "lv": "metināšanas Ar"
+            }
+          },
+          {
+            "id": "aluline-he30",
+            "name": "Aluline He30"
+          }
+        ],
+        "thick": [
+          {
+            "id": "aluline-he30",
+            "name": "Aluline He30"
+          },
+          {
+            "id": "aluline-he50",
+            "name": "Aluline He50"
+          },
+          {
+            "id": "aluline-he70",
+            "name": "Aluline He70"
+          }
+        ]
+      }
+    }
+  },
+  "rootProtectionGases": [
+    {
+      "id": "ar",
+      "name": {
+        "en": "welding Ar",
+        "ru": "сварочный Ar",
+        "lv": "metināšanas Ar"
+      }
+    },
+    {
+      "id": "forming-gas",
+      "name": "Forming gas (10% H₂ + N₂)"
+    }
+  ],
+  "gasProperties": {
+    "ferroline-c18": {
+      "isoStandard": "ISO EN 14175: M21",
+      "isoStandardFull": "ArC-18",
+      "penetration": "high",
+      "smokeEmission": "high",
+      "spatter": "high",
+      "porosityRisk": "low",
+      "silicateIslands": "high",
+      "application": {
+        "en": "Universal welding mixture for carbon steels across a wide thickness range. Characterized by stable, deep, and uniform penetration. Recommended for use in the manufacture of critical structures in industrial production.",
+        "ru": "Универсальная сварочная смесь для сварки углеродистых сталей в широком диапазоне толщин. Характеризуется стабильным, глубоким и равномерным проплавлением. Рекомендуется для применения при изготовлении ответственных конструкций в промышленном производстве.",
+        "lv": "Universāls metināšanas maisījums oglekļa tēraudam plašā biezumu diapazonā. To raksturo stabils, dziļš un vienmērīgs izkausējums. Ieteicams atbildīgu konstrukciju izgatavošanai rūpnieciskajā ražošanā."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    },
+    "ferroline-c25": {
+      "isoStandard": "ISO EN 14175: M21",
+      "isoStandardFull": "ArC-25",
+      "penetration": "high",
+      "smokeEmission": "high",
+      "spatter": "high",
+      "porosityRisk": "low",
+      "silicateIslands": "high",
+      "application": {
+        "en": "Used for root and fill passes of thick metal. Provides stable penetration and reduces the likelihood of porosity when welding critical products.",
+        "ru": "Применяется при сварке корневых и заполняющих проходов металла большой толщины. Обеспечивает стабильное проплавление и снижает вероятность образования пор при сварке ответственных изделий.",
+        "lv": "Lietojams saknes un aizpildes kārtu metināšanai liela biezuma metālam. Nodrošina stabilu izkausējumu un samazina porainības veidošanās risku, metinot atbildīgus izstrādājumus."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    },
+    "ferroline-c8": {
+      "isoStandard": "ISO EN 14175: M20",
+      "isoStandardFull": "ArC-8",
+      "penetration": "medium",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "The welding mixture is widely used for critical welded joints in industry and construction. When forming single-pass and multi-pass welds, surface cleaning from silicate inclusions is practically not required.",
+        "ru": "Сварочная смесь широко применяется при выполнении ответственных сварных соединений в промышленности и строительстве. При формировании однопроходных и многопроходных швов практически не требуется очистка поверхности от силикатных включений.",
+        "lv": "Šo metināšanas maisījumu plaši izmanto atbildīgu metinātu savienojumu izpildei rūpniecībā un būvniecībā. Veidojot viengājiena un daudzgājienu šuves, virsmas tīrīšana no silikātu ieslēgumiem praktiski nav nepieciešama."
+      },
+      "recommendedThickness": [
+        "thin"
+      ]
+    },
+    "ferroline-c12x2": {
+      "isoStandard": "ISO EN 14175: M24",
+      "isoStandardFull": "ArCO-12/2",
+      "penetration": "high",
+      "smokeEmission": "high",
+      "spatter": "high",
+      "porosityRisk": "medium",
+      "silicateIslands": "medium",
+      "cleaningDifficulty": "easy",
+      "application": {
+        "en": "Designed for welding carbon steels across a wide thickness range and can be used as an alternative to Ferroline C18. Advantages: a soft welding arc, comfortable seam control, good edge wetting, stable, deep and uniform penetration, and easy removal of spatter. Suitable for welding various products in industrial and small-scale production.",
+        "ru": "Предназначена для сварки углеродистых сталей в широком диапазоне толщин, может использоваться как альтернатива Ferroline C18. Преимущества: мягкая сварочная дуга, комфортное ведение шва, хорошее смачивание кромок металла, стабильное, глубокое и равномерное проплавление, лёгкая очистка металла от брызг. Может использоваться для сварки любых изделий в промышленном и мелком производстве",
+        "lv": "Paredzēta oglekļa tēraudu metināšanai plašā biezumu diapazonā, var izmantot kā alternatīvu Ferroline C18. Priekšrocības: mīksta metināšanas loka, ērta šuves vadība, laba metāla malu samitrināšana, stabils, dziļš un vienmērīgs izkausējums, viegla šļakatu noņemšana. Piemērota dažādu izstrādājumu metināšanai rūpnieciskā un nelielā ražošanā."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    },
+    "ferroline-c6x1": {
+      "isoStandard": "ISO EN 14175: M24",
+      "isoStandardFull": "ArCO-6/1",
+      "penetration": "high",
+      "smokeEmission": "high",
+      "spatter": "high",
+      "porosityRisk": "medium",
+      "silicateIslands": "medium",
+      "cleaningDifficulty": "easy",
+      "recommendedThickness": [
+        "thin"
+      ],
+      "application": {
+        "en": "The mixture is used for both single-pass and multi-pass welding. Silicate inclusions on the weld surface are practically absent, and due to the specially selected composition, fine, easily removable spatter is formed. This significantly speeds up cleaning and reduces production costs. Advantages: high welding arc stability; good edge wetting; stable and uniform penetration; easy removal of spatter; suitable for robotic and mechanized welding.",
+        "ru": "Используется как для однопроходной, так и для многопроходной сварки. Практически не образуются силикатные островки на поверхности шва, а благодаря специальному составу смеси формируются очень мелкие, легко удаляемые брызги, что значительно ускоряет очистку и снижает производственные затраты. Преимущества: очень стабильная сварочная дуга, хорошее смачивание кромок металла, стабильное, равномерное проплавление, лёгкая очистка металла от брызг, подходит для роботизированной и механизированной сварки.",
+        "lv": "Izmantojama gan viengājiena, gan daudzgājienu metināšanai. Silikātu salas uz šuves virsmas praktiski neveidojas, un īpašā maisījuma sastāva dēļ veidojas ļoti smalkas, viegli noņemamas šļakatas, kas būtiski paātrina tīrīšanu un samazina ražošanas izmaksas. Priekšrocības: ļoti stabila metināšanas loka, laba malu samitrināšana, stabils un vienmērīgs izkausējums, viegla šļakatu noņemšana, piemērota robotizētai un mehānizētai metināšanai."
+      }
+    },
+    "ar": {
+      "isoStandard": "ISO EN 14175: I1",
+      "isoStandardFull": "",
+      "penetration": "medium",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "Universal shielding gas for TIG welding of various materials. Provides a stable arc, a clean weld surface, and good process control.",
+        "ru": "Универсальный защитный газ для TIG-сварки различных материалов. Обеспечивает стабильную дугу, чистую поверхность шва и хорошую управляемость процесса.",
+        "lv": "Universāla aizsarggāze TIG metināšanai dažādiem materiāliem. Nodrošina stabilu loku, tīru šuves virsmu un labu procesa kontroli."
+      },
+      "recommendedThickness": [
+        "thin"
+      ]
+    },
+    "aluline-he30": {
+      "isoStandard": "ISO EN 14175: I3",
+      "isoStandardFull": "ArHe-30",
+      "penetration": "high",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for MIG and TIG welding of non‑ferrous metals and their alloys, primarily aluminum. In some cases, it may be used for TIG welding of carbon steels to increase penetration. Due to its specially selected composition, it provides deeper penetration and allows an increase in welding speed. As a rule, it is used for welding thin and medium thickness materials.",
+        "ru": "Подходит для MIG/TIG сварки алюминия и его сплавов в широком диапазоне толщин. Обеспечивает стабильную дугу и хорошую скорость сварки.",
+        "lv": "Šis metināšanas maisījums tiek izmantots krāsaino metālu un to sakausējumu, galvenokārt alumīnija, MIG un TIG metināšanai. Dažos gadījumos to var izmantot arī oglekļa tēraudu TIG metināšanai, lai palielinātu izkausējumu. Pateicoties īpaši izvēlētajam sastāvam, tas nodrošina dziļāku izkausējumu un ļauj palielināt metināšanas ātrumu. Parasti to izmanto plānu un vidēja biezuma materiālu metināšanai."
+      },
+      "recommendedThickness": [
+        "thin",
+        "thick"
+      ]
+    },
+    "inoxline-c2": {
+      "isoStandard": "ISO EN 14175: M12",
+      "isoStandardFull": "ArC-2.5",
+      "penetration": "medium",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for welding high-alloy steels, mainly stainless steels of grades AISI 304 (C ≤ 0.08%, Cr 17.5–20%, Fe 65–74%, Ni 8–11%, Mn, P, S, Cu) and AISI 316 (with added Mo). These materials are welded using mixtures with a low content of active gases. The mixture is most effective for welding thin and medium thickness metal. It provides minimal soot and oxidation of the weld. To improve process stability at low currents, the use of pulsed power sources is recommended.",
+        "ru": "Защитный газ для MAG-сварки нержавеющих сталей тонких толщин. Обеспечивает стабильную дугу и чистую поверхность шва.",
+        "lv": "Šis metināšanas maisījums tiek izmantots augstleģēto tēraudu, galvenokārt nerūsējošo tēraudu AISI 304 (C ≤ 0,08 %, Cr 17,5–20 %, Fe 65–74 %, Ni 8–11 %, Mn, P, S, Cu) un AISI 316 (ar Mo piedevu) metināšanai. Šo materiālu metināšanai izmanto maisījumus ar zemu aktīvo gāzu saturu. Maisījums visefektīvāk piemērots metāla mazai un vidējai biezumam. Tas nodrošina minimālu šuves apdegumu un oksidēšanos. Procesa stabilitātes uzlabošanai darbā ar mazām strāvām ieteicams izmantot impulsu barošanas avotus."
+      },
+      "recommendedThickness": [
+        "thin"
+      ]
+    },
+    "inoxline-x2": {
+      "isoStandard": "ISO EN 14175: M13",
+      "isoStandardFull": "ArO-2",
+      "penetration": "medium",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for welding high-alloy steels, mainly stainless steels of grades AISI 304 (C ≤ 0.08%, Cr 17.5–20%, Fe 65–74%, Ni 8–11%, Mn, P, S, Cu) and AISI 316 (with added Mo). These materials are welded using mixtures with a low content of active gases—oxygen and carbon dioxide. The mixture is most effective for welding thin and medium thickness metal. It provides minimal soot and somewhat higher oxidation of the weld compared to Inoxline C2. To improve process stability at low currents, the use of pulsed power sources is recommended.",
+        "ru": "Рекомендуется для MAG-сварки нержавеющих сталей тонких толщин с акцентом на чистоту шва и стабильность дуги.",
+        "lv": "Šis metināšanas maisījums tiek izmantots augstleģēto tēraudu, galvenokārt nerūsējošo tēraudu AISI 304 (C ≤ 0,08 %, Cr 17,5–20 %, Fe 65–74 %, Ni 8–11 %, Mn, P, S, Cu) un AISI 316 (ar Mo piedevu) metināšanai. Šo materiālu metināšanai izmanto maisījumus ar zemu aktīvo gāzu saturu — skābekli un oglekļa dioksīdu. Maisījums visefektīvāk piemērots metāla mazam un vidējam biezumam. Tas nodrošina minimālu šuves apdegumu un nedaudz lielāku oksidēšanos salīdzinājumā ar maisījumu Inoxline C2. Procesa stabilitātes uzlabošanai darbā ar mazām strāvām ieteicams izmantot impulsu barošanas avotus."
+      },
+      "recommendedThickness": [
+        "thin"
+      ]
+    },
+    "inoxline-c3h1": {
+      "isoStandard": "ISO EN 14175: M11",
+      "isoStandardFull": "ArCH-3/1",
+      "penetration": "high",
+      "smokeEmission": "medium",
+      "spatter": "medium",
+      "application": {
+        "en": "This welding mixture is used for welding high-alloy steels, mainly stainless steels of grades AISI 304 (C ≤ 0.08%, Cr 17.5–20%, Fe 65–74%, Ni 8–11%, Mn, P, S, Cu) and AISI 316 (with added Mo). These materials are welded using mixtures with a low content of active gases—oxygen and carbon dioxide. The mixture is specifically developed to improve the appearance of the weld and is most effective for welding thin and medium thickness metal. It provides minimal oxidation of the weld and heat-affected zone. To improve process stability at low currents, the use of pulsed power sources is recommended.",
+        "ru": "Газ для MAG-сварки нержавеющих сталей, подходит для получения более глубокого проплавления и стабильной дуги.",
+        "lv": "Šis metināšanas maisījums tiek izmantots augstleģēto tēraudu, galvenokārt nerūsējošo tēraudu AISI 304 (C ≤ 0,08 %, Cr 17,5–20 %, Fe 65–74 %, Ni 8–11 %, Mn, P, S, Cu) un AISI 316 (ar Mo piedevu) metināšanai. Šo materiālu metināšanai izmanto maisījumus ar zemu aktīvo gāzu saturu — skābekli un oglekļa dioksīdu. Maisījums ir īpaši izstrādāts šuves ārējā izskata uzlabošanai un visefektīvāk piemērots metāla mazam un vidējam biezumam. Tas nodrošina minimālu šuves un termiski ietekmētās zonas oksidēšanos. Procesa stabilitātes uzlabošanai darbā ar mazām strāvām ieteicams izmantot impulsu barošanas avotus."
+      },
+      "recommendedThickness": [
+        "thin"
+      ]
+    },
+    "inoxline-he15c2": {
+      "isoStandard": "ISO EN 14175: M12",
+      "isoStandardFull": "ArHeC-15/2",
+      "penetration": "high",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for welding high-alloy steels, mainly stainless steels of grades AISI 304 (C ≤ 0.08%, Cr 17.5–20%, Fe 65–74%, Ni 8–11%, Mn, P, S, Cu) and AISI 316 (with added Mo). These materials are welded using mixtures with a low content of active gases—oxygen and carbon dioxide. The mixture was developed to increase penetration depth and is most effective for welding medium and thick metal. It provides minimal oxidation of the weld and heat-affected zone. To improve process stability at low currents, the use of pulsed power sources is recommended.",
+        "ru": "Рекомендуется для MAG-сварки нержавеющих сталей больших толщин. Обеспечивает глубокое проплавление и стабильный процесс.",
+        "lv": "Šis metināšanas maisījums tiek izmantots augstleģēto tēraudu, galvenokārt nerūsējošo tēraudu AISI 304 (C ≤ 0,08 %, Cr 17,5–20 %, Fe 65–74 %, Ni 8–11 %, Mn, P, S, Cu) un AISI 316 (ar Mo piedevu) metināšanai. Šo materiālu metināšanai izmanto maisījumus ar zemu aktīvo gāzu saturu — skābekli un oglekļa dioksīdu. Maisījums izstrādāts, lai palielinātu izkausējuma dziļumu un visefektīvāk piemērots metāla vidējam un lielam biezumam. Tas nodrošina minimālu šuves un termiski ietekmētās zonas oksidēšanos. Procesa stabilitātes uzlabošanai darbā ar mazām strāvām ieteicams izmantot impulsu barošanas avotus."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    },
+    "inoxline-he3h1": {
+      "isoStandard": "ISO EN 14175: R1",
+      "isoStandardFull": "ArHeH-3/1.5",
+      "penetration": "high",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for TIG welding of high-alloy steels, mainly stainless steels of grades AISI 304 (C ≤ 0.08%, Cr 17.5–20%, Fe 65–74%, Ni 8–11%, Mn, P, S, Cu) and AISI 316 (with added Mo). The mixture is specifically developed to increase penetration depth and welding speed, reduce metal distortions after welding, and improve the appearance of the weld. It is most effective for welding medium and thick metals. It provides minimal oxidation of the weld and heat-affected zone.",
+        "ru": "Рекомендуется для TIG-сварки нержавеющих сталей, обеспечивает стабильную дугу и качественную поверхность шва.",
+        "lv": "Šis metināšanas maisījums tiek izmantots augstleģēto tēraudu, galvenokārt nerūsējošo tēraudu AISI 304 (C ≤ 0,08 %, Cr 17,5–20 %, Fe 65–74 %, Ni 8–11 %, Mn, P, S, Cu) un AISI 316 (ar Mo piedevu) TIG metināšanai. Maisījums ir īpaši izstrādāts, lai palielinātu izkausējuma dziļumu un metināšanas ātrumu, samazinātu metāla deformācijas pēc metināšanas un uzlabotu šuves ārējo izskatu. Tas ir visefektīvākais vidēja un liela biezuma metāla metināšanai. Nodrošina minimālu šuves un termiski ietekmētās zonas oksidēšanos."
+      },
+      "recommendedThickness": [
+        "thin",
+        "thick"
+      ]
+    },
+    "inoxline-h5": {
+      "isoStandard": "ISO EN 14175: R1",
+      "isoStandardFull": "ArH-5",
+      "penetration": "high",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is specifically developed for use in automated and mechanized systems, including orbital welding, and is intended for welding high-alloy (stainless) steels. The mixture provides very deep penetration and high welding speed.",
+        "ru": "Используется для TIG-сварки нержавеющих сталей, в том числе в полностью механизированных (orbital) процессах. Обеспечивает стабильную дугу и надежное проплавление.",
+        "lv": "Šis metināšanas maisījums ir īpaši izstrādāts izmantošanai automatizētās un mehānizētās sistēmās, tostarp orbitālajā metināšanā, un paredzēts augstleģēto (nerūsējošo) tēraudu metināšanai. Maisījums nodrošina ļoti dziļu izkausējumu un augstu metināšanas ātrumu."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    },
+    "aluline-he50": {
+      "isoStandard": "ISO EN 14175: I3",
+      "isoStandardFull": "ArHe-50",
+      "penetration": "high",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for welding non‑ferrous metals and their alloys, primarily aluminum. Due to the specially selected composition, it provides very deep penetration and allows a significant increase in welding speed. As a rule, it is used for welding medium and thick materials.",
+        "ru": "Рекомендуется для MIG/TIG сварки алюминия и его сплавов при повышенных требованиях к проплавлению и скорости.",
+        "lv": "Šis metināšanas maisījums tiek izmantots krāsaino metālu un to sakausējumu, galvenokārt alumīnija, metināšanai. Pateicoties īpaši izvēlētajam sastāvam, tas nodrošina ļoti dziļu izkausējumu un ļauj ievērojami palielināt metināšanas ātrumu. Parasti to izmanto vidēja un liela biezuma materiālu metināšanai."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    },
+    "aluline-he70": {
+      "isoStandard": "ISO EN 14175: I3",
+      "isoStandardFull": "ArHe-70",
+      "penetration": "high",
+      "smokeEmission": "low",
+      "spatter": "low",
+      "application": {
+        "en": "This welding mixture is used for welding non‑ferrous metals and their alloys, primarily aluminum. Due to the specially selected composition, it provides maximum penetration and allows a significant increase in welding speed. As a rule, it is used for welding medium and thick materials.",
+        "ru": "Подходит для MIG/TIG сварки алюминия и его сплавов при необходимости высокой производительности и глубокого проплавления.",
+        "lv": "Šis metināšanas maisījums tiek izmantots krāsaino metālu un to sakausējumu, galvenokārt alumīnija, metināšanai. Pateicoties īpaši izvēlētajam sastāvam, tas nodrošina maksimālu izkausējumu un ļauj ievērojami palielināt metināšanas ātrumu. Parasti to izmanto vidēja un liela biezuma materiālu metināšanai."
+      },
+      "recommendedThickness": [
+        "thick"
+      ]
+    }
+  },
+  "criteriaGroups": {
+    "ferroline": {
+      "gasIds": [
+        "ferroline-c25",
+        "ferroline-c18",
+        "ferroline-c12x2",
+        "ferroline-c6x1",
+        "ferroline-c8"
+      ],
+      "criteria": [
+        {
+          "id": "penetrationLevel",
+          "label": {
+            "en": "Weld penetration level",
+            "ru": "Уровень проплавления шва",
+            "lv": "Šuves iespiešanās līmenis"
+          }
+        },
+        {
+          "id": "porosityResistance",
+          "label": {
+            "en": "Porosity resistance",
+            "ru": "Устойчивость к образованию пористости",
+            "lv": "Izturība pret porainību"
+          }
+        },
+        {
+          "id": "cleaningEase",
+          "label": {
+            "en": "Ease of weld cleaning",
+            "ru": "Легкость очистки сварного шва",
+            "lv": "Šuves tīrīšanas vieglums"
+          }
+        },
+        {
+          "id": "airCleanliness",
+          "label": {
+            "en": "Air cleanliness around the weld zone",
+            "ru": "Чистота воздуха вокруг зоны сварки",
+            "lv": "Gaisa tīrība ap metināšanas zonu"
+          }
+        },
+        {
+          "id": "lowSpatter",
+          "label": {
+            "en": "Low spatter",
+            "ru": "Низкое разбрызгивание",
+            "lv": "Zema šļakatu veidošanās"
+          }
+        }
+      ]
+    },
+    "inoxlineMag": {
+      "gasIds": [
+        "inoxline-c2",
+        "inoxline-x2",
+        "inoxline-he15c2",
+        "inoxline-c3h1"
+      ],
+      "criteria": [
+        {
+          "id": "penetrationUniformity",
+          "label": {
+            "en": "Penetration depth and uniformity",
+            "ru": "Глубина и равномерность проплавления шва",
+            "lv": "Šuves iespiešanās dziļums un vienmērība"
+          }
+        },
+        {
+          "id": "arcStability",
+          "label": {
+            "en": "Welding arc stability",
+            "ru": "Стабильность горения сварочной дуги",
+            "lv": "Metināšanas loka stabilitāte"
+          }
+        },
+        {
+          "id": "surfaceCleanliness",
+          "label": {
+            "en": "Cleanliness of the seam surface and surrounding area",
+            "ru": "Чистота поверхности шва и окружающей зоны",
+            "lv": "Šuves virsmas un apkārtējās zonas tīrība"
+          }
+        }
+      ]
+    },
+    "tigGroup": {
+      "gasIds": [
+        "inoxline-he3h1",
+        "inoxline-h5"
+      ],
+      "criteria": [
+        {
+          "id": "penetrationUniformity",
+          "label": {
+            "en": "Penetration depth and uniformity",
+            "ru": "Глубина и равномерность проплавления шва",
+            "lv": "Šuves iespiešanās dziļums un vienmērība"
+          }
+        },
+        {
+          "id": "arcStability",
+          "label": {
+            "en": "Welding arc stability",
+            "ru": "Стабильность горения сварочной дуги",
+            "lv": "Metināšanas loka stabilitāte"
+          }
+        },
+        {
+          "id": "weldingSpeed",
+          "label": {
+            "en": "Welding speed",
+            "ru": "Скорость сварки",
+            "lv": "Metināšanas ātrums"
+          }
+        },
+        {
+          "id": "surfaceCleanliness",
+          "label": {
+            "en": "Seam surface cleanliness",
+            "ru": "Чистота поверхности шва",
+            "lv": "Šuves virsmas tīrība"
+          }
+        }
+      ]
+    },
+    "aluline": {
+      "gasIds": [
+        "ar",
+        "aluline-he30",
+        "aluline-he50",
+        "aluline-he70"
+      ],
+      "criteria": [
+        {
+          "id": "penetrationUniformity",
+          "label": {
+            "en": "Penetration depth and uniformity",
+            "ru": "Глубина и равномерность проплавления шва",
+            "lv": "Šuves iespiešanās dziļums un vienmērība"
+          }
+        },
+        {
+          "id": "arcStability",
+          "label": {
+            "en": "Welding arc stability",
+            "ru": "Стабильность горения сварочной дуги",
+            "lv": "Metināšanas loka stabilitāte"
+          }
+        },
+        {
+          "id": "weldingSpeed",
+          "label": {
+            "en": "Welding speed",
+            "ru": "Скорость сварки",
+            "lv": "Metināšanas ātrums"
+          }
+        }
+      ]
+    }
+  },
+  "gasCriteriaScores": {
+    "ferroline-c25": {
+      "penetrationLevel": 4.5,
+      "porosityResistance": 4.5,
+      "cleaningEase": 2.5,
+      "airCleanliness": 2.5,
+      "lowSpatter": 2.5
+    },
+    "ferroline-c18": {
+      "penetrationLevel": 4,
+      "porosityResistance": 4,
+      "cleaningEase": 3,
+      "airCleanliness": 3,
+      "lowSpatter": 3
+    },
+    "ferroline-c12x2": {
+      "penetrationLevel": 3.5,
+      "porosityResistance": 3.5,
+      "cleaningEase": 4,
+      "airCleanliness": 3.5,
+      "lowSpatter": 3.5
+    },
+    "ferroline-c6x1": {
+      "penetrationLevel": 3.5,
+      "porosityResistance": 3.5,
+      "cleaningEase": 4.5,
+      "airCleanliness": 4,
+      "lowSpatter": 4
+    },
+    "ferroline-c8": {
+      "penetrationLevel": 3.5,
+      "porosityResistance": 3.5,
+      "cleaningEase": 4,
+      "airCleanliness": 3.5,
+      "lowSpatter": 3.5
+    },
+    "inoxline-c2": {
+      "penetrationUniformity": 3.5,
+      "arcStability": 3.5,
+      "surfaceCleanliness": 4
+    },
+    "inoxline-x2": {
+      "penetrationUniformity": 3.5,
+      "arcStability": 3.5,
+      "surfaceCleanliness": 3.5
+    },
+    "inoxline-he15c2": {
+      "penetrationUniformity": 4.5,
+      "arcStability": 3,
+      "surfaceCleanliness": 3.5
+    },
+    "inoxline-c3h1": {
+      "penetrationUniformity": 4,
+      "arcStability": 3,
+      "surfaceCleanliness": 4
+    },
+    "inoxline-he3h1": {
+      "penetrationUniformity": 4,
+      "arcStability": 4,
+      "weldingSpeed": 4.5,
+      "surfaceCleanliness": 4
+    },
+    "inoxline-h5": {
+      "penetrationUniformity": 4,
+      "arcStability": 4,
+      "weldingSpeed": 4.5,
+      "surfaceCleanliness": 4
+    },
+    "ar": {
+      "penetrationUniformity": 3,
+      "arcStability": 5,
+      "weldingSpeed": 3
+    },
+    "aluline-he30": {
+      "penetrationUniformity": 3.5,
+      "arcStability": 4.5,
+      "weldingSpeed": 3.5
+    },
+    "aluline-he50": {
+      "penetrationUniformity": 4,
+      "arcStability": 4,
+      "weldingSpeed": 4
+    },
+    "aluline-he70": {
+      "penetrationUniformity": 4.5,
+      "arcStability": 3.5,
+      "weldingSpeed": 4.5
+    }
+  },
+  "propertyLabels": {
+    "penetration": {
+      "low": {
+        "en": "low depth / width",
+        "ru": "малая глубина / ширина",
+        "lv": "maza dziļums / platums"
+      },
+      "medium": {
+        "en": "medium",
+        "ru": "средняя",
+        "lv": "vidēja"
+      },
+      "high": {
+        "en": "high",
+        "ru": "большая",
+        "lv": "liela"
+      }
+    },
+    "smokeEmission": {
+      "low": {
+        "en": "low",
+        "ru": "мало",
+        "lv": "maz"
+      },
+      "medium": {
+        "en": "medium",
+        "ru": "средне",
+        "lv": "vidēji"
+      },
+      "high": {
+        "en": "high",
+        "ru": "много",
+        "lv": "daudz"
+      }
+    },
+    "porosityRisk": {
+      "low": {
+        "en": "low",
+        "ru": "малая",
+        "lv": "maza"
+      },
+      "medium": {
+        "en": "medium",
+        "ru": "средняя",
+        "lv": "vidēja"
+      },
+      "high": {
+        "en": "high",
+        "ru": "высокая",
+        "lv": "augsta"
+      }
+    },
+    "cleaningDifficulty": {
+      "easy": {
+        "en": "easy",
+        "ru": "легкая",
+        "lv": "viegla"
+      },
+      "medium": {
+        "en": "medium",
+        "ru": "средняя",
+        "lv": "vidēja"
+      },
+      "hard": {
+        "en": "difficult",
+        "ru": "трудоемкая",
+        "lv": "grūta"
+      }
+    },
+    "silicateIslands": {
+      "low": {
+        "en": "low",
+        "ru": "мало",
+        "lv": "maz"
+      },
+      "medium": {
+        "en": "medium",
+        "ru": "средне",
+        "lv": "vidēji"
+      },
+      "high": {
+        "en": "high",
+        "ru": "много",
+        "lv": "daudz"
+      }
+    },
+    "spatter": {
+      "low": {
+        "en": "low",
+        "ru": "мало",
+        "lv": "maz"
+      },
+      "medium": {
+        "en": "medium",
+        "ru": "средне",
+        "lv": "vidēji"
+      },
+      "high": {
+        "en": "high",
+        "ru": "много",
+        "lv": "daudz"
+      }
+    },
+    "thickness": {
+      "thin": {
+        "en": "thin sections",
+        "ru": "тонкие толщины",
+        "lv": "plānas biezības"
+      },
+      "thick": {
+        "en": "thick sections",
+        "ru": "большие толщины",
+        "lv": "lielas biezības"
+      }
+    }
+  },
+  "rootProtectionWarning": {
+    "en": "During TIG welding of stainless steels without root protection, hard chromium oxides form on the reverse side, reducing corrosion resistance.",
+    "ru": "При TIG-сварке нержавеющих сталей без защиты корня шва с обратной стороны образуются твёрдые оксиды хрома, ухудшающие коррозионную стойкость.",
+    "lv": "TIG metinot nerūsējošo tēraudu bez saknes aizsardzības, pretējā pusē veidojas cieti hroma oksīdi, kas pasliktina korozijas izturību."
+  }
+}

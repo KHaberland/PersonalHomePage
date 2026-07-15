@@ -28,7 +28,7 @@
     "fallbackTool": {
       "shieldingGas": {
         "name": "Aizsarggāzes kalkulators",
-        "description": "Ievade: stieple, materiāls un process; izvade: plūsmas diapazons."
+        "description": "Ievade: materiāls, process un biezums; izvade: aizsarggāzes maisījums ar ISO apzīmējumu un kritēriju vērtējumiem."
       },
       "heatInput": {
         "name": "Siltuma ievades kalkulators",

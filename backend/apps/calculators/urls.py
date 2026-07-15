@@ -5,6 +5,11 @@ from . import views
 urlpatterns = [
     path("tools/", views.CalculatorListView.as_view(), name="calculator-list"),
     path(
+        "shielding-gas/catalog/",
+        views.ShieldingGasCatalogView.as_view(),
+        name="shielding-gas-catalog",
+    ),
+    path(
         "calculate/heat-input/",
         views.HeatInputCalculateView.as_view(),
         name="calculate-heat-input",

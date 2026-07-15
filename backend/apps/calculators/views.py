@@ -13,6 +13,7 @@ from .services import (
     calculate_welding_cost,
     calculate_welding_parameters,
 )
+from .shielding_gas_catalog import get_shielding_gas_catalog, normalize_lang
 
 
 class CalculatorListView(generics.ListAPIView):
@@ -73,6 +74,14 @@ class GasFlowCalculateView(APIView):
                 {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class ShieldingGasCatalogView(APIView):
+    """GET /api/shielding-gas/catalog/ - Shielding gas selection catalog."""
+
+    def get(self, request: Request) -> Response:
+        lang = normalize_lang(request.query_params.get("lang", "en"))
+        return Response(get_shielding_gas_catalog(lang))
 
 
 class ShieldingGasCalculateView(APIView):

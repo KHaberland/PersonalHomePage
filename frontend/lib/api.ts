@@ -29,6 +29,7 @@ import type {
   WeldingParametersRequest,
   WeldingParametersResponse,
 } from './api-types';
+import type { ShieldingGasCatalog } from './shielding-gas/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
@@ -206,6 +207,14 @@ export async function getTools(lang: Lang = 'en'): Promise<Calculator[]> {
   );
   if (Array.isArray(data)) return data;
   return data.results ?? [];
+}
+
+export async function getShieldingGasCatalog(
+  lang: Lang
+): Promise<ShieldingGasCatalog> {
+  return fetchApi<ShieldingGasCatalog>('/shielding-gas/catalog/', {
+    params: { lang },
+  });
 }
 
 export async function calculateHeatInput(

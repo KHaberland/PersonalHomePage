@@ -28,7 +28,7 @@
     "fallbackTool": {
       "shieldingGas": {
         "name": "Shielding Gas Calculator",
-        "description": "Input wire, material and process; output a flow range."
+        "description": "Input: material, process and thickness; output: shielding gas mix with ISO designation and criteria scores."
       },
       "heatInput": {
         "name": "Heat Input Calculator",

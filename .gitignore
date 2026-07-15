@@ -19,6 +19,9 @@ frontend/lib/*
 !frontend/lib/api.ts
 !frontend/lib/api-types.ts
 !frontend/lib/metadata.ts
+!frontend/lib/calculator-content.ts
+!frontend/lib/shielding-gas/
+!frontend/lib/shielding-gas/**
 parts/
 sdist/
 var/
