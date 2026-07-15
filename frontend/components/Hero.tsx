@@ -109,21 +109,15 @@ export function Hero({ text }: HeroProps) {
         </p>
         {/* Декор: линии и точка — нативный CSS, без SVG */}
         <div className="mt-8 flex items-center gap-4" aria-hidden>
-          <span className="h-px w-12 bg-[#fdba74]" />
+          <span className="h-px w-12 bg-accent-orange-soft" />
           <span className="h-2 w-2 rounded-full bg-accent-blue" />
-          <span className="h-px w-12 bg-[#fdba74]" />
+          <span className="h-px w-12 bg-accent-orange-soft" />
         </div>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
-          <Link
-            href="/solutions"
-            className="btn-primary inline-block min-w-[12rem] px-8 py-3 text-center"
-          >
+          <Link href="/solutions" className="btn-primary btn-lg">
             {text.ctaSolutions}
           </Link>
-          <Link
-            href="/tools"
-            className="btn-secondary inline-block min-w-[12rem] px-8 py-3 text-center"
-          >
+          <Link href="/tools" className="btn-secondary btn-lg">
             {text.ctaTools}
           </Link>
         </div>

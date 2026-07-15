@@ -1,5 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { CompetencyCard } from '@/components/CompetencyCard';
+import { Section } from '@/components/Section';
 import { Link } from '@/i18n/navigation';
 import {
   IconCompetencyCutting,
@@ -79,15 +80,15 @@ export default async function ExpertisePage({ params }: Props) {
     content[section]?.[key] || '';
 
   return (
-    <div className="container-wide section">
+    <Section bordered={false} scrollMargin={false}>
       <div className="max-w-4xl">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+        <p className="eyebrow-blue mb-3">
           {expertiseText('hero', 'expertiseDecisionEyebrow')}
         </p>
         <h1 className="heading-1 text-accent-orange">
           {expertiseText('hero', 'competenciesTitle')}
         </h1>
-        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
+        <p className="lead mt-6 max-w-3xl">
           {expertiseText('hero', 'expertisePageIntro')}
         </p>
       </div>
@@ -101,7 +102,7 @@ export default async function ExpertisePage({ params }: Props) {
           return (
             <li key={anchorId} id={anchorId} className="scroll-mt-24">
               <div className="flex h-full flex-col gap-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-accent-blue">
+                <p className="eyebrow-blue-sm">
                   {expertiseText(competencyBlock, 'group')}
                 </p>
                 <CompetencyCard
@@ -119,10 +120,7 @@ export default async function ExpertisePage({ params }: Props) {
       </ul>
 
       <section className="mt-12 grid gap-4 md:grid-cols-2">
-        <Link
-          href="/solutions"
-          className="card block p-6 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)]"
-        >
+        <Link href="/solutions" className="card card-interactive block p-6">
           <h2 className="heading-3 text-foreground">
             {expertiseText('cta_solutions', 'expertiseSolutionsCtaTitle')}
           </h2>
@@ -133,10 +131,7 @@ export default async function ExpertisePage({ params }: Props) {
             {expertiseText('cta_solutions', 'expertiseSolutionsCta')} →
           </span>
         </Link>
-        <Link
-          href="/experience"
-          className="card block p-6 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)]"
-        >
+        <Link href="/experience" className="card card-interactive block p-6">
           <h2 className="heading-3 text-foreground">
             {expertiseText('cta_experience', 'expertiseExperienceCtaTitle')}
           </h2>
@@ -148,6 +143,6 @@ export default async function ExpertisePage({ params }: Props) {
           </span>
         </Link>
       </section>
-    </div>
+    </Section>
   );
 }

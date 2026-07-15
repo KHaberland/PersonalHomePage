@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { ContactForm } from '@/components/ContactForm';
 import type { ContactFormLabels } from '@/components/ContactForm';
+import { Section } from '@/components/Section';
 import { getContact } from '@/lib/api';
 import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
@@ -60,12 +61,12 @@ export default async function ContactPage({ params }: Props) {
     process.env.NEXT_PUBLIC_MAP_EMBED_URL?.trim() || DEFAULT_MAP_EMBED;
 
   return (
-    <div className="container-narrow section">
-      <h1 className="heading-1 mb-12 text-accent-orange">
+    <Section container="narrow" bordered={false} scrollMargin={false}>
+      <h1 className="heading-1 mb-4 text-accent-orange">
         {contactText('hero', 'title')}
       </h1>
 
-      <p className="mb-12 max-w-2xl text-foreground/90">
+      <p className="lead mb-12 max-w-2xl">
         {contactText('hero', 'description')}
       </p>
 
@@ -79,7 +80,7 @@ export default async function ContactPage({ params }: Props) {
         {contact?.email && (
           <a
             href={`mailto:${contact.email}`}
-            className="card flex items-center gap-4 p-6 transition-colors hover:border-accent-orange"
+            className="card flex items-center gap-4 p-6"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent-orange/20 text-accent-orange">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -100,7 +101,7 @@ export default async function ContactPage({ params }: Props) {
             href={contact.linkedin_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="card flex items-center gap-4 p-6 transition-colors hover:border-accent-orange"
+            className="card flex items-center gap-4 p-6"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent-orange/20 text-accent-orange">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -115,7 +116,7 @@ export default async function ContactPage({ params }: Props) {
                   'LinkedIn'
                 )}
               </p>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/80">
                 {contactText('contact_methods', 'linkedin')}
               </p>
             </div>
@@ -127,7 +128,7 @@ export default async function ContactPage({ params }: Props) {
             href={contact.youtube_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="card flex items-center gap-4 p-6 transition-colors hover:border-accent-orange"
+            className="card flex items-center gap-4 p-6"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent-orange/20 text-accent-orange">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -138,7 +139,7 @@ export default async function ContactPage({ params }: Props) {
               <p className="font-medium text-foreground">
                 {contactLabel('contact_methods', 'youtubePlatform', 'YouTube')}
               </p>
-              <p className="text-sm text-foreground/70">
+              <p className="text-sm text-foreground/80">
                 {contactText('contact_methods', 'youtube')}
               </p>
             </div>
@@ -147,7 +148,7 @@ export default async function ContactPage({ params }: Props) {
       </div>
 
       {!contact && (
-        <p className="mt-8 text-foreground/70">
+        <p className="mt-8 text-foreground/80">
           {contactText('empty', 'noContact')}
         </p>
       )}
@@ -156,7 +157,7 @@ export default async function ContactPage({ params }: Props) {
         <h2 id="contact-map-heading" className="heading-2 mb-2 text-foreground">
           {contactText('map', 'mapTitle')}
         </h2>
-        <p className="mb-4 max-w-2xl text-sm text-foreground/70">
+        <p className="mb-4 max-w-2xl text-sm text-foreground/80">
           {contactText('map', 'mapDescription')}
         </p>
         <div className="overflow-hidden rounded-lg border border-border">
@@ -169,6 +170,6 @@ export default async function ContactPage({ params }: Props) {
           />
         </div>
       </section>
-    </div>
+    </Section>
   );
 }

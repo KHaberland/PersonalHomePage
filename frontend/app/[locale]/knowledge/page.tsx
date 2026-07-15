@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { Section } from '@/components/Section';
 import { getCategories, getPosts } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
@@ -74,19 +75,13 @@ export default async function KnowledgePage({ params }: Props) {
   const categoryMap = new Map(categories.map((c) => [c.slug, c]));
 
   return (
-    <div className="container-wide section">
-      <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-        {knowledgeText('eyebrow')}
-      </p>
+    <Section bordered={false} scrollMargin={false}>
+      <p className="eyebrow-blue mb-3">{knowledgeText('eyebrow')}</p>
       <h1 className="heading-1 mb-4 text-accent-orange">
         {knowledgeText('title')}
       </h1>
-      <p className="mb-3 max-w-3xl text-foreground/80">
-        {knowledgeText('description')}
-      </p>
-      <p className="mb-12 max-w-3xl text-sm text-foreground/70">
-        {knowledgeText('schemaNote')}
-      </p>
+      <p className="lead mb-3 max-w-3xl">{knowledgeText('description')}</p>
+      <p className="caption mb-12 max-w-3xl">{knowledgeText('schemaNote')}</p>
 
       <div className="space-y-16">
         {KNOWLEDGE_SECTIONS.map(({ slug }, idx) => {
@@ -130,7 +125,7 @@ export default async function KnowledgePage({ params }: Props) {
                           {post.title}
                         </h3>
                         <div
-                          className="mt-1 line-clamp-2 text-sm text-foreground/70 [&_p]:inline [&_p]:m-0"
+                          className="mt-1 line-clamp-2 text-sm text-foreground/80 [&_p]:inline [&_p]:m-0"
                           dangerouslySetInnerHTML={{
                             __html: post.excerpt || '',
                           }}
@@ -173,7 +168,7 @@ export default async function KnowledgePage({ params }: Props) {
             <h3 className="heading-3 text-foreground">
               {knowledgeText('solutionCtaTitle')}
             </h3>
-            <p className="mt-2 text-sm text-foreground/75">
+            <p className="mt-2 text-sm text-foreground/80">
               {knowledgeText('solutionCtaText')}
             </p>
             <span className="link-accent mt-4 inline-block text-sm">
@@ -184,7 +179,7 @@ export default async function KnowledgePage({ params }: Props) {
             <h3 className="heading-3 text-foreground">
               {knowledgeText('blogLinkTitle')}
             </h3>
-            <p className="mt-2 text-sm text-foreground/75">
+            <p className="mt-2 text-sm text-foreground/80">
               {knowledgeText('blogLinkText')}
             </p>
           </Link>
@@ -192,12 +187,12 @@ export default async function KnowledgePage({ params }: Props) {
             <h3 className="heading-3 text-foreground">
               {knowledgeText('bookLinkTitle')}
             </h3>
-            <p className="mt-2 text-sm text-foreground/75">
+            <p className="mt-2 text-sm text-foreground/80">
               {knowledgeText('bookLinkText')}
             </p>
           </Link>
         </div>
       </section>
-    </div>
+    </Section>
   );
 }

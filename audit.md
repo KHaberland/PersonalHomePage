@@ -89,6 +89,8 @@ npm run lint
 
 ## Этап 3. Упорядочить muted text и labels
 
+**Статус:** выполнено. Второстепенный текст в страницах и общих компонентах приведён к ограниченной шкале `text-foreground/80`, `text-foreground/60`, `text-foreground/50`; нестандартные `/78`, `/75`, `/70`, `/65`, `/55`, `/45` заменены там, где они были muted/caption/label. `.caption` и `.eyebrow` применены точечно, без массовой смены цветовых акцентов.
+
 Файлы:
 
 - страницы в `frontend/app/[locale]/`
@@ -144,6 +146,8 @@ npm run lint
 
 ## Этап 5. Упорядочить кнопки и CTA
 
+**Статус:** выполнено. В `globals.css` зафиксирована иерархия CTA (primary / secondary / link-accent / pill) и модификаторы размеров `.btn-lg`, `.btn-sm`, `.btn-pill-sm`; локальные `px-*` / `py-*` / `text-*` overrides убраны в Hero, decision-system pills, DiplomaCertificates и ExperienceCaseAccordion. Book page и EngineerIdentityStrip уже использовали базовые классы без лишних overrides.
+
 Файлы читать точечно:
 
 - `frontend/components/Hero.tsx`
@@ -176,6 +180,8 @@ npm run lint
 ```
 
 ## Этап 6. Упорядочить карточки
+
+**Статус:** выполнено. В `globals.css` зафиксированы variants: `.card`, `.card-compact`/`.card-comfortable`, `.card-interactive`, `.card-nav`, `.card-highlight`, `.card-highlight-soft`, `.card-cta`, `.card-cta-blue`, `.card-subtle`, `.card-accent`, `.card-nested`, `.card-stat`, `.card-expanded`. Inline `rounded-xl`/`rounded-2xl` заменены на variants в home, expertise, contact, tools, experience, solutions. `WhyChooseCard` удалён как неиспользуемый код. Специальные блоки (timeline experience, hero photo panel) сохранены без изменений.
 
 Файлы читать точечно:
 
@@ -211,6 +217,8 @@ npm run lint
 
 ## Этап 7. Убрать явные hardcoded-дубли токенов
 
+**Статус:** выполнено. В `globals.css` добавлены `--accent-orange-soft` и `--surface-deep`; пагинация блога и декор Hero переведены на токены; `BookSpreadPreview` и SVG калькуляторов без изменений (специальные цвета). `WhyChooseCard` уже удалён на этапе 6.
+
 Файлы:
 
 - `frontend/app/[locale]/blog/page.tsx`
@@ -243,6 +251,8 @@ npm run lint
 ```
 
 ## Этап 8. Расширить применение `Section`
+
+**Статус:** выполнено. В `Section.tsx` добавлены `container` (`wide` | `narrow`) и `as` (`section` | `article` | `div`); standalone-страницы переведены на `Section` с `bordered={false}` и `scrollMargin={false}`; главная и `/tools` без изменений.
 
 Файлы:
 

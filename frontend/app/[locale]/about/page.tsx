@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { DiplomaCertificates } from '@/components/DiplomaCertificates';
+import { Section } from '@/components/Section';
 import { getAbout, getContact } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
@@ -167,26 +168,22 @@ export default async function AboutPage({ params }: Props) {
   };
 
   return (
-    <div className="container-wide section">
+    <Section bordered={false} scrollMargin={false}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <h1 className="heading-2 mb-6 text-accent-orange">
+      <h1 className="heading-1 mb-6 text-accent-orange">
         {aboutUiText('title')}
       </h1>
 
       <section className="card mb-10 grid gap-6 p-6 md:grid-cols-[1.5fr_1fr] md:p-8">
         <div>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-accent-orange">
-            {aboutUiText('profileSummaryEyebrow')}
-          </p>
+          <p className="eyebrow mb-2">{aboutUiText('profileSummaryEyebrow')}</p>
           <h2 className="heading-3 mb-3 text-foreground">
             {aboutUiText('profileSummaryTitle')}
           </h2>
-          <p className="max-w-3xl text-foreground/80">
-            {aboutUiText('profileSummaryLead')}
-          </p>
+          <p className="lead max-w-3xl">{aboutUiText('profileSummaryLead')}</p>
         </div>
 
         <div className="space-y-4">
@@ -314,7 +311,7 @@ export default async function AboutPage({ params }: Props) {
             </h2>
           ) : null}
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/70">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/60">
             {profileRecordText('versionLabel') ||
             profileRecordText('version') ? (
               <p>
@@ -341,12 +338,12 @@ export default async function AboutPage({ params }: Props) {
             </p>
           ) : null}
           {profileRecordText('footerUpdated') ? (
-            <p className="mt-5 text-xs font-medium uppercase tracking-wide text-foreground/50">
+            <p className="caption mt-5 font-medium uppercase tracking-wide">
               {profileRecordText('footerUpdated')}
             </p>
           ) : null}
         </section>
       ) : null}
-    </div>
+    </Section>
   );
 }

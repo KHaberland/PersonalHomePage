@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { BookSpreadPreview } from '@/components/BookSpreadPreview';
+import { Section } from '@/components/Section';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getBook, getContact } from '@/lib/api';
@@ -60,8 +61,8 @@ export default async function BookPage({ params }: Props) {
       : null;
 
   return (
-    <div className="container-narrow section">
-      <h1 className="heading-1 mb-12 text-accent-orange">{title}</h1>
+    <Section container="narrow" bordered={false} scrollMargin={false}>
+      <h1 className="heading-1 mb-8 text-accent-orange">{title}</h1>
 
       <div className="flex flex-col gap-12 md:flex-row md:items-start md:gap-16">
         {/* Обложка */}
@@ -84,11 +85,11 @@ export default async function BookPage({ params }: Props) {
             <p className="text-lg font-medium text-accent-orange">
               {bookText('hero', 'subtitle')}
             </p>
-            <p className="mt-1 text-sm text-foreground/70">{year}</p>
+            <p className="mt-1 text-sm text-foreground/60">{year}</p>
           </div>
 
           <div
-            className="text-foreground/90 [&_p]:mt-2 [&_p:first-child]:mt-0 [&_p]:leading-relaxed"
+            className="lead [&_p]:mt-2 [&_p:first-child]:mt-0"
             dangerouslySetInnerHTML={{ __html: description }}
           />
 
@@ -102,10 +103,10 @@ export default async function BookPage({ params }: Props) {
                 {bookText('authority', 'authorityTitle')}
               </h2>
               <blockquote>
-                <p className="text-foreground/90 leading-relaxed">
+                <p className="leading-relaxed text-foreground/80">
                   {bookText('authority', 'authorityQuote')}
                 </p>
-                <footer className="mt-4 text-sm text-foreground/65">
+                <footer className="caption mt-4">
                   {bookText('authority', 'authorityAttribution')}
                 </footer>
               </blockquote>
@@ -120,17 +121,11 @@ export default async function BookPage({ params }: Props) {
               {bookText('purchase', 'purchaseIntro')}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link
-                href="/contact"
-                className="btn-primary inline-block px-6 py-3"
-              >
+              <Link href="/contact" className="btn-primary">
                 {bookText('cta', 'cta')}
               </Link>
               {mailtoBook && (
-                <a
-                  href={mailtoBook}
-                  className="btn-secondary inline-block px-6 py-3 text-center"
-                >
+                <a href={mailtoBook} className="btn-secondary">
                   {bookText('cta', 'ctaEmail')}
                 </a>
               )}
@@ -139,7 +134,7 @@ export default async function BookPage({ params }: Props) {
                   href={purchaseUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary inline-block px-6 py-3 text-center"
+                  className="btn-secondary"
                 >
                   {bookText('cta', 'buyOnline')}
                 </a>
@@ -149,7 +144,7 @@ export default async function BookPage({ params }: Props) {
                   href={downloadUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary inline-block px-6 py-3 text-center"
+                  className="btn-secondary"
                 >
                   {bookText('cta', 'downloadSample')}
                 </a>
@@ -158,6 +153,6 @@ export default async function BookPage({ params }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </Section>
   );
 }

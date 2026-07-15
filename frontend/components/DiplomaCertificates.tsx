@@ -39,7 +39,7 @@ function isRasterDocumentUrl(url: string): boolean {
 function PreviewPlaceholder() {
   return (
     <div
-      className="flex h-full min-h-0 flex-col items-center justify-center gap-1 bg-[linear-gradient(145deg,var(--surface-elevated)_0%,#121820_50%,var(--surface)_100%)] px-2 py-2 text-center sm:gap-2 sm:px-3 sm:py-4"
+      className="flex h-full min-h-0 flex-col items-center justify-center gap-1 bg-[linear-gradient(145deg,var(--surface-elevated)_0%,var(--surface-deep)_50%,var(--surface)_100%)] px-2 py-2 text-center sm:gap-2 sm:px-3 sm:py-4"
       aria-hidden
     >
       <svg
@@ -49,7 +49,7 @@ function PreviewPlaceholder() {
       >
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 12h8v2H8v-2zm0 4h8v2H8v-2zm0-8h3v2H8V8z" />
       </svg>
-      <span className="text-[0.65rem] font-semibold uppercase tracking-wide text-foreground/45">
+      <span className="text-[0.65rem] font-semibold uppercase tracking-wide text-foreground/50">
         PDF
       </span>
     </div>
@@ -143,13 +143,13 @@ export function DiplomaCertificates({ items, labels }: Props) {
               <h3 className="text-sm font-semibold leading-snug text-foreground">
                 {item.title}
               </h3>
-              <p className="text-xs leading-relaxed text-foreground/70">
+              <p className="text-xs leading-relaxed text-foreground/80">
                 {item.summary}
               </p>
               <div className="mt-auto pt-2">
                 <button
                   type="button"
-                  className="btn-primary w-full px-3 py-2 text-center text-xs sm:text-sm"
+                  className="btn-primary btn-sm w-full"
                   onClick={() => openModal(item.pdfUrl, item.title)}
                 >
                   {labels.openInModal}
@@ -181,13 +181,13 @@ export function DiplomaCertificates({ items, labels }: Props) {
                   href={active.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary px-3 py-1.5 text-xs"
+                  className="btn-secondary btn-sm"
                 >
                   {labels.openNewTab}
                 </a>
                 <button
                   type="button"
-                  className="btn-primary px-3 py-1.5 text-xs"
+                  className="btn-primary btn-sm"
                   onClick={closeModal}
                 >
                   {labels.closeModal}

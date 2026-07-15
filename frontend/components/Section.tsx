@@ -1,10 +1,16 @@
 import type { ReactNode } from 'react';
 
 export type SectionVariant = 'default' | 'surface' | 'tools';
+export type SectionContainer = 'wide' | 'narrow';
+export type SectionAs = 'section' | 'article' | 'div';
 
 type SectionProps = {
   id?: string;
   variant?: SectionVariant;
+  /** Ширина контейнера: `wide` — списки и лендинги, `narrow` — статьи и формы */
+  container?: SectionContainer;
+  /** Корневой HTML-элемент (например `article` для детальной страницы блога) */
+  as?: SectionAs;
   /** Верхняя граница между секциями (паттерн главной) */
   bordered?: boolean;
   /** Отступ под фиксированный header при якорной навигации */
@@ -21,13 +27,20 @@ const variantClass: Record<SectionVariant, string> = {
   tools: 'section-tools',
 };
 
+const containerClassByWidth: Record<SectionContainer, string> = {
+  wide: 'container-wide',
+  narrow: 'container-narrow',
+};
+
 /**
- * Единый каркас секции: отступы `.section`, контейнер `container-wide`.
+ * Единый каркас секции: отступы `.section`, контейнер `container-wide` или `container-narrow`.
  * П. 8 site_rework — унификация отступов и структуры блоков.
  */
 export function Section({
   id,
   variant = 'default',
+  container = 'wide',
+  as: Component = 'section',
   bordered = true,
   scrollMargin = true,
   className = '',
@@ -36,7 +49,7 @@ export function Section({
   children,
 }: SectionProps) {
   return (
-    <section
+    <Component
       id={id}
       className={[
         'section',
@@ -50,12 +63,12 @@ export function Section({
       aria-labelledby={ariaLabelledBy}
     >
       <div
-        className={['container-wide', containerClassName]
+        className={[containerClassByWidth[container], containerClassName]
           .filter(Boolean)
           .join(' ')}
       >
         {children}
       </div>
-    </section>
+    </Component>
   );
 }

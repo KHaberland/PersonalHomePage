@@ -6,6 +6,7 @@ import { getTools } from '@/lib/api';
 import { CALCULATOR_SLUGS, isCalculatorSlug } from '@/components/calculators';
 import { loadCalculator } from '@/components/calculators/loadCalculator';
 import { CalculatorStaticExample } from '@/components/calculators/CalculatorStaticExample';
+import { Section } from '@/components/Section';
 import type { Lang } from '@/lib/api-types';
 import {
   getCalculatorChromeText,
@@ -83,19 +84,17 @@ export default async function CalculatorPage({ params }: Props) {
   const calculatorProps = getCalculatorProps(content, slug, calculatorFallback);
 
   return (
-    <div className="container-narrow section">
+    <Section container="narrow" bordered={false} scrollMargin={false}>
       <h1 className="heading-1 mb-4 text-accent-orange">
         {tool?.name ?? slug}
       </h1>
-      <p className="mb-8 max-w-3xl text-lg leading-relaxed text-foreground/85">
-        {pageText.lead}
-      </p>
+      <p className="lead mb-8 max-w-3xl">{pageText.lead}</p>
 
       <section
-        className="mb-8 rounded-xl border border-foreground/10 bg-foreground/[0.03] p-6"
+        className="card-subtle mb-8"
         aria-labelledby="calc-example-heading"
       >
-        <p className="mb-1 text-xs font-medium uppercase tracking-wide text-foreground/55">
+        <p className="caption mb-1 font-medium uppercase tracking-wide">
           {chromeText.exampleSectionTitle}
         </p>
         <h2
@@ -104,14 +103,12 @@ export default async function CalculatorPage({ params }: Props) {
         >
           {pageText.exampleTitle}
         </h2>
-        <p className="mb-4 text-sm text-foreground/70">
-          {pageText.exampleCaption}
-        </p>
+        <p className="caption mb-4">{pageText.exampleCaption}</p>
         <CalculatorStaticExample slug={slug} />
       </section>
 
       <section
-        className="mb-8 rounded-xl border border-accent-orange/25 bg-accent-orange/5 p-5"
+        className="card-accent mb-8"
         aria-labelledby="calc-engineering-note-heading"
       >
         <h2
@@ -129,17 +126,17 @@ export default async function CalculatorPage({ params }: Props) {
         <CalculatorComponent {...calculatorProps} />
       </div>
 
-      <section className="mt-8 rounded-xl border border-border bg-foreground/[0.02] p-5">
+      <section className="card-subtle mt-8">
         <h2 className="heading-3 mb-2 text-foreground">
           {chromeText.validationCtaTitle}
         </h2>
-        <p className="text-sm leading-relaxed text-foreground/75">
+        <p className="text-sm leading-relaxed text-foreground/80">
           {chromeText.validationCtaText}
         </p>
         <Link href="/contact" className="link-accent mt-4 inline-block text-sm">
           {chromeText.validationCta} →
         </Link>
       </section>
-    </div>
+    </Section>
   );
 }

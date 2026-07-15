@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { Section } from '@/components/Section';
 import { getCategories, getPosts, getTags } from '@/lib/api';
 import type { Category, Lang, PostListItem } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
@@ -108,10 +109,10 @@ export default async function BlogPage({ params, searchParams }: Props) {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
-    <div className="container-wide section">
+    <Section bordered={false} scrollMargin={false}>
       <h1 className="heading-1 mb-4 text-accent-orange">{blogText('title')}</h1>
-      <p className="mb-3 text-foreground/80">{blogText('description')}</p>
-      <p className="mb-8 text-sm text-foreground/70">
+      <p className="lead mb-3">{blogText('description')}</p>
+      <p className="caption mb-8">
         {blogText('knowledgeCrossLink')}{' '}
         <Link
           href="/knowledge"
@@ -122,13 +123,13 @@ export default async function BlogPage({ params, searchParams }: Props) {
       </p>
 
       {/* Фильтр по категориям */}
-      <p className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground/50">
+      <p className="caption mb-2 font-medium uppercase tracking-wide">
         {blogText('filterByCategory')}
       </p>
       <div className="mb-6 flex flex-wrap gap-2">
         <Link
           href={buildBlogListHref({ tag_slug: tagSlug ?? undefined })}
-          className={`rounded-full px-4 py-2 text-sm transition-colors ${
+          className={`inline-flex min-h-11 items-center rounded-full px-4 py-2.5 text-sm transition-colors ${
             !categorySlug
               ? 'bg-accent-orange text-white'
               : 'card text-foreground/80 hover:border-accent-orange'
@@ -143,7 +144,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
               category_slug: cat.slug,
               tag_slug: tagSlug ?? undefined,
             })}
-            className={`rounded-full px-4 py-2 text-sm transition-colors ${
+            className={`inline-flex min-h-11 items-center rounded-full px-4 py-2.5 text-sm transition-colors ${
               categorySlug === cat.slug
                 ? 'bg-accent-orange text-white'
                 : 'card text-foreground/80 hover:border-accent-orange'
@@ -157,7 +158,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
       {/* Фильтр по тегам */}
       {tags.length > 0 ? (
         <>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground/50">
+          <p className="caption mb-2 font-medium uppercase tracking-wide">
             {blogText('filterByTag')}
           </p>
           <div className="mb-8 flex flex-wrap gap-2">
@@ -165,7 +166,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
               href={buildBlogListHref({
                 category_slug: categorySlug ?? undefined,
               })}
-              className={`rounded-full px-4 py-2 text-sm transition-colors ${
+              className={`inline-flex min-h-11 items-center rounded-full px-4 py-2.5 text-sm transition-colors ${
                 !tagSlug
                   ? 'bg-accent-orange text-white'
                   : 'card text-foreground/80 hover:border-accent-orange'
@@ -180,7 +181,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                   category_slug: categorySlug ?? undefined,
                   tag_slug: tag.slug,
                 })}
-                className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                className={`inline-flex min-h-11 items-center rounded-full px-4 py-2.5 text-sm transition-colors ${
                   tagSlug === tag.slug
                     ? 'bg-accent-orange text-white'
                     : 'card text-foreground/80 hover:border-accent-orange'
@@ -223,12 +224,12 @@ export default async function BlogPage({ params, searchParams }: Props) {
                     tag_slug: tagSlug ?? undefined,
                     page: pageNum - 1,
                   })}
-                  className="rounded border border-[#30363d] bg-[#161b22] px-4 py-2 text-sm text-[#e6edf3] hover:border-[#f97316]"
+                  className="card px-4 py-2 text-sm text-foreground hover:border-accent-orange"
                 >
                   ← {blogText('previous')}
                 </Link>
               )}
-              <span className="px-4 py-2 text-sm text-foreground/70">
+              <span className="px-4 py-2 text-sm text-foreground/60">
                 {formatPageOf(content.ui?.pageOf || '', pageNum, totalPages)}
               </span>
               {hasNext && (
@@ -247,11 +248,11 @@ export default async function BlogPage({ params, searchParams }: Props) {
           )}
         </>
       ) : (
-        <div className="card px-6 py-12 text-center text-foreground/60">
+        <div className="card px-6 py-12 text-center text-muted">
           {blogText('noArticles')}
         </div>
       )}
-    </div>
+    </Section>
   );
 }
 
@@ -293,10 +294,10 @@ function BlogCard({
           {post.title}
         </h2>
         <div
-          className="mt-1 line-clamp-2 text-sm text-foreground/70 [&_p]:inline [&_p]:m-0"
+          className="mt-1 line-clamp-2 text-sm text-foreground/80 [&_p]:inline [&_p]:m-0"
           dangerouslySetInnerHTML={{ __html: post.excerpt || '' }}
         />
-        <p className="mt-2 text-xs text-foreground/50">
+        <p className="caption mt-2">
           {post.published_at
             ? new Date(post.published_at).toLocaleDateString(locale)
             : ''}

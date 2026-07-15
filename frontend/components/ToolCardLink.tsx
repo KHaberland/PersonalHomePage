@@ -27,19 +27,21 @@ export function ToolCardLink({
   return (
     <Link
       href={`/tools/${tool.slug}`}
-      className={isCompact ? 'card block p-4' : 'card block p-6'}
+      className={
+        isCompact ? 'card card-compact block' : 'card card-comfortable block'
+      }
     >
       {isCompact ? (
         <>
           <h3 className="heading-3 text-foreground">{tool.name}</h3>
-          <p className="mt-1 line-clamp-2 text-sm text-foreground/70">
+          <p className="mt-1 line-clamp-2 text-sm text-foreground/80">
             {tool.description}
           </p>
         </>
       ) : (
         <>
           <h2 className="heading-3 text-foreground">{tool.name}</h2>
-          <p className="mt-2 text-foreground/70">{tool.description}</p>
+          <p className="mt-2 text-foreground/80">{tool.description}</p>
           {ctaText ? (
             <span className="link-accent mt-4 inline-block text-sm">
               {ctaText} →

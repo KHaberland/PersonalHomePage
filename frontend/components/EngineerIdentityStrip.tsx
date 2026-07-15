@@ -56,7 +56,7 @@ export function EngineerIdentityStrip({
             >
               {title}
             </h2>
-            <div className="mt-4 max-w-3xl space-y-3 text-sm leading-relaxed text-foreground/78 sm:text-base">
+            <div className="mt-4 max-w-3xl space-y-3 text-sm leading-relaxed text-foreground/80">
               {lead.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -72,16 +72,10 @@ export function EngineerIdentityStrip({
             </ul>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link
-                href="/about"
-                className="btn-secondary inline-block text-center"
-              >
+              <Link href="/about" className="btn-secondary">
                 {aboutCta}
               </Link>
-              <Link
-                href="/experience"
-                className="rounded-full border border-border px-5 py-2.5 text-center text-sm font-semibold text-foreground/85 transition-colors hover:border-accent-orange hover:text-accent-orange"
-              >
+              <Link href="/experience" className="btn-pill">
                 {experienceCta}
               </Link>
             </div>

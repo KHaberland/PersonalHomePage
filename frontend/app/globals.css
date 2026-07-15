@@ -14,6 +14,7 @@
 
   /* Сварочные акценты */
   --accent-orange: #f97316;
+  --accent-orange-soft: #fdba74;
   --accent-orange-hover: #ea580c;
   --accent-orange-glow: rgba(249, 115, 22, 0.25);
   --accent-blue: #3b82f6;
@@ -22,6 +23,7 @@
 
   /* Поверхности */
   --surface: #161b22;
+  --surface-deep: #121820;
   --surface-elevated: #21262d;
   --border: #30363d;
   --border-subtle: #21262d;
@@ -30,7 +32,10 @@
   --text-h1: clamp(2rem, 5vw, 3.5rem);
   --text-h2: clamp(1.5rem, 4vw, 2.5rem);
   --text-h3: clamp(1rem, 2vw, 1.25rem);
-  --text-body: clamp(0.625rem, 1vw, 0.75rem);
+  --text-h4: var(--text-small);
+  --text-article-h2: var(--text-h3);
+  --text-article-h3: clamp(1rem, 1.5vw, 1.125rem);
+  --text-body: var(--text-small); /* 14px — совпадает с доминирующим text-sm */
   --text-small: 0.875rem;
 
   /* Отступы секций (mobile-first) */
@@ -42,9 +47,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
   --color-accent-orange: var(--accent-orange);
+  --color-accent-orange-soft: var(--accent-orange-soft);
   --color-accent-blue: var(--accent-blue);
   --color-surface: var(--surface);
+  --color-surface-deep: var(--surface-deep);
   --color-border: var(--border);
 }
 
@@ -81,10 +89,10 @@ body {
   font-weight: 400;
 }
 
-/* Десктоп: основной текст 10–12px, контент «Обо мне» на 2pt меньше */
+/* Десктоп: основной текст 14px; контент «Обо мне» — отдельный editorial-режим */
 @media (min-width: 1024px) {
   body {
-    font-size: clamp(0.625rem, 0.5vw, 0.75rem);
+    font-size: var(--text-small); /* 0.875rem = 14px */
   }
   .about-content {
     font-size: calc(clamp(0.75rem, 0.8vw, 0.875rem) - 2pt);
@@ -97,7 +105,11 @@ body {
   }
 }
 
-/* Крупные заголовки — индустриальный стиль */
+/* Крупные заголовки — индустриальный стиль
+ * Иерархия H2 (desktop):
+ * - .heading-2 — заголовок секции (nav, map, cases list)
+ * - .heading-3 на <h2> — заголовок карточки/формы (допустимо по DOM)
+ */
 .heading-1 {
   font-size: var(--text-h1);
   font-weight: 700;
@@ -111,9 +123,120 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Home-only: крупные H2 секций на тёмном/surface фоне (не inner pages) */
+.heading-2-home {
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
 .heading-3 {
   font-size: var(--text-h3);
   font-weight: 600;
+}
+
+.heading-4 {
+  font-size: var(--text-h4);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+.eyebrow {
+  color: var(--accent-orange);
+  font-size: var(--text-small);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eyebrow-blue {
+  color: var(--accent-blue);
+  font-size: var(--text-small);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.eyebrow-blue-sm {
+  color: var(--accent-blue);
+  font-size: calc(var(--text-small) - 0.125rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.lead {
+  color: color-mix(in srgb, var(--foreground) 85%, transparent);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
+}
+
+.text-muted {
+  color: var(--foreground-muted);
+}
+
+.caption {
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
+  font-size: calc(var(--text-small) - 0.125rem);
+  line-height: 1.5;
+}
+
+/* CMS-статьи блога — типографика in-article */
+.blog-content h2 {
+  margin-top: 2rem;
+  font-size: var(--text-article-h2);
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.blog-content h3 {
+  margin-top: 1.5rem;
+  font-size: var(--text-article-h3);
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.blog-content p {
+  margin-top: 1rem;
+  color: color-mix(in srgb, var(--foreground) 80%, transparent);
+  line-height: 1.625;
+}
+
+.blog-content a {
+  color: var(--accent-orange);
+  text-decoration: underline;
+}
+
+.blog-content a:hover {
+  text-decoration: none;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+}
+
+.blog-content ul {
+  list-style-type: disc;
+}
+
+.blog-content ol {
+  list-style-type: decimal;
+}
+
+.blog-content li {
+  margin-top: 0.25rem;
+}
+
+.blog-content img {
+  margin-top: 1rem;
+  max-width: 100%;
+  border-radius: 0.5rem;
 }
 
 /* Hero H1: длинный заголовок — меньше базового h1, чтобы укладывался примерно в 2 строки */
@@ -145,8 +268,7 @@ body {
   }
 }
 
-/* Главная — блок «Обо мне»: те же размеры, что тексты в WhyChooseCard
-   (заголовок карточки 17px semibold, описание 14px / leading 1.45). */
+/* Главная — блок «Обо мне»: заголовок карточки 17px semibold, описание 14px / leading 1.45. */
 .home-about-copy {
   font-size: 0.875rem;
   line-height: 1.45;
@@ -154,7 +276,7 @@ body {
 
 .home-about-copy .home-about-lead {
   margin: 0 0 0.75rem;
-  color: #fff;
+  color: var(--foreground);
   font-weight: 600;
   font-size: 17px;
   line-height: 1.375;
@@ -164,7 +286,7 @@ body {
 
 .home-about-copy .home-about-p {
   margin: 0 0 0.75rem;
-  color: rgba(255, 255, 255, 0.88);
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
   font-weight: 400;
   font-size: 14px;
   line-height: 1.45;
@@ -235,19 +357,162 @@ body {
   margin-right: auto;
 }
 
-/* Карточки — минималистичный индустриальный стиль */
+/*
+ * Card variants:
+ * - .card — базовая карточка (surface + orange hover)
+ * - .card-compact / .card-comfortable — padding для плотных и просторных карточек
+ * - .card-interactive — кликабельная ссылка с elevation hover
+ * - .card-nav — якорная навигация с лёгким lift
+ * - .card-highlight — крупная секция/panel
+ * - .card-highlight-soft — panel с более светлым surface
+ * - .card-cta / .card-cta-blue — акцентные CTA-блоки
+ * - .card-subtle / .card-accent — info-панели без hover
+ * - .card-nested — вложенная колонка внутри highlight-секции
+ * - .card-stat — компактный badge/stat
+ * - .card-expanded — открытое состояние accordion
+ */
 .card {
   border: 1px solid var(--border);
   background: var(--surface);
   border-radius: 0.5rem;
   transition:
     border-color 0.2s,
-    box-shadow 0.2s;
+    box-shadow 0.2s,
+    background-color 0.2s,
+    transform 0.2s;
 }
 
 .card:hover {
   border-color: var(--accent-orange);
   box-shadow: 0 0 0 1px var(--accent-orange-glow);
+}
+
+.card-compact {
+  padding: 1rem;
+}
+
+.card-comfortable {
+  padding: 1.5rem;
+}
+
+.card-interactive:hover,
+.card-interactive:focus-visible {
+  border-color: color-mix(in srgb, var(--accent-orange) 60%, transparent);
+  background: var(--surface-elevated);
+  box-shadow: none;
+}
+
+.card-nav:hover {
+  transform: translateY(-0.25rem);
+}
+
+.card-highlight {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .card-highlight {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-highlight {
+    padding: 2.5rem;
+  }
+}
+
+.card-highlight-soft {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .card-highlight-soft {
+    padding: 2rem;
+  }
+}
+
+.card-cta {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent-orange) 30%, transparent);
+  background: color-mix(in srgb, var(--accent-orange) 10%, transparent);
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .card-cta {
+    padding: 2rem;
+  }
+}
+
+.card-cta-blue {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent-blue) 30%, transparent);
+  background: color-mix(in srgb, var(--accent-blue) 10%, transparent);
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .card-cta-blue {
+    padding: 2rem;
+  }
+}
+
+.card-cta-blue-compact {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent-blue) 30%, transparent);
+  background: color-mix(in srgb, var(--accent-blue) 10%, transparent);
+  padding: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .card-cta-blue-compact {
+    padding: 1.5rem;
+  }
+}
+
+.card-subtle {
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  padding: 1.5rem;
+}
+
+.card-accent {
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--accent-orange) 25%, transparent);
+  background: color-mix(in srgb, var(--accent-orange) 5%, transparent);
+  padding: 1.25rem;
+}
+
+.card-nested {
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+}
+
+.card-stat {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--background) 35%, transparent);
+  padding: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--foreground) 80%, transparent);
+}
+
+.card-expanded {
+  border-color: color-mix(in srgb, var(--accent-orange) 50%, transparent);
+  background: color-mix(in srgb, var(--surface-elevated) 80%, transparent);
 }
 
 /* Карточка компетенций: группа «результаты для бизнеса» — синий hover вместо оранжевого */
@@ -265,11 +530,22 @@ body {
   color: color-mix(in srgb, var(--accent-blue) 72%, #ffffff 28%);
 }
 
-/* Кнопки */
+/*
+ * CTA hierarchy:
+ * - .btn-primary — главное действие
+ * - .btn-secondary — вторичное действие (outline)
+ * - .link-accent — текстовая ссылка с акцентом
+ * - .btn-pill — tertiary pill-действие
+ * Размеры: .btn-lg (hero), .btn-sm (modal/card), .btn-pill-sm (компактный pill)
+ */
 .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--accent-orange);
   color: white;
   font-weight: 500;
+  text-align: center;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   transition:
@@ -297,10 +573,14 @@ body {
 }
 
 .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   color: var(--accent-blue);
   border: 1px solid var(--accent-blue);
   font-weight: 500;
+  text-align: center;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   transition:
@@ -311,6 +591,49 @@ body {
 .btn-secondary:hover {
   background: var(--accent-blue-glow);
   color: var(--foreground);
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  color: rgb(229 231 235 / 0.8);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  text-align: center;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+
+.btn-pill:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+.btn-lg {
+  min-width: 12rem;
+  padding: 0.75rem 2rem;
+}
+
+.btn-sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .btn-sm {
+    font-size: 0.875rem;
+  }
+}
+
+.btn-pill-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
 }
 
 /* Поля ввода — тёмный индустриальный стиль */
@@ -332,11 +655,14 @@ body {
 /* Ссылки с акцентом */
 .link-accent {
   color: var(--accent-orange);
+  font-weight: 600;
+  text-underline-offset: 0.25rem;
   transition: color 0.2s;
 }
 
 .link-accent:hover {
   color: var(--accent-orange-hover);
+  text-decoration-line: underline;
 }
 
 /*
@@ -387,7 +713,7 @@ body {
  * чем чистый --accent-orange (#f97316)
  */
 .hero-title-accent {
-  color: #fdba74;
+  color: var(--accent-orange-soft);
 }
 
 /* Секция «Инженерные инструменты» — отдельный фон и акцент (UX п. 4) */
@@ -399,7 +725,12 @@ body {
       var(--accent-blue-glow),
       transparent 55%
     ),
-    linear-gradient(180deg, #121820 0%, var(--surface) 45%, #0d1117 100%);
+    linear-gradient(
+      180deg,
+      var(--surface-deep) 0%,
+      var(--surface) 45%,
+      #0d1117 100%
+    );
   box-shadow:
     inset 0 1px 0 0 rgba(59, 130, 246, 0.15),
     inset 3px 0 0 0 var(--accent-blue);

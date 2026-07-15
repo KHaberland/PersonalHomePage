@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { Section } from '@/components/Section';
 import {
   IconCompetencyGas,
   IconServiceConsulting,
@@ -96,21 +97,19 @@ export default async function SolutionsPage({ params }: Props) {
       .filter(Boolean);
 
   return (
-    <div className="container-wide section">
-      <section className="rounded-2xl border border-border bg-surface/60 p-6 sm:p-8 lg:p-10">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+    <Section bordered={false} scrollMargin={false}>
+      <section className="card-highlight">
+        <p className="eyebrow-blue mb-3">
           {solutionText('hero', 'heroEyebrow')}
         </p>
         <h1 className="heading-1 text-accent-orange">
           {solutionText('hero', 'title')}
         </h1>
-        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
-          {solutionText('hero', 'lead')}
-        </p>
+        <p className="lead mt-6 max-w-3xl">{solutionText('hero', 'lead')}</p>
       </section>
 
-      <section className="mt-8 rounded-2xl border border-accent-blue/30 bg-accent-blue/10 p-5 sm:p-6">
-        <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
+      <section className="card-cta-blue-compact mt-8">
+        <p className="eyebrow-blue">
           {solutionText('validation', 'validationEyebrow')}
         </p>
         <h2 className="heading-3 mt-2 text-foreground">
@@ -137,7 +136,7 @@ export default async function SolutionsPage({ params }: Props) {
             <a
               key={anchorId}
               href={`#${anchorId}`}
-              className="card group flex h-full flex-col p-5 transition-transform duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-orange"
+              className="card card-nav group flex h-full flex-col p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-orange"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-orange/10 text-accent-orange transition-colors group-hover:bg-accent-orange/20">
                 <Icon className="h-6 w-6" aria-hidden title={undefined} />
@@ -161,11 +160,11 @@ export default async function SolutionsPage({ params }: Props) {
           <section
             key={anchorId}
             id={anchorId}
-            className="scroll-mt-28 rounded-2xl border border-border bg-surface/70 p-6 sm:p-8"
+            className="card-highlight-soft scroll-mt-28"
           >
             <div>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
+                <p className="eyebrow-blue">
                   {String(index + 1).padStart(2, '0')}
                 </p>
                 <h2 className="heading-2 mt-2 text-foreground">
@@ -179,10 +178,7 @@ export default async function SolutionsPage({ params }: Props) {
                 const items = solutionList(`section_${itemKey}`, listKey);
 
                 return (
-                  <div
-                    key={listKey}
-                    className={`rounded-xl border p-5 ${className}`}
-                  >
+                  <div key={listKey} className={`card-nested ${className}`}>
                     <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
                       {solutionText('labels', labelKey)}
                     </h3>
@@ -202,7 +198,7 @@ export default async function SolutionsPage({ params }: Props) {
         ))}
       </div>
 
-      <section className="mt-12 rounded-2xl border border-accent-orange/30 bg-accent-orange/10 p-6 sm:p-8">
+      <section className="card-cta mt-12">
         <h2 className="heading-3 text-foreground">
           {solutionText('final_cta', 'finalCtaTitle')}
         </h2>
@@ -213,6 +209,6 @@ export default async function SolutionsPage({ params }: Props) {
           {solutionText('final_cta', 'finalCtaContact')}
         </Link>
       </section>
-    </div>
+    </Section>
   );
 }

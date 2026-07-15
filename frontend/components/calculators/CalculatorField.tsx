@@ -4,19 +4,18 @@ import { useId } from 'react';
 
 type Props = {
   label: string;
-  hint: string;
-  children: (ids: { inputId: string; hintId: string }) => React.ReactNode;
+  hint?: string;
+  children: (ids: { inputId: string; hintId?: string }) => React.ReactNode;
 };
 
 /**
- * Подпись поля, текст подсказки (aria-describedby) и передача id в инпут/select.
- * На элемент ввода добавьте title={hint} и aria-describedby={hintId} из render-prop.
+ * Подпись поля, опциональная подсказка (aria-describedby) и передача id в инпут/select.
  */
 export function CalculatorField({ label, hint, children }: Props) {
   const reactId = useId();
   const base = `calc-field-${reactId.replace(/:/g, '')}`;
   const inputId = `${base}-input`;
-  const hintId = `${base}-hint`;
+  const hintId = hint ? `${base}-hint` : undefined;
 
   return (
     <div>
@@ -26,9 +25,11 @@ export function CalculatorField({ label, hint, children }: Props) {
       >
         {label}
       </label>
-      <p id={hintId} className="mt-1 text-xs text-foreground/65">
-        {hint}
-      </p>
+      {hint && (
+        <p id={hintId} className="caption mt-1">
+          {hint}
+        </p>
+      )}
       <div className="mt-1">{children({ inputId, hintId })}</div>
     </div>
   );

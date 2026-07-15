@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Link as IntlLink } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { Section } from '@/components/Section';
 import { getPost, getPosts } from '@/lib/api';
 import type { Category, Lang, PostListItem } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
@@ -119,7 +120,12 @@ export default async function BlogPostPage({ params }: Props) {
   const coverSrc = getImageSrc(post.cover_image);
 
   return (
-    <article className="container-narrow section">
+    <Section
+      as="article"
+      container="narrow"
+      bordered={false}
+      scrollMargin={false}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -141,7 +147,7 @@ export default async function BlogPostPage({ params }: Props) {
           </IntlLink>
         )}
         <h1 className="heading-1 mt-4 text-foreground">{post.title}</h1>
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-foreground/70">
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted">
           {post.author && <span>{post.author.name}</span>}
           {(post.published_at || post.created_at) && (
             <time dateTime={post.published_at || post.created_at}>
@@ -174,7 +180,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Контент */}
       <div
-        className="blog-content [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_p]:mt-4 [&_p]:text-foreground/90 [&_p]:leading-relaxed [&_a]:text-accent-orange [&_a]:underline [&_a]:hover:no-underline [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mt-1 [&_img]:mt-4 [&_img]:rounded-lg [&_img]:max-w-full"
+        className="blog-content"
         dangerouslySetInnerHTML={{ __html: post.content || '' }}
       />
 
@@ -198,7 +204,7 @@ export default async function BlogPostPage({ params }: Props) {
                   />
                 </div>
                 {img.caption && (
-                  <figcaption className="mt-2 text-center text-sm text-foreground/60">
+                  <figcaption className="mt-2 text-center text-sm text-muted">
                     {img.caption}
                   </figcaption>
                 )}
@@ -254,7 +260,7 @@ export default async function BlogPostPage({ params }: Props) {
                     {related.title}
                   </h3>
                   <div
-                    className="mt-1 line-clamp-2 text-sm text-foreground/70 [&_p]:inline [&_p]:m-0"
+                    className="mt-1 line-clamp-2 text-sm text-foreground/80 [&_p]:inline [&_p]:m-0"
                     dangerouslySetInnerHTML={{
                       __html: related.excerpt || '',
                     }}
@@ -265,6 +271,6 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </section>
       )}
-    </article>
+    </Section>
   );
 }

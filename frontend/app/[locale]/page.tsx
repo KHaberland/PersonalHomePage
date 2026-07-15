@@ -129,12 +129,12 @@ export default async function HomePage({ params }: Props) {
         variant="surface"
         aria-labelledby="home-decision-system-heading"
       >
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+        <p className="eyebrow-blue mb-3">
           {homeText('decision_system', 'decisionSystemEyebrow')}
         </p>
         <h2
           id="home-decision-system-heading"
-          className="heading-2 max-w-4xl font-semibold tracking-tight text-white"
+          className="heading-2 heading-2-home max-w-4xl"
         >
           {homeText('decision_system', 'decisionSystemTitle')}
         </h2>
@@ -149,7 +149,7 @@ export default async function HomePage({ params }: Props) {
                 key={titleKey}
                 className="card flex h-full flex-col gap-4 p-5"
               >
-                <p className="text-xs font-semibold uppercase tracking-wide text-accent-blue">
+                <p className="eyebrow-blue-sm">
                   {String(index + 1).padStart(2, '0')}
                 </p>
                 <div>
@@ -165,7 +165,7 @@ export default async function HomePage({ params }: Props) {
                     <Link
                       key={href}
                       href={href}
-                      className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground/80 transition-colors hover:border-accent-orange hover:text-accent-orange"
+                      className="btn-pill btn-pill-sm"
                     >
                       {homeText('decision_system', labelKey)}
                     </Link>
@@ -178,12 +178,12 @@ export default async function HomePage({ params }: Props) {
       </Section>
 
       <Section id="user-paths" aria-labelledby="home-user-paths-heading">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
+        <p className="eyebrow-blue mb-3">
           {homeText('entry_paths', 'entryPathsEyebrow')}
         </p>
         <h2
           id="home-user-paths-heading"
-          className="heading-2 max-w-4xl font-semibold tracking-tight text-white"
+          className="heading-2 heading-2-home max-w-4xl"
         >
           {homeText('entry_paths', 'entryPathsTitle')}
         </h2>
@@ -196,7 +196,7 @@ export default async function HomePage({ params }: Props) {
             <li key={href} className="h-full min-h-0">
               <Link
                 href={href}
-                className="card flex h-full min-h-0 flex-col gap-4 p-5 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)] focus-visible:border-accent-orange/60 focus-visible:bg-[var(--surface-elevated)]"
+                className="card card-interactive flex h-full min-h-0 flex-col gap-4 p-5"
               >
                 <h3 className="heading-3 text-foreground">
                   {homeText('entry_paths', titleKey)}
@@ -204,7 +204,7 @@ export default async function HomePage({ params }: Props) {
                 <p className="text-sm leading-relaxed text-foreground/80">
                   {homeText('entry_paths', descriptionKey)}
                 </p>
-                <span className="mt-auto text-sm font-semibold text-accent-orange">
+                <span className="link-accent mt-auto text-sm">
                   {homeText('entry_paths', ctaKey)}
                 </span>
               </Link>
@@ -223,10 +223,7 @@ export default async function HomePage({ params }: Props) {
         </h2>
         <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {proofItems.map((key) => (
-            <li
-              key={key}
-              className="rounded-2xl border border-border bg-background/35 p-5 text-center text-sm font-semibold uppercase tracking-wide text-foreground/90"
-            >
+            <li key={key} className="card-stat">
               {homeText('proof', key)}
             </li>
           ))}
@@ -234,14 +231,14 @@ export default async function HomePage({ params }: Props) {
       </Section>
 
       <Section id="contact" aria-labelledby="home-contact-heading">
-        <div className="rounded-2xl border border-accent-orange/30 bg-accent-orange/10 p-6 sm:p-8">
+        <div className="card-cta">
           <h2 id="home-contact-heading" className="heading-3 text-foreground">
             {homeText('contact_cta', 'contactCtaTitle')}
           </h2>
           <p className="mt-3 max-w-3xl text-foreground/80">
             {homeText('contact_cta', 'contactCtaText')}
           </p>
-          <Link href="/contact" className="btn-primary mt-6 inline-block">
+          <Link href="/contact" className="btn-primary mt-6">
             {homeText('contact_cta', 'contactCta')}
           </Link>
         </div>

@@ -7,9 +7,7 @@ type Props = {
 export function BookSpreadPreview({ title, caption }: Props) {
   return (
     <figure className="w-full">
-      <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-orange">
-        {title}
-      </p>
+      <p className="eyebrow mb-3">{title}</p>
       <div
         className="relative mx-auto max-w-2xl overflow-hidden rounded-lg border border-border bg-[#1a1614] p-4 shadow-lg"
         aria-hidden
@@ -46,9 +44,7 @@ export function BookSpreadPreview({ title, caption }: Props) {
           </div>
         </div>
       </div>
-      <figcaption className="mt-3 text-sm text-foreground/70">
-        {caption}
-      </figcaption>
+      <figcaption className="caption mt-3">{caption}</figcaption>
     </figure>
   );
 }

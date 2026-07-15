@@ -42,7 +42,7 @@ export function Header({
           >
             {brandText('name')}
           </Link>
-          <p className="hidden text-xs font-medium uppercase tracking-wide text-foreground/55 sm:block">
+          <p className="caption hidden font-medium uppercase tracking-wide sm:block">
             {headerText('systemLabel')}
           </p>
         </div>
@@ -115,7 +115,7 @@ export function Header({
                 {navText(item.key)}
               </Link>
             ))}
-            <p className="mt-3 border-t border-border pt-3 text-xs font-medium uppercase tracking-wide text-foreground/55">
+            <p className="caption mt-3 border-t border-border pt-3 font-medium uppercase tracking-wide">
               {headerText('systemFlow')}
             </p>
           </div>

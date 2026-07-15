@@ -5,6 +5,7 @@ import {
   ExperienceCaseAccordion,
   type ExperienceCaseItem,
 } from '@/components/ExperienceCaseAccordion';
+import { Section } from '@/components/Section';
 import { getExperience } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
@@ -79,20 +80,16 @@ export default async function ExperiencePage({ params }: Props) {
   };
 
   return (
-    <div className="container-narrow section">
-      <section className="mb-12 rounded-2xl border border-border bg-surface/60 p-6 sm:p-8 lg:p-10">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {experienceText('layerEyebrow')}
-        </p>
+    <Section container="narrow" bordered={false} scrollMargin={false}>
+      <section className="card-highlight mb-12">
+        <p className="eyebrow-blue mb-3">{experienceText('layerEyebrow')}</p>
         <h1 className="heading-1 text-accent-orange">
           {experienceText('title')}
         </h1>
-        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
-          {experienceText('lead')}
-        </p>
+        <p className="lead mt-6 max-w-3xl">{experienceText('lead')}</p>
       </section>
 
-      <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-surface/45 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-6 md:p-10">
+      <div className="card-highlight relative overflow-hidden">
         <div
           className="pointer-events-none absolute inset-y-8 left-10 w-0.5 -translate-x-1/2 bg-gradient-to-b from-accent-orange/50 via-border to-border/40 sm:left-11 md:left-[3.75rem]"
           aria-hidden
@@ -132,14 +129,14 @@ export default async function ExperiencePage({ params }: Props) {
         <h2 className="heading-2 text-foreground">
           {experienceText('casesTitle')}
         </h2>
-        <p className="max-w-3xl text-foreground/85 leading-relaxed">
+        <p className="max-w-3xl leading-relaxed text-foreground/80">
           {experienceText('casesIntro')}
         </p>
         <ExperienceCaseAccordion items={caseItems} labels={caseLabels} />
       </section>
 
-      <section className="mt-16 rounded-2xl border border-accent-blue/30 bg-accent-blue/10 p-6 sm:p-8">
-        <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
+      <section className="card-cta-blue mt-16">
+        <p className="eyebrow-blue">
           {experienceText('relatedPatternsEyebrow')}
         </p>
         <h2 className="heading-3 mt-2 text-foreground">
@@ -178,6 +175,6 @@ export default async function ExperiencePage({ params }: Props) {
           ))}
         </div>
       </section>
-    </div>
+    </Section>
   );
 }

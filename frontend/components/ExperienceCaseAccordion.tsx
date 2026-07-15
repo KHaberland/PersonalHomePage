@@ -41,24 +41,20 @@ export function ExperienceCaseAccordion({ items, labels }: Props) {
         return (
           <li key={item.id}>
             <div
-              className={`card overflow-hidden border transition-colors ${
-                isOpen
-                  ? 'border-accent-orange/50 bg-[color-mix(in_srgb,var(--surface-elevated)_80%,transparent)]'
-                  : 'border-border'
-              }`}
+              className={`card overflow-hidden ${isOpen ? 'card-expanded' : ''}`}
             >
               <div className="flex flex-col gap-2 p-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
                 <div className="min-w-0 flex-1">
                   <h3 id={titleId} className="heading-3 text-foreground">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm text-foreground/85">
+                  <p className="mt-2 text-sm text-foreground/80">
                     {item.summary}
                   </p>
                 </div>
                 <button
                   type="button"
-                  className="btn-secondary shrink-0 self-start px-4 py-2 text-sm"
+                  className="btn-secondary shrink-0 self-start"
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onClick={() => setOpenId(isOpen ? null : item.id)}
@@ -73,13 +69,13 @@ export function ExperienceCaseAccordion({ items, labels }: Props) {
                 hidden={!isOpen}
                 className="border-t border-border/80 px-4 pb-4 pt-3"
               >
-                <div className="space-y-4 text-sm leading-relaxed text-foreground/90">
+                <div className="space-y-4 text-sm leading-relaxed text-foreground/80">
                   <dl className="grid gap-3 sm:grid-cols-2">
                     <div>
                       <dt className="font-semibold text-accent-orange">
                         {labels.context}
                       </dt>
-                      <dd className="mt-1 text-foreground/85">
+                      <dd className="mt-1 text-foreground/80">
                         {item.context}
                       </dd>
                     </div>
@@ -87,7 +83,7 @@ export function ExperienceCaseAccordion({ items, labels }: Props) {
                       <dt className="font-semibold text-accent-orange">
                         {labels.problem}
                       </dt>
-                      <dd className="mt-1 text-foreground/85">
+                      <dd className="mt-1 text-foreground/80">
                         {item.problem}
                       </dd>
                     </div>
@@ -95,7 +91,7 @@ export function ExperienceCaseAccordion({ items, labels }: Props) {
                       <dt className="font-semibold text-accent-orange">
                         {labels.engineeringAction}
                       </dt>
-                      <dd className="mt-1 text-foreground/85">
+                      <dd className="mt-1 text-foreground/80">
                         {item.engineeringAction}
                       </dd>
                     </div>
@@ -103,13 +99,13 @@ export function ExperienceCaseAccordion({ items, labels }: Props) {
                       <dt className="font-semibold text-accent-orange">
                         {labels.result}
                       </dt>
-                      <dd className="mt-1 text-foreground/85">{item.result}</dd>
+                      <dd className="mt-1 text-foreground/80">{item.result}</dd>
                     </div>
                   </dl>
                   {item.moreHref && item.moreLabel ? (
                     <Link
                       href={item.moreHref}
-                      className="inline-flex items-center gap-1 font-medium text-accent-orange underline-offset-4 hover:underline"
+                      className="link-accent inline-flex items-center gap-1"
                     >
                       {item.moreLabel}
                       <span aria-hidden>→</span>

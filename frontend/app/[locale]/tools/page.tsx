@@ -50,15 +50,11 @@ export default async function ToolsPage({ params }: Props) {
 
   return (
     <Section bordered={false} scrollMargin={false}>
-      <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-        {toolsText('toolsEyebrow')}
-      </p>
+      <p className="eyebrow-blue mb-3">{toolsText('toolsEyebrow')}</p>
       <h1 className="heading-1 mb-4 text-accent-orange">
         {toolsText('toolsTitle')}
       </h1>
-      <p className="mb-12 text-foreground/80">
-        {toolsText('toolsDescription')}
-      </p>
+      <p className="lead mb-12">{toolsText('toolsDescription')}</p>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {tools.map((tool) => (
