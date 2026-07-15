@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { useId, useState } from 'react';
 import { Link } from '@/i18n/navigation';
 
@@ -18,10 +17,17 @@ export type ExperienceCaseItem = {
 
 type Props = {
   items: ExperienceCaseItem[];
+  labels: {
+    toggleShow: string;
+    toggleHide: string;
+    context: string;
+    problem: string;
+    engineeringAction: string;
+    result: string;
+  };
 };
 
-export function ExperienceCaseAccordion({ items }: Props) {
-  const t = useTranslations('experience');
+export function ExperienceCaseAccordion({ items, labels }: Props) {
   const baseId = useId();
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -57,7 +63,7 @@ export function ExperienceCaseAccordion({ items }: Props) {
                   aria-controls={panelId}
                   onClick={() => setOpenId(isOpen ? null : item.id)}
                 >
-                  {isOpen ? t('caseToggleHide') : t('caseToggleShow')}
+                  {isOpen ? labels.toggleHide : labels.toggleShow}
                 </button>
               </div>
               <div
@@ -71,7 +77,7 @@ export function ExperienceCaseAccordion({ items }: Props) {
                   <dl className="grid gap-3 sm:grid-cols-2">
                     <div>
                       <dt className="font-semibold text-accent-orange">
-                        {t('caseContextLabel')}
+                        {labels.context}
                       </dt>
                       <dd className="mt-1 text-foreground/85">
                         {item.context}
@@ -79,7 +85,7 @@ export function ExperienceCaseAccordion({ items }: Props) {
                     </div>
                     <div>
                       <dt className="font-semibold text-accent-orange">
-                        {t('caseProblemLabel')}
+                        {labels.problem}
                       </dt>
                       <dd className="mt-1 text-foreground/85">
                         {item.problem}
@@ -87,7 +93,7 @@ export function ExperienceCaseAccordion({ items }: Props) {
                     </div>
                     <div>
                       <dt className="font-semibold text-accent-orange">
-                        {t('caseEngineeringActionLabel')}
+                        {labels.engineeringAction}
                       </dt>
                       <dd className="mt-1 text-foreground/85">
                         {item.engineeringAction}
@@ -95,7 +101,7 @@ export function ExperienceCaseAccordion({ items }: Props) {
                     </div>
                     <div>
                       <dt className="font-semibold text-accent-orange">
-                        {t('caseResultLabel')}
+                        {labels.result}
                       </dt>
                       <dd className="mt-1 text-foreground/85">{item.result}</dd>
                     </div>

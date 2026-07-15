@@ -14,6 +14,11 @@ eggs/
 .eggs/
 lib/
 lib64/
+!frontend/lib/
+frontend/lib/*
+!frontend/lib/api.ts
+!frontend/lib/api-types.ts
+!frontend/lib/metadata.ts
 parts/
 sdist/
 var/

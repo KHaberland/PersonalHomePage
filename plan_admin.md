@@ -197,6 +197,8 @@
 
 ## Этап 7. SEO из Django Admin
 
+**Статус:** выполнено. Добавлены модель `SEOMetadata`, админка, API `/api/content/seo/{page}/`, начальная миграция данных из текущего JSON SEO и frontend fallback через `createPageMetadata`.
+
 Добавить модель `SEOMetadata`:
 
 - `page`;
@@ -218,6 +220,8 @@ Frontend:
 
 ## Этап 8. Мультиязычные сущности
 
+**Статус:** выполнено. Добавлены translation-модели для `Tag`, `Author`, `PostImage`, мультиязычные поля `Calculator`, миграции с переносом legacy-значений в English, админка и API fallback по `?lang=`.
+
 Blog:
 
 - `TagTranslation`: `tag`, `language`, `name`;
@@ -232,6 +236,8 @@ Tools:
 Рекомендуемый первый шаг: поля `name_en/name_ru/name_lv`, потому что сущность маленькая.
 
 ## Этап 9. Переключение primary source
+
+**Статус:** выполнено для `Home`, `Book`, `Contact`, `Solutions`, `Expertise`. Эти страницы сначала запрашивают Django CMS через `getCmsPageOrFallback`; JSON остаётся только legacy fallback-слоем до ручной проверки `/en`, `/ru`, `/lv` и отдельного удаления на этапе 10.
 
 Для каждой страницы выполнить один и тот же сценарий:
 

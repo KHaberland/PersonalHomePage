@@ -11,8 +11,9 @@
 
 Основной сценарий работы:
 
-- Frontend получает контент из Django API через `frontend/lib/api.ts`.
-- Если API недоступен, часть страниц использует fallback-контент из локализационных JSON или статических массивов.
+- Frontend получает контент из Django API через `frontend/lib/api.ts` и CMS helper `frontend/lib/cms-content.ts`.
+- Основной редактируемый UI-текст хранится в Django Admin через `SiteTextBlock`; SEO хранится в `SEOMetadata`.
+- `frontend/messages/*.json` больше не является основным источником UI-текстов: там остаётся только технический fallback для `seo`, fallback списка tools и минимальные fallback-поля `/about`.
 - Backend хранит данные в SQLite в локальной разработке: `backend/db.sqlite3`.
 - Медиа и публичные статические файлы лежат в `frontend/public/` и `backend/media/`.
 
@@ -35,7 +36,7 @@ Problem -> Analysis -> Solution Pattern -> Real-world Validation -> Knowledge ->
 - Home — engineering entry page: кто специалист и какой путь выбрать дальше.
 - `/solutions` — solution patterns: типовые производственные проблемы, инженерный подход и модель решения без реальных кейсов.
 - `/expertise` — engineering capabilities: карта компетенций, за счёт которых возможны решения.
-- `/experience` — real cases and timeline: практическое подтверждение, действия и Engineering Impact.
+- `/experience` — real cases and timeline: практическое подтверждение опыта, кейсы и observed outcomes.
 - `/tools` — deterministic calculators: расчёты и проверка параметров.
 - `/knowledge` — structured explanations: статьи, объяснения процессов и разборы дефектов.
 - `/blog` — chronological publications: CMS/content layer для публикаций.
@@ -61,7 +62,10 @@ Problem -> Analysis -> Solution Pattern -> Real-world Validation -> Knowledge ->
 
 - `api.ts` — HTTP-клиент Django REST API и функции получения данных.
 - `api-types.ts` — TypeScript-типы ответов API и калькуляторов.
-- `fallback-content.ts` — fallback для инструментов и карточек блога.
+- `cms-content.ts` — безопасная загрузка `SiteTextBlock` по page/locale через `/api/content/page/{page}/`.
+- `common-labels.ts` — сборка labels для `Header`, `Footer`, navigation, language switcher и home progress из CMS.
+- `calculator-content.ts` — преобразование CMS-блоков `calculators` в props для страниц и client-калькуляторов.
+- `fallback-content.ts` — fallback для карточек инструментов при пустом API.
 - `html-to-plain-text.ts` — очистка HTML до plain text для коротких CMS-полей.
 - `ia.ts` — канонический IA mapping: primary navigation, 3 слоя `Engineering Decision System` и support links.
 - `metadata.ts` — helpers для `generateMetadata`.
@@ -92,22 +96,24 @@ Layout локали:
 
 - Файл: `frontend/app/[locale]/layout.tsx`.
 - Проверяет валидность локали через `hasLocale`.
-- Загружает сообщения `next-intl`.
+- Загружает сообщения `next-intl` для оставшегося fallback-слоя.
 - Загружает контактные данные через `getContact()`.
+- Загружает `common` CMS-контент через `getPageContent('common', locale)`.
+- Собирает labels через `buildCommonUiLabels()`.
 - Оборачивает страницы в `NextIntlClientProvider` и `Layout`.
 
 Физически доступные статические маршруты frontend:
 
-- `/`
-- `/about`
-- `/experience`
-- `/expertise`
-- `/solutions`
-- `/book`
-- `/tools`
-- `/knowledge`
-- `/blog`
-- `/contact`
+- `/[locale]`
+- `/[locale]/about`
+- `/[locale]/experience`
+- `/[locale]/expertise`
+- `/[locale]/solutions`
+- `/[locale]/book`
+- `/[locale]/tools`
+- `/[locale]/knowledge`
+- `/[locale]/blog`
+- `/[locale]/contact`
 
 `/blog` и `/blog/{slug}` остаются content routes. `/blog` входит в Footer IA и sitemap как часть `Knowledge System`; `/blog/{slug}` остаётся динамическим маршрутом статей.
 
@@ -128,8 +134,8 @@ Layout локали:
 
 Динамические маршруты:
 
-- `/tools/{slug}`
-- `/blog/{slug}`
+- `/[locale]/tools/{slug}`
+- `/[locale]/blog/{slug}`
 
 ## 4. Сквозной Layout
 
@@ -141,13 +147,19 @@ Layout локали:
 
 - `Header`
 - `<main>`
+- `HomeSectionProgress`
 - `Footer`
 
-`Layout` получает `contact` из API и передает в `Footer`:
+`Layout` получает `contact` из API и labels из `common` CMS-контента. В дочерние компоненты передаются:
 
 - email;
 - LinkedIn;
 - YouTube.
+- header labels;
+- footer labels;
+- nav labels;
+- progress labels;
+- brand/platform/language labels.
 
 ### 4.2. Header
 
@@ -155,7 +167,7 @@ Layout локали:
 
 Логотип:
 
-- `Oleg Suvorov` → `/`
+- brand name из `SiteTextBlock(page="common", block="brand", key="name")` → `/`
 
 Основное меню:
 
@@ -169,6 +181,7 @@ Layout локали:
 Особенности:
 
 - Список primary navigation берётся из `frontend/lib/ia.ts`.
+- Тексты header/nav/language передаются props из server layout, а не читаются напрямую из JSON.
 - Header sticky.
 - Desktop меню — горизонтальное.
 - Mobile меню открывается кнопкой и повторяет основной список.
@@ -180,8 +193,8 @@ Layout локали:
 
 Содержит:
 
-- бренд `Oleg Suvorov`;
-- tagline из `footer.tagline`;
+- бренд из `common.brand`;
+- tagline из `common.footer`;
 - email, LinkedIn, YouTube, если они есть в API;
 - переключатель языка;
 - soft CTA `Контакт` → `/contact` (`btn-secondary`);
@@ -200,11 +213,19 @@ Support links Footer:
 - `/about`;
 - `/contact`.
 
+Footer получает labels из `SiteTextBlock(page="common")`: blocks `footer`, `nav`, `brand`, `platforms`, `language`.
+
 ## 5. Главная Страница `/`
 
 Файл: `frontend/app/[locale]/page.tsx`.
 
 Главная — короткая `engineering entry page`, а не preview всех разделов сайта.
+
+Источник текстов:
+
+- `getCmsPage('home', locale)`;
+- `SiteTextBlock(page="home")`;
+- блоки: `hero`, `about_teaser`, `decision_system`, `entry_paths`, `proof`, `contact_cta`.
 
 Порядок блоков:
 
@@ -270,17 +291,19 @@ Support links Footer:
 
 Короткий CTA на `/contact` для реальной производственной задачи после выбора соответствующего слоя системы.
 
-На главной больше нет preview-блоков `solutions`, `experience`, `expertise`, `tools`, `knowledge` и нет локальной навигации `HomeSectionProgress`.
+На главной больше нет preview-блоков `solutions`, `experience`, `expertise`, `tools`, `knowledge`. `HomeSectionProgress` остаётся сквозным компонентом layout и получает labels из `common.progress`.
 
 ## 6. Страница `/solutions`
 
 Файл: `frontend/app/[locale]/solutions/page.tsx`.
 
-Namespace переводов:
-
-- `solutionsPage`.
-
 Назначение: outcome-страница. Это единственное место сайта, где подробно раскрываются производственные задачи: проблема, возможная причина, инженерный анализ, решение и ожидаемый результат.
+
+Источник текстов:
+
+- `getCmsPage('solutions', locale)`;
+- `SiteTextBlock(page="solutions")`;
+- основные blocks: `hero`, `validation`, `nav`, `labels`, `defect_reduction`, `process_optimization`, `gas_selection`, `training`, `wps_support`, `final_cta`.
 
 Блоки:
 
@@ -319,10 +342,16 @@ Namespace переводов:
 
 Назначение: static capability layer. Это карта инженерных компетенций без кейсов, историй и продаж.
 
+Источник текстов:
+
+- `getCmsPage('expertise', locale)`;
+- `SiteTextBlock(page="expertise")`;
+- основные blocks: `hero`, `competency_mig_mag`, `competency_tig`, `competency_gases`, `competency_metallurgy`, `competency_quality`, `competency_safety`, `cta_solutions`, `cta_experience`.
+
 Блоки:
 
 - H1 `Экспертиза`.
-- Вводный текст `home.expertisePageIntro`.
+- Вводный текст из `SiteTextBlock(page="expertise", block="hero", key="expertisePageIntro")`.
 - Сетка компетенций с capability-only описаниями.
 - Групповые labels: `Processes`, `Materials`, `Gases`, `Metallurgy`, `Safety`.
 - CTA в `/solutions` как применение компетенций.
@@ -344,7 +373,10 @@ Namespace переводов:
 Данные:
 
 - API `GET /api/about/?lang={locale}`;
-- fallback из `messages/{locale}.json` namespace `about`.
+- UI labels из `getCmsPage('about', locale)`, block `ui`;
+- professional profile record из `getCmsPage('about', locale)`, block `profile_record`;
+- brand name из `getCmsPage('common', locale)`, block `brand`;
+- минимальный fallback из `messages/{locale}.json` используется только для `photoAlt`, `workPhotoAlt`, `fallbackBio`, `fallbackEducation`, `fallbackQualifications`.
 
 Блоки:
 
@@ -358,6 +390,7 @@ Namespace переводов:
 - `Профессиональные квалификации`, если есть видимый текст.
 - `Дипломы и сертификаты`.
 - Галерея фотографий с работы.
+- `Professional Profile Record`, если в CMS заполнены `title` или `footerUpdated`.
 
 Безопасность HTML:
 
@@ -388,36 +421,18 @@ Namespace переводов:
 Данные:
 
 - API `GET /api/experience/?lang={locale}`;
-- fallback из namespace `experience`.
+- UI labels из `getCmsPage('experience', locale)`, block `ui`;
+- case content из `getCmsPage('experience', locale)`, block `cases`.
 
 Блоки:
 
 - H1 `Профессиональный опыт`.
 - Таймлайн опыта.
 - `#cases` с аккордеоном в структуре `Контекст` / `Проблема` / `Что было сделано` / `Результат`.
-- `#engineering-impact` — единый блок `Engineering Impact`.
+- блок related solution patterns с переходом на `/solutions`.
 - Галерея фотографий.
 
-Блок `Engineering Impact`:
-
-- реализован локальными компонентами `EngineeringImpactSection` и `ImpactCard` в `frontend/app/[locale]/experience/page.tsx`;
-- заменяет прежние отдельные секции `Проекты и направления` и `Результаты`;
-- на desktop выводится сеткой из 2 колонок, на mobile карточки идут друг под другом;
-- содержит 2 карточки:
-  - `Engineering Approach` — короткие инженерные тезисы о подходе к процессу;
-  - `Engineering Impact` — короткие тезисы о наблюдаемом производственном эффекте;
-- контент хранится в `messages/{locale}.json` namespace `experience`:
-  - `engineeringImpactTitle`;
-  - `engineeringApproachTitle`;
-  - `engineeringImpactCardTitle`;
-  - `engineeringApproachItems`;
-  - `engineeringImpactItems`.
-
-Fallback-записи таймлайна:
-
-- `Elme Messer Gaas` / `Инженер по сварке` / `2015 — настоящее время`;
-- `Учебный центр BUTS` / `Преподаватель сварки` / `2013 — 2015`;
-- `Производственный опыт` / `Сварщик` / `До 2013`.
+Таймлайн опыта больше не использует JSON fallback. Если API `Experience` вернёт пустой список, таймлайн просто не отрисует записи.
 
 Компонент кейсов:
 
@@ -444,7 +459,7 @@ Fallback-записи таймлайна:
 Данные:
 
 - API `GET /api/book/?lang={locale}`;
-- fallback из namespace `book`.
+- UI text из `getCmsPage('book', locale)`;
 - контакты через `GET /api/contact/`.
 
 Блоки:
@@ -483,8 +498,9 @@ Fallback-записи таймлайна:
 
 Данные:
 
-- API `GET /api/tools/`;
-- fallback через `buildFallbackTools()`.
+- API `GET /api/tools/?lang={locale}` для карточек калькуляторов;
+- UI intro/CTA из `getCmsPage('tools', locale)`, block `list_intro`;
+- fallback карточек через `buildFallbackTools()` остаётся только если API вернул пустой список.
 
 Блоки:
 
@@ -530,7 +546,7 @@ Fallback-записи таймлайна:
 Структура страницы:
 
 - H1 с названием калькулятора.
-- Lead из `calculators.pages.{slug}.lead`.
+- Lead из `SiteTextBlock(page="calculators", block="{slug}_page", key="lead")`.
 - Блок `Пример результата (иллюстрация)`.
 - Блок `Инженерное применение` с пояснением, что расчёт является отправной точкой и проверяется по материалу, WPS, оборудованию и пробным швам.
 - Интерактивный калькулятор.
@@ -549,6 +565,14 @@ Fallback-записи таймлайна:
 - `CalculatorField.tsx`;
 - `CalculatorStaticExample.tsx`.
 
+Источник текстов:
+
+- `getCmsPage('calculators', locale)`;
+- `frontend/lib/calculator-content.ts`;
+- common labels: `page="calculators", block="common"`;
+- detail page text: `block="{slug}_page"`;
+- field labels/hints/options: `block="{slug}_fields"`.
+
 Если slug не входит в `CALCULATOR_SLUGS`, открывается 404.
 
 ## 13. Страница `/knowledge`
@@ -561,6 +585,8 @@ Fallback-записи таймлайна:
 
 - `GET /api/categories/`;
 - `GET /api/posts/?category_slug={slug}&lang={locale}&page=1`.
+- UI text из `getCmsPage('knowledge', locale)`, block `ui`.
+- Названия тематических разделов берутся из `Category.name_en/name_ru/name_lv` по slug.
 
 Блоки:
 
@@ -593,6 +619,8 @@ Fallback-записи таймлайна:
 - `GET /api/posts/?lang={locale}&page={page}`;
 - `GET /api/categories/`;
 - `GET /api/tags/`.
+- UI text из `getCmsPage('blog', locale)`, block `ui`;
+- link label `knowledgeNav` из `getCmsPage('common', locale)`, block `nav`.
 
 Фильтры query string:
 
@@ -624,6 +652,8 @@ Fallback-записи таймлайна:
 Данные:
 
 - `GET /api/posts/{slug}/?lang={locale}`.
+- UI text из `getCmsPage('blog', locale)`, block `ui`;
+- publisher brand name из `getCmsPage('common', locale)`, block `brand`.
 
 Блоки:
 
@@ -647,6 +677,8 @@ Fallback-записи таймлайна:
 Данные:
 
 - `GET /api/contact/`.
+- UI text из `getCmsPage('contact', locale)`;
+- platform labels `LinkedIn`/`YouTube` частично берутся из `contact.contact_methods`, частично из fallback-значений в компоненте.
 
 Блоки:
 
@@ -691,11 +723,13 @@ Base URL:
 - `getPost(slug, lang)` → `/posts/{slug}/`;
 - `getCategories()` → `/categories/`;
 - `getTags()` → `/tags/`;
+- `getPageContent(page, lang)` → `/content/page/{page}/`;
+- `getSeoMetadata(page, lang)` → `/content/seo/{page}/`;
 - `getAbout(lang)` → `/about/`;
 - `getExperience(lang)` → `/experience/`;
 - `getBook(lang)` → `/book/`;
 - `getContact()` → `/contact/`;
-- `getTools()` → `/tools/`.
+- `getTools(lang)` → `/tools/`.
 
 Legacy/резервные методы, которые API сохраняет, но новая главная v3.0 не использует:
 
@@ -766,11 +800,15 @@ Endpoints:
 - `GET /api/experience/`;
 - `GET /api/book/`;
 - `GET /api/contact/`;
+- `GET /api/content/page/{page}/?lang={locale}`;
+- `GET /api/content/seo/{page}/?lang={locale}`;
 - `GET /api/home-technical-skills/`;
 - `GET /api/home-business-outcomes/`.
 
 Модели:
 
+- `SiteTextBlock` — универсальные CMS UI-тексты: `page`, `block`, `key`, `text_en/ru/lv`.
+- `SEOMetadata` — SEO title/description по page и language.
 - `AboutMain` — legacy/резервный краткий блок `Обо мне`.
 - `About` — полная страница `/about`.
 - `Experience` — записи таймлайна.
@@ -802,14 +840,18 @@ Endpoints:
 Модели:
 
 - `Author`;
+- `AuthorTranslation`;
 - `Category`;
 - `Tag`;
+- `TagTranslation`;
 - `Post`;
-- `PostImage`.
+- `PostImage`;
+- `PostImageTranslation`.
 
 Особенности:
 
 - Посты мультиязычные: `title_en/ru/lv`, `content_en/ru/lv`, `excerpt_en/ru/lv`.
+- Авторы, теги и подписи изображений имеют translation-модели.
 - Статусы постов: `draft`, `published`.
 - Список постов поддерживает фильтрацию по category/tag.
 
@@ -836,7 +878,7 @@ Endpoints:
 
 Модель:
 
-- `Calculator` — имя, описание, slug.
+- `Calculator` — имя, описание, slug; есть legacy `name`/`description` и мультиязычные поля `name_en/ru/lv`, `description_en/ru/lv`.
 
 Расчётные функции:
 
@@ -892,33 +934,48 @@ Endpoint:
 - сохраняет файл в `folder` из request data или в `uploads`;
 - возвращает `url`, `path`, `thumbnails`.
 
-## 24. Локализация Текстов
+## 24. Локализация И CMS-Тексты
 
-Файлы переводов:
+Текущая модель:
 
-- `frontend/messages/en.json`;
-- `frontend/messages/ru.json`;
-- `frontend/messages/lv.json`.
+- Основной редактируемый UI-текст хранится в Django Admin в модели `SiteTextBlock`.
+- SEO title/description управляются через `SEOMetadata`.
+- Entity-контент хранится в собственных моделях: `About`, `Experience`, `Book`, `Contact`, `Post`, `Category`, `Tag`, `Calculator`.
+- `frontend/messages/en.json`, `ru.json`, `lv.json` остаются только fallback-слоем для `seo`, fallback списка tools и минимальных `/about` fallback-полей.
 
-Основные namespaces:
+Основные CMS pages в `SiteTextBlock.Page`:
 
-- `seo`;
-- `footer`;
-- `common`;
 - `home`;
-- `solutionsPage`;
 - `about`;
 - `experience`;
-- `calculators`;
+- `expertise`;
+- `solutions`;
 - `knowledge`;
 - `blog`;
+- `calculators`;
+- `tools`;
 - `contact`;
 - `book`.
+- `common`.
 
-Правило:
+Типовая структура CMS-текста:
 
-- При добавлении ключа он должен быть синхронизирован во всех трех локалях.
-- Страницы с `next-intl` падают при отсутствии обязательного ключа.
+- `page` — логическая страница или общая группа (`home`, `common`, `calculators`, ...);
+- `block` — секция страницы (`hero`, `footer`, `nav`, `common`, `{slug}_fields`, ...);
+- `key` — конкретная строка;
+- `text_en`, `text_ru`, `text_lv` — локализованные значения.
+
+Frontend-доступ:
+
+- `getCmsPage(page, locale)` возвращает `Record<block, Record<key, text>>`;
+- страницы читают CMS как primary source;
+- client-компоненты получают labels через props из server layout/page.
+
+Правила поддержки:
+
+- Новый редактируемый текст добавляется в Django Admin/миграции `SiteTextBlock`, а не в `frontend/messages/*.json`.
+- Если строка должна быть fallback при недоступном API, это нужно явно описать и оставить минимально.
+- При добавлении CMS key seed-данные должны покрывать `en`, `ru`, `lv`.
 
 ## 25. SEO, Robots И Sitemap
 
@@ -926,6 +983,11 @@ SEO helper:
 
 - `frontend/lib/metadata.ts`;
 - `frontend/lib/seo.ts`.
+
+Источник SEO:
+
+- primary: `/api/content/seo/{page}/?lang={locale}` (`SEOMetadata`);
+- fallback: `frontend/messages/{locale}.json`, группа `seo`.
 
 Root metadata:
 
@@ -964,7 +1026,7 @@ Sitemap:
 Важное текущее замечание:
 
 - `/blog` и `/book` входят в sitemap как routes `Knowledge System`.
-- `/blog/{slug}` остаётся динамическим маршрутом статей и не добавляется в sitemap без отдельного решения по CMS/индексации.
+- `/blog/{slug}` остаётся динамическим маршрутом статей и сейчас не добавляется в sitemap.
 
 Приоритеты:
 

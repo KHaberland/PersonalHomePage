@@ -3,12 +3,20 @@ import { getTranslations } from 'next-intl/server';
 import { Section } from '@/components/Section';
 import { ToolCardLink } from '@/components/ToolCardLink';
 import { getTools } from '@/lib/api';
+import type { Lang } from '@/lib/api-types';
+import { getCmsPage } from '@/lib/cms-content';
 import { buildFallbackTools } from '@/lib/fallback-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+function langFromLocale(locale: string): Lang {
+  return locale === 'en' || locale === 'ru' || locale === 'lv'
+    ? (locale as Lang)
+    : 'en';
+}
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
@@ -23,11 +31,14 @@ export async function generateMetadata({ params }: Props) {
 export default async function ToolsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const lang = langFromLocale(locale);
 
-  const [t, apiTools] = await Promise.all([
+  const [t, apiTools, content] = await Promise.all([
     getTranslations('home'),
-    getTools().catch(() => []),
+    getTools(lang).catch(() => []),
+    getCmsPage('tools', locale),
   ]);
+  const toolsText = (key: string) => content.list_intro?.[key] || '';
 
   const tools =
     apiTools.length > 0
@@ -40,17 +51,21 @@ export default async function ToolsPage({ params }: Props) {
   return (
     <Section bordered={false} scrollMargin={false}>
       <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-        {t('toolsEyebrow')}
+        {toolsText('toolsEyebrow')}
       </p>
-      <h1 className="heading-1 mb-4 text-accent-orange">{t('toolsTitle')}</h1>
-      <p className="mb-12 text-foreground/80">{t('toolsDescription')}</p>
+      <h1 className="heading-1 mb-4 text-accent-orange">
+        {toolsText('toolsTitle')}
+      </h1>
+      <p className="mb-12 text-foreground/80">
+        {toolsText('toolsDescription')}
+      </p>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {tools.map((tool) => (
           <ToolCardLink
             key={tool.id}
             tool={tool}
-            ctaText={t('toolsCta')}
+            ctaText={toolsText('toolsCta')}
             density="comfortable"
           />
         ))}

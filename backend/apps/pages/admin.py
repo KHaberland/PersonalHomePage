@@ -12,6 +12,7 @@ from .models import (
     HomeBusinessOutcomesIntro,
     HomeTechnicalSkillCard,
     HomeTechnicalSkillsIntro,
+    SEOMetadata,
     SiteTextBlock,
 )
 
@@ -31,6 +32,18 @@ class SiteTextBlockAdmin(admin.ModelAdmin):
         ("English", {"fields": ("text_en",)}),
         ("Русский", {"fields": ("text_ru",)}),
         ("Latviešu", {"fields": ("text_lv",)}),
+    )
+
+
+@admin.register(SEOMetadata)
+class SEOMetadataAdmin(admin.ModelAdmin):
+    list_display = ["page", "language", "title", "updated_at"]
+    list_filter = ["page", "language"]
+    search_fields = ["page", "language", "title", "description"]
+    readonly_fields = ["updated_at"]
+    ordering = ["page", "language"]
+    fieldsets = (
+        (None, {"fields": ("page", "language", "title", "description", "updated_at")}),
     )
 
 

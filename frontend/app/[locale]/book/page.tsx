@@ -2,10 +2,8 @@ import Image from 'next/image';
 import { BookSpreadPreview } from '@/components/BookSpreadPreview';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { getBook, getContact } from '@/lib/api';
-import { getCmsPageOrFallback } from '@/lib/cms-content';
-import type { PageContent } from '@/lib/cms-content';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const localizedBookCovers = {
@@ -37,49 +35,28 @@ export default async function BookPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, book, contact] = await Promise.all([
-    getTranslations('book'),
+  const [book, contact] = await Promise.all([
     getBook(lang).catch(() => null),
     getContact().catch(() => null),
   ]);
 
-  const fallbackContent: PageContent = {
-    hero: {
-      subtitle: t('subtitle'),
-    },
-    authority: {
-      authorityTitle: t('authorityTitle'),
-      authorityQuote: t('authorityQuote'),
-      authorityAttribution: t('authorityAttribution'),
-    },
-    purchase: {
-      purchaseTitle: t('purchaseTitle'),
-      purchaseIntro: t('purchaseIntro'),
-    },
-    cta: {
-      cta: t('cta'),
-      ctaEmail: t('ctaEmail'),
-      buyOnline: t('buyOnline'),
-      downloadSample: t('downloadSample'),
-    },
-  };
-  const content = await getCmsPageOrFallback(
-    'book',
-    locale,
-    () => fallbackContent
-  );
-  const bookText = (section: keyof typeof fallbackContent, key: string) =>
-    content[section]?.[key] || fallbackContent[section]?.[key] || '';
+  const content = await getCmsPage('book', locale);
+  const bookText = (section: string, key: string) =>
+    content[section]?.[key] || '';
+  const bookUiText = (section: string, key: string) =>
+    content[section]?.[key] || '';
 
-  const title = book?.title ?? t('title');
-  const description = book?.description || t('description');
-  const year = book?.year ?? 2024;
+  const title = book?.title ?? '';
+  const description = book?.description || '';
+  const year = book?.year ?? '';
   const coverImage = localizedBookCovers[lang];
   const purchaseUrl = process.env.NEXT_PUBLIC_BOOK_PURCHASE_URL?.trim();
   const downloadUrl = process.env.NEXT_PUBLIC_BOOK_DOWNLOAD_URL?.trim();
   const mailtoBook =
     contact?.email != null
-      ? `mailto:${contact.email}?subject=${encodeURIComponent(t('emailSubjectBook'))}`
+      ? `mailto:${contact.email}?subject=${encodeURIComponent(
+          bookUiText('cta', 'emailSubjectBook')
+        )}`
       : null;
 
   return (
@@ -92,7 +69,7 @@ export default async function BookPage({ params }: Props) {
           <div className="relative aspect-[2/3] w-56 overflow-hidden rounded-lg border border-border shadow-xl">
             <Image
               src={coverImage}
-              alt={t('coverAlt')}
+              alt={bookUiText('cover', 'coverAlt')}
               fill
               className="object-cover"
               sizes="224px"
@@ -117,8 +94,8 @@ export default async function BookPage({ params }: Props) {
 
           <div className="grid gap-10 border-t border-border pt-8 lg:grid-cols-2 lg:items-start lg:gap-12">
             <BookSpreadPreview
-              title={t('previewTitle')}
-              caption={t('previewCaption')}
+              title={bookUiText('preview', 'previewTitle')}
+              caption={bookUiText('preview', 'previewCaption')}
             />
             <figure className="card border-l-4 border-l-accent-orange p-6">
               <h2 className="heading-3 mb-3 text-foreground">

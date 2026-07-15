@@ -9,12 +9,16 @@ const locales = [
   { code: 'lv' as const, label: 'LV' },
 ];
 
-export function LanguageSwitcher() {
+type LanguageSwitcherProps = {
+  ariaLabel?: string;
+};
+
+export function LanguageSwitcher({ ariaLabel }: LanguageSwitcherProps) {
   const pathname = usePathname();
   const currentLocale = useLocale();
 
   return (
-    <nav className="flex shrink-0 gap-1.5" aria-label="Language">
+    <nav className="flex shrink-0 gap-1.5" aria-label={ariaLabel ?? 'Language'}>
       {locales.map(({ code, label }) => (
         <Link
           key={code}

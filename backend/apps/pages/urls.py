@@ -13,6 +13,11 @@ urlpatterns = [
         name="page-content",
     ),
     path(
+        "content/seo/<slug:page>/",
+        views.SEOMetadataView.as_view(),
+        name="seo-metadata",
+    ),
+    path(
         "home-technical-skills/",
         views.HomeTechnicalSkillsView.as_view(),
         name="home-technical-skills",

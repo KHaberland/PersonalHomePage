@@ -11,9 +11,12 @@ class SiteTextBlock(models.Model):
         EXPERTISE = "expertise", "Expertise"
         SOLUTIONS = "solutions", "Solutions"
         KNOWLEDGE = "knowledge", "Knowledge"
+        BLOG = "blog", "Blog"
+        CALCULATORS = "calculators", "Calculators"
         TOOLS = "tools", "Tools"
         CONTACT = "contact", "Contact"
         BOOK = "book", "Book"
+        COMMON = "common", "Common"
 
     page = models.CharField(max_length=50, choices=Page.choices)
     block = models.SlugField(max_length=100)
@@ -41,6 +44,51 @@ class SiteTextBlock(models.Model):
 
     def __str__(self):
         return f"{self.page}.{self.block}.{self.key}"
+
+
+class SEOMetadata(models.Model):
+    """Localized SEO metadata managed from Django Admin."""
+
+    class Page(models.TextChoices):
+        HOME = "home", "Home"
+        ABOUT = "about", "About"
+        EXPERIENCE = "experience", "Experience"
+        EXPERTISE = "expertise", "Expertise"
+        SOLUTIONS = "solutions", "Solutions"
+        KNOWLEDGE = "knowledge", "Knowledge"
+        BLOG = "blog", "Blog"
+        TOOLS = "tools", "Tools"
+        CONTACT = "contact", "Contact"
+        BOOK = "book", "Book"
+
+    class Language(models.TextChoices):
+        EN = "en", "English"
+        RU = "ru", "Русский"
+        LV = "lv", "Latviešu"
+
+    page = models.CharField(max_length=50, choices=Page.choices)
+    language = models.CharField(max_length=5, choices=Language.choices)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_seo_metadata"
+        verbose_name = "SEO metadata"
+        verbose_name_plural = "SEO metadata"
+        ordering = ["page", "language"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["page", "language"],
+                name="unique_seo_metadata_page_language",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["page", "language"]),
+        ]
+
+    def __str__(self):
+        return f"{self.page}.{self.language}"
 
 
 class AboutMain(models.Model):

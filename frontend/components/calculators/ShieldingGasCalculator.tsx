@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { calculateShieldingGas } from '@/lib/api';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import type { CalculatorProps } from '@/components/calculators';
 
-export function ShieldingGasCalculator() {
-  const t = useTranslations('calculators');
+export function ShieldingGasCalculator({ texts }: CalculatorProps) {
+  const text = (key: string, fallback?: string) =>
+    texts?.[key] ?? fallback ?? '';
   const [wireDiameter, setWireDiameter] = useState('1.2');
   const [material, setMaterial] = useState('steel');
   const [process, setProcess] = useState('MIG/MAG');
@@ -24,7 +25,7 @@ export function ShieldingGasCalculator() {
     setResult(null);
     const wd = parseFloat(wireDiameter);
     if (isNaN(wd) || wd <= 0) {
-      setError(t('errorWireDiameter'));
+      setError(text('errorWireDiameter'));
       return;
     }
     setLoading(true);
@@ -37,20 +38,20 @@ export function ShieldingGasCalculator() {
       setResult(res);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t('errorCalculationFailed')
+        err instanceof Error ? err.message : text('errorCalculationFailed')
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const hw = t('shieldingGas.hints.wireDiameter');
-  const hm = t('shieldingGas.hints.material');
-  const hp = t('shieldingGas.hints.process');
+  const hw = text('shieldingGas.hints.wireDiameter');
+  const hm = text('shieldingGas.hints.material');
+  const hp = text('shieldingGas.hints.process');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <CalculatorField label={t('shieldingGas.wireDiameter')} hint={hw}>
+      <CalculatorField label={text('shieldingGas.wireDiameter')} hint={hw}>
         {({ inputId, hintId }) => (
           <select
             id={inputId}
@@ -67,7 +68,7 @@ export function ShieldingGasCalculator() {
           </select>
         )}
       </CalculatorField>
-      <CalculatorField label={t('shieldingGas.material')} hint={hm}>
+      <CalculatorField label={text('shieldingGas.material')} hint={hm}>
         {({ inputId, hintId }) => (
           <select
             id={inputId}
@@ -77,13 +78,19 @@ export function ShieldingGasCalculator() {
             aria-describedby={hintId}
             title={hm}
           >
-            <option value="steel">Steel</option>
-            <option value="stainless">Stainless steel</option>
-            <option value="aluminum">Aluminum</option>
+            <option value="steel">
+              {text('shieldingGas.options.steel', 'Steel')}
+            </option>
+            <option value="stainless">
+              {text('shieldingGas.options.stainless', 'Stainless steel')}
+            </option>
+            <option value="aluminum">
+              {text('shieldingGas.options.aluminum', 'Aluminum')}
+            </option>
           </select>
         )}
       </CalculatorField>
-      <CalculatorField label={t('shieldingGas.process')} hint={hp}>
+      <CalculatorField label={text('shieldingGas.process')} hint={hp}>
         {({ inputId, hintId }) => (
           <select
             id={inputId}
@@ -93,8 +100,12 @@ export function ShieldingGasCalculator() {
             aria-describedby={hintId}
             title={hp}
           >
-            <option value="MIG/MAG">MIG/MAG</option>
-            <option value="TIG">TIG</option>
+            <option value="MIG/MAG">
+              {text('shieldingGas.options.migMag', 'MIG/MAG')}
+            </option>
+            <option value="TIG">
+              {text('shieldingGas.options.tig', 'TIG')}
+            </option>
           </select>
         )}
       </CalculatorField>
@@ -103,17 +114,17 @@ export function ShieldingGasCalculator() {
         disabled={loading}
         className="btn-primary disabled:opacity-50"
       >
-        {loading ? t('calculating') : t('calculate')}
+        {loading ? text('calculating') : text('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
         <div className="card space-y-2 p-4">
           <p className="text-accent-orange">
-            {t('shieldingGas.flowRange')}: {result.flow_rate_min}–
+            {text('shieldingGas.flowRange')}: {result.flow_rate_min}–
             {result.flow_rate_max} L/min
           </p>
           <p className="text-foreground">
-            {t('shieldingGas.typical')}: {result.flow_rate_typical} L/min
+            {text('shieldingGas.typical')}: {result.flow_rate_typical} L/min
           </p>
         </div>
       )}

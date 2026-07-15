@@ -1,12 +1,10 @@
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { EngineerIdentityStrip } from '@/components/EngineerIdentityStrip';
 import { Hero } from '@/components/Hero';
 import type { HeroText } from '@/components/Hero';
 import { Section } from '@/components/Section';
-import { getCmsPageOrFallback } from '@/lib/cms-content';
-import type { PageContent } from '@/lib/cms-content';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const userPathItems = [
@@ -96,58 +94,10 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations('home');
-  const fallbackContent: PageContent = {
-    hero: {
-      heroVideoDescription: t('heroVideoDescription'),
-      heroTitleLine1: t('heroTitleLine1'),
-      heroTitleLine2: t('heroTitleLine2'),
-      heroTitleLineHighlight: t('heroTitleLineHighlight'),
-      heroTitleLine3: t('heroTitleLine3'),
-      heroCtaSolutions: t('heroCtaSolutions'),
-      heroCtaTools: t('heroCtaTools'),
-    },
-    decision_system: {
-      decisionSystemEyebrow: t('decisionSystemEyebrow'),
-      decisionSystemTitle: t('decisionSystemTitle'),
-      decisionSystemLead: t('decisionSystemLead'),
-      ...Object.fromEntries(
-        decisionSystemItems.flatMap(({ titleKey, descriptionKey, links }) => [
-          [titleKey, t(titleKey)],
-          [descriptionKey, t(descriptionKey)],
-          ...links.map(({ labelKey }) => [labelKey, t(labelKey)]),
-        ])
-      ),
-    },
-    entry_paths: {
-      entryPathsEyebrow: t('entryPathsEyebrow'),
-      entryPathsTitle: t('entryPathsTitle'),
-      entryPathsLead: t('entryPathsLead'),
-      ...Object.fromEntries(
-        userPathItems.flatMap(({ titleKey, descriptionKey, ctaKey }) => [
-          [titleKey, t(titleKey)],
-          [descriptionKey, t(descriptionKey)],
-          [ctaKey, t(ctaKey)],
-        ])
-      ),
-    },
-    proof: {
-      proofTitle: t('proofTitle'),
-      ...Object.fromEntries(proofItems.map((key) => [key, t(key)])),
-    },
-    contact_cta: {
-      contactCtaTitle: t('contactCtaTitle'),
-      contactCtaText: t('contactCtaText'),
-      contactCta: t('contactCta'),
-    },
-  };
-  const content = await getCmsPageOrFallback(
-    'home',
-    locale,
-    () => fallbackContent
-  );
-  const homeText = (section: keyof typeof fallbackContent, key: string) =>
-    content[section]?.[key] || fallbackContent[section]?.[key] || '';
+  const content = await getCmsPage('home', locale);
+  const homeText = (section: string, key: string) =>
+    content[section]?.[key] || '';
+  const aboutTeaserText = (key: string) => homeText('about_teaser', key);
   const heroText: HeroText = {
     videoDescription: homeText('hero', 'heroVideoDescription'),
     titleLine1: homeText('hero', 'heroTitleLine1'),
@@ -162,13 +112,16 @@ export default async function HomePage({ params }: Props) {
     <>
       <Hero text={heroText} />
       <EngineerIdentityStrip
-        ariaLabel={t('aboutTeaserAriaLabel')}
-        photoAlt={t('aboutTeaserPhotoAlt')}
-        title={t('aboutTeaserTitle')}
-        lead={[t('aboutTeaserLead1'), t('aboutTeaserLead2')]}
-        bullets={aboutTeaserBullets.map((key) => t(key))}
-        aboutCta={t('aboutTeaserAboutCta')}
-        experienceCta={t('aboutTeaserExperienceCta')}
+        ariaLabel={aboutTeaserText('aboutTeaserAriaLabel')}
+        photoAlt={aboutTeaserText('aboutTeaserPhotoAlt')}
+        title={aboutTeaserText('aboutTeaserTitle')}
+        lead={[
+          aboutTeaserText('aboutTeaserLead1'),
+          aboutTeaserText('aboutTeaserLead2'),
+        ]}
+        bullets={aboutTeaserBullets.map((key) => aboutTeaserText(key))}
+        aboutCta={aboutTeaserText('aboutTeaserAboutCta')}
+        experienceCta={aboutTeaserText('aboutTeaserExperienceCta')}
       />
 
       <Section

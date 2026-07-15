@@ -8,6 +8,7 @@ from .models import (
     Experience,
     HomeBusinessOutcomeCard,
     HomeTechnicalSkillCard,
+    SEOMetadata,
 )
 
 
@@ -130,6 +131,14 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = ["id", "email", "linkedin_url", "youtube_url", "updated_at"]
+
+
+class SEOMetadataSerializer(serializers.ModelSerializer):
+    """Serializer for localized SEO metadata."""
+
+    class Meta:
+        model = SEOMetadata
+        fields = ["page", "language", "title", "description", "updated_at"]
 
 
 def _localized_text(obj, base: str, lang: str) -> str:

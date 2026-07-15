@@ -1,10 +1,8 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { ContactForm } from '@/components/ContactForm';
 import type { ContactFormLabels } from '@/components/ContactForm';
 import { getContact } from '@/lib/api';
-import { getCmsPageOrFallback } from '@/lib/cms-content';
-import type { PageContent } from '@/lib/cms-content';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const DEFAULT_MAP_EMBED =
@@ -28,55 +26,15 @@ export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, contact] = await Promise.all([
-    getTranslations('contact'),
+  const [content, contact] = await Promise.all([
+    getCmsPage('contact', locale),
     getContact().catch(() => null),
   ]);
 
-  const fallbackContent: PageContent = {
-    hero: {
-      title: t('title'),
-      description: t('description'),
-    },
-    form: {
-      formTitle: t('formTitle'),
-      formName: t('formName'),
-      formEmail: t('formEmail'),
-      formRequestType: t('formRequestType'),
-      formRequestTypePlaceholder: t('formRequestTypePlaceholder'),
-      formMessage: t('formMessage'),
-      formHint: t('formHint'),
-      formSubjectPrefix: t('formSubjectPrefix'),
-      formBodyName: t('formBodyName'),
-      formBodyEmail: t('formBodyEmail'),
-      formBodyRequestType: t('formBodyRequestType'),
-      requestConsultation: t('requestConsultation'),
-    },
-    request_types: {
-      requestTypeDefects: t('requestTypeDefects'),
-      requestTypeProcess: t('requestTypeProcess'),
-      requestTypeTraining: t('requestTypeTraining'),
-    },
-    contact_methods: {
-      email: t('email'),
-      linkedin: t('linkedin'),
-      youtube: t('youtube'),
-    },
-    empty: {
-      noContact: t('noContact'),
-    },
-    map: {
-      mapTitle: t('mapTitle'),
-      mapDescription: t('mapDescription'),
-    },
-  };
-  const content = await getCmsPageOrFallback(
-    'contact',
-    locale,
-    () => fallbackContent
-  );
-  const contactText = (section: keyof typeof fallbackContent, key: string) =>
-    content[section]?.[key] || fallbackContent[section]?.[key] || '';
+  const contactText = (section: string, key: string) =>
+    content[section]?.[key] || '';
+  const contactLabel = (section: string, key: string, fallback: string) =>
+    contactText(section, key) || fallback;
   const formLabels: ContactFormLabels = {
     formTitle: contactText('form', 'formTitle'),
     formName: contactText('form', 'formName'),
@@ -150,7 +108,13 @@ export default async function ContactPage({ params }: Props) {
               </svg>
             </span>
             <div>
-              <p className="font-medium text-foreground">LinkedIn</p>
+              <p className="font-medium text-foreground">
+                {contactLabel(
+                  'contact_methods',
+                  'linkedinPlatform',
+                  'LinkedIn'
+                )}
+              </p>
               <p className="text-sm text-foreground/70">
                 {contactText('contact_methods', 'linkedin')}
               </p>
@@ -171,7 +135,9 @@ export default async function ContactPage({ params }: Props) {
               </svg>
             </span>
             <div>
-              <p className="font-medium text-foreground">YouTube</p>
+              <p className="font-medium text-foreground">
+                {contactLabel('contact_methods', 'youtubePlatform', 'YouTube')}
+              </p>
               <p className="text-sm text-foreground/70">
                 {contactText('contact_methods', 'youtube')}
               </p>

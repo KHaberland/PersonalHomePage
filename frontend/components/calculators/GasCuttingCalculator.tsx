@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { calculateGasCutting } from '@/lib/api';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import type { CalculatorProps } from '@/components/calculators';
 
-export function GasCuttingCalculator() {
-  const t = useTranslations('calculators');
+export function GasCuttingCalculator({ texts }: CalculatorProps) {
+  const text = (key: string, fallback?: string) =>
+    texts?.[key] ?? fallback ?? '';
   const [plateThickness, setPlateThickness] = useState('');
   const [gasType, setGasType] = useState('acetylene');
   const [cuttingSpeed, setCuttingSpeed] = useState('');
@@ -24,7 +25,7 @@ export function GasCuttingCalculator() {
     setResult(null);
     const pt = parseFloat(plateThickness);
     if (isNaN(pt) || pt <= 0) {
-      setError(t('errorPlateThickness'));
+      setError(text('errorPlateThickness'));
       return;
     }
     setLoading(true);
@@ -39,20 +40,20 @@ export function GasCuttingCalculator() {
       setResult(res);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t('errorCalculationFailed')
+        err instanceof Error ? err.message : text('errorCalculationFailed')
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const h1 = t('gasCutting.hints.plateThickness');
-  const h2 = t('gasCutting.hints.gasType');
-  const h3 = t('gasCutting.hints.cuttingSpeed');
+  const h1 = text('gasCutting.hints.plateThickness');
+  const h2 = text('gasCutting.hints.gasType');
+  const h3 = text('gasCutting.hints.cuttingSpeed');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <CalculatorField label={t('gasCutting.plateThickness')} hint={h1}>
+      <CalculatorField label={text('gasCutting.plateThickness')} hint={h1}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -67,7 +68,7 @@ export function GasCuttingCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('gasCutting.gasType')} hint={h2}>
+      <CalculatorField label={text('gasCutting.gasType')} hint={h2}>
         {({ inputId, hintId }) => (
           <select
             id={inputId}
@@ -77,12 +78,16 @@ export function GasCuttingCalculator() {
             aria-describedby={hintId}
             title={h2}
           >
-            <option value="acetylene">Acetylene</option>
-            <option value="propane">Propane</option>
+            <option value="acetylene">
+              {text('gasCutting.options.acetylene', 'Acetylene')}
+            </option>
+            <option value="propane">
+              {text('gasCutting.options.propane', 'Propane')}
+            </option>
           </select>
         )}
       </CalculatorField>
-      <CalculatorField label={t('gasCutting.cuttingSpeed')} hint={h3}>
+      <CalculatorField label={text('gasCutting.cuttingSpeed')} hint={h3}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -91,7 +96,7 @@ export function GasCuttingCalculator() {
             value={cuttingSpeed}
             onChange={(e) => setCuttingSpeed(e.target.value)}
             className="input-industrial w-full"
-            placeholder={t('gasCutting.cuttingSpeedPlaceholder')}
+            placeholder={text('gasCutting.cuttingSpeedPlaceholder')}
             aria-describedby={hintId}
             title={h3}
           />
@@ -102,16 +107,16 @@ export function GasCuttingCalculator() {
         disabled={loading}
         className="btn-primary disabled:opacity-50"
       >
-        {loading ? t('calculating') : t('calculate')}
+        {loading ? text('calculating') : text('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
         <div className="card space-y-2 p-4">
           <p className="text-accent-orange">
-            {t('gasCutting.o2Pressure')}: {result.o2_pressure_bar} bar
+            {text('gasCutting.o2Pressure')}: {result.o2_pressure_bar} bar
           </p>
           <p className="text-accent-orange">
-            {t('gasCutting.fuelFlow')}: {result.fuel_flow_l_h} L/h
+            {text('gasCutting.fuelFlow')}: {result.fuel_flow_l_h} L/h
           </p>
         </div>
       )}

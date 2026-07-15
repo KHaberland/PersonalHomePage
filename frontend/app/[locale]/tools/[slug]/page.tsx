@@ -6,6 +6,13 @@ import { getTools } from '@/lib/api';
 import { CALCULATOR_SLUGS, isCalculatorSlug } from '@/components/calculators';
 import { loadCalculator } from '@/components/calculators/loadCalculator';
 import { CalculatorStaticExample } from '@/components/calculators/CalculatorStaticExample';
+import type { Lang } from '@/lib/api-types';
+import {
+  getCalculatorChromeText,
+  getCalculatorPageText,
+  getCalculatorProps,
+} from '@/lib/calculator-content';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 export function generateStaticParams() {
@@ -25,10 +32,17 @@ type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
+function langFromLocale(locale: string): Lang {
+  return locale === 'en' || locale === 'ru' || locale === 'lv'
+    ? (locale as Lang)
+    : 'en';
+}
+
 export async function generateMetadata({ params }: Props) {
   const { locale, slug } = await params;
   if (!isCalculatorSlug(slug)) return {};
-  const apiTools = await getTools().catch(() => []);
+  const lang = langFromLocale(locale);
+  const apiTools = await getTools(lang).catch(() => []);
   const tool =
     apiTools.find((t) => t.slug === slug) ??
     fallbackTools.find((t) => t.slug === slug);
@@ -46,12 +60,16 @@ export async function generateMetadata({ params }: Props) {
 export default async function CalculatorPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const lang = langFromLocale(locale);
 
   if (!isCalculatorSlug(slug)) {
     notFound();
   }
 
-  const apiTools = await getTools().catch(() => []);
+  const [apiTools, content] = await Promise.all([
+    getTools(lang).catch(() => []),
+    getCmsPage('calculators', locale),
+  ]);
   const tool =
     apiTools.find((t) => t.slug === slug) ??
     fallbackTools.find((t) => t.slug === slug);
@@ -59,21 +77,10 @@ export default async function CalculatorPage({ params }: Props) {
   const CalculatorComponent = await loadCalculator(slug);
   if (!CalculatorComponent) notFound();
 
-  const tCalc = await getTranslations({ locale, namespace: 'calculators' });
-  const pageBase = `pages.${slug}`;
-  const lead = tCalc(`${pageBase}.lead` as 'pages.heat-input.lead');
-  const exampleTitle = tCalc(
-    `${pageBase}.exampleTitle` as 'pages.heat-input.exampleTitle'
-  );
-  const exampleCaption = tCalc(
-    `${pageBase}.exampleCaption` as 'pages.heat-input.exampleCaption'
-  );
-  const exampleSectionTitle = tCalc('exampleSectionTitle');
-  const engineeringNoteTitle = tCalc('engineeringNoteTitle');
-  const engineeringNote = tCalc('engineeringNote');
-  const validationCtaTitle = tCalc('validationCtaTitle');
-  const validationCtaText = tCalc('validationCtaText');
-  const validationCta = tCalc('validationCta');
+  const calculatorFallback = () => '';
+  const pageText = getCalculatorPageText(content, slug, calculatorFallback);
+  const chromeText = getCalculatorChromeText(content, calculatorFallback);
+  const calculatorProps = getCalculatorProps(content, slug, calculatorFallback);
 
   return (
     <div className="container-narrow section">
@@ -81,7 +88,7 @@ export default async function CalculatorPage({ params }: Props) {
         {tool?.name ?? slug}
       </h1>
       <p className="mb-8 max-w-3xl text-lg leading-relaxed text-foreground/85">
-        {lead}
+        {pageText.lead}
       </p>
 
       <section
@@ -89,15 +96,17 @@ export default async function CalculatorPage({ params }: Props) {
         aria-labelledby="calc-example-heading"
       >
         <p className="mb-1 text-xs font-medium uppercase tracking-wide text-foreground/55">
-          {exampleSectionTitle}
+          {chromeText.exampleSectionTitle}
         </p>
         <h2
           id="calc-example-heading"
           className="heading-3 mb-3 text-foreground"
         >
-          {exampleTitle}
+          {pageText.exampleTitle}
         </h2>
-        <p className="mb-4 text-sm text-foreground/70">{exampleCaption}</p>
+        <p className="mb-4 text-sm text-foreground/70">
+          {pageText.exampleCaption}
+        </p>
         <CalculatorStaticExample slug={slug} />
       </section>
 
@@ -109,24 +118,26 @@ export default async function CalculatorPage({ params }: Props) {
           id="calc-engineering-note-heading"
           className="heading-3 mb-2 text-foreground"
         >
-          {engineeringNoteTitle}
+          {chromeText.engineeringNoteTitle}
         </h2>
         <p className="text-sm leading-relaxed text-foreground/80">
-          {engineeringNote}
+          {chromeText.engineeringNote}
         </p>
       </section>
 
       <div className="card p-6">
-        <CalculatorComponent />
+        <CalculatorComponent {...calculatorProps} />
       </div>
 
       <section className="mt-8 rounded-xl border border-border bg-foreground/[0.02] p-5">
-        <h2 className="heading-3 mb-2 text-foreground">{validationCtaTitle}</h2>
+        <h2 className="heading-3 mb-2 text-foreground">
+          {chromeText.validationCtaTitle}
+        </h2>
         <p className="text-sm leading-relaxed text-foreground/75">
-          {validationCtaText}
+          {chromeText.validationCtaText}
         </p>
         <Link href="/contact" className="link-accent mt-4 inline-block text-sm">
-          {validationCta} →
+          {chromeText.validationCta} →
         </Link>
       </section>
     </div>

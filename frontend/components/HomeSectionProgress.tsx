@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
+import type { LabelMap } from '@/lib/common-labels';
 
 const SECTION_IDS = [
   'problem-value',
@@ -25,9 +25,13 @@ const SECTION_LABEL_KEYS = [
 /**
  * Мини-навигация по якорям главной (п. 9 site_rework): подсветка активного блока при скролле.
  */
-export function HomeSectionProgress() {
+type HomeSectionProgressProps = {
+  labels?: LabelMap;
+};
+
+export function HomeSectionProgress({ labels }: HomeSectionProgressProps) {
   const pathname = usePathname();
-  const t = useTranslations('common');
+  const text = (key: string) => labels?.[key] ?? '';
   const [activeId, setActiveId] = useState<string>(SECTION_IDS[0]);
 
   const isHome = pathname === '/' || pathname === '';
@@ -66,7 +70,7 @@ export function HomeSectionProgress() {
     <nav
       role="navigation"
       className="pointer-events-auto fixed right-3 top-1/2 z-40 -translate-y-1/2 max-xl:hidden xl:flex flex-col gap-2 print:hidden"
-      aria-label={t('homePageProgressLabel')}
+      aria-label={text('homePageProgressLabel')}
     >
       {SECTION_IDS.map((id, i) => {
         const labelKey = SECTION_LABEL_KEYS[i];
@@ -75,14 +79,14 @@ export function HomeSectionProgress() {
           <Link
             key={id}
             href={`/#${id}`}
-            title={t(labelKey)}
+            title={text(labelKey)}
             aria-current={active ? 'true' : undefined}
             className={`group flex items-center justify-end gap-2 outline-none ${
               active ? 'opacity-100' : 'opacity-55 hover:opacity-90'
             }`}
           >
             <span className="max-w-[7rem] truncate text-right text-[0.65rem] font-medium uppercase tracking-wide text-foreground/80 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-              {t(labelKey)}
+              {text(labelKey)}
             </span>
             <span
               className={`shrink-0 rounded-full border-2 transition-all ${

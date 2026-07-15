@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { Link as IntlLink } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getPost, getPosts } from '@/lib/api';
 import type { Category, Lang, PostListItem } from '@/lib/api-types';
+import { getCmsPage } from '@/lib/cms-content';
 import { createArticleMetadata } from '@/lib/metadata';
 import { getBaseUrl, getCanonicalUrl } from '@/lib/seo';
 
@@ -58,14 +58,18 @@ export default async function BlogPostPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, post] = await Promise.all([
-    getTranslations('blog'),
+  const [post, content, commonContent] = await Promise.all([
     getPost(slug, lang).catch(() => null),
+    getCmsPage('blog', locale),
+    getCmsPage('common', locale),
   ]);
 
   if (!post) {
     notFound();
   }
+
+  const blogText = (key: string) => content.ui?.[key] || '';
+  const publisherName = commonContent.brand?.name || 'Oleg Suvorov';
 
   // JSON-LD для статьи
   const coverFullUrl = post.cover_image
@@ -87,7 +91,7 @@ export default async function BlogPostPage({ params }: Props) {
       : undefined,
     publisher: {
       '@type': 'Organization',
-      name: 'Oleg Suvorov',
+      name: publisherName,
       logo: {
         '@type': 'ImageObject',
         url: `${getBaseUrl()}/images/photos/DSC_0222_optimized.jpg`,
@@ -126,7 +130,7 @@ export default async function BlogPostPage({ params }: Props) {
           href="/blog"
           className="link-accent mb-4 inline-block text-sm hover:underline"
         >
-          ← {t('backToBlog')}
+          ← {blogText('backToBlog')}
         </IntlLink>
         {post.category && (
           <IntlLink
@@ -222,7 +226,7 @@ export default async function BlogPostPage({ params }: Props) {
       {relatedPosts.length > 0 && (
         <section className="mt-16 border-t border-border pt-8">
           <h2 className="heading-2 mb-6 text-accent-orange">
-            {t('relatedPosts')}
+            {blogText('relatedPosts')}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((related) => (

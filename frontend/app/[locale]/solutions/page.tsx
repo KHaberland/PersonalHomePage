@@ -1,12 +1,12 @@
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import {
   IconCompetencyGas,
   IconServiceConsulting,
   IconServiceImplementation,
   IconServiceTraining,
 } from '@/components/icons';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const solutionItems = [
@@ -82,41 +82,56 @@ export async function generateMetadata({ params }: Props) {
 export default async function SolutionsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('solutionsPage');
+  const content = await getCmsPage('solutions', locale);
+  const solutionText = (section: string, key: string) =>
+    content[section]?.[key] || '';
+  const solutionList = (section: string, listKey: string) =>
+    Object.entries(content[section] ?? {})
+      .filter(([key]) => key.startsWith(`${listKey}_`))
+      .sort(
+        ([left], [right]) =>
+          Number(left.split('_').at(-1)) - Number(right.split('_').at(-1))
+      )
+      .map(([, value]) => value)
+      .filter(Boolean);
 
   return (
     <div className="container-wide section">
       <section className="rounded-2xl border border-border bg-surface/60 p-6 sm:p-8 lg:p-10">
         <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {t('heroEyebrow')}
+          {solutionText('hero', 'heroEyebrow')}
         </p>
-        <h1 className="heading-1 text-accent-orange">{t('title')}</h1>
+        <h1 className="heading-1 text-accent-orange">
+          {solutionText('hero', 'title')}
+        </h1>
         <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
-          {t('lead')}
+          {solutionText('hero', 'lead')}
         </p>
       </section>
 
       <section className="mt-8 rounded-2xl border border-accent-blue/30 bg-accent-blue/10 p-5 sm:p-6">
         <p className="text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {t('validationEyebrow')}
+          {solutionText('validation', 'validationEyebrow')}
         </p>
         <h2 className="heading-3 mt-2 text-foreground">
-          {t('validationTitle')}
+          {solutionText('validation', 'validationTitle')}
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/80">
-          {t('validationText')}
+          {solutionText('validation', 'validationText')}
         </p>
         <Link
           href="/experience"
           className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange underline-offset-4 hover:underline"
         >
-          {t('validationCta')}
+          {solutionText('validation', 'validationCta')}
           <span aria-hidden>→</span>
         </Link>
       </section>
 
-      <nav className="mt-12" aria-label={t('navAriaLabel')}>
-        <h2 className="heading-2 text-foreground">{t('navTitle')}</h2>
+      <nav className="mt-12" aria-label={solutionText('nav', 'navAriaLabel')}>
+        <h2 className="heading-2 text-foreground">
+          {solutionText('nav', 'navTitle')}
+        </h2>
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {solutionItems.map(({ Icon, anchorId, itemKey }) => (
             <a
@@ -128,13 +143,13 @@ export default async function SolutionsPage({ params }: Props) {
                 <Icon className="h-6 w-6" aria-hidden title={undefined} />
               </div>
               <h3 className="heading-3 mt-4 text-foreground">
-                {t(`nav.${itemKey}.title`)}
+                {solutionText(`nav_${itemKey}`, 'title')}
               </h3>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground/80">
-                {t(`nav.${itemKey}.description`)}
+                {solutionText(`nav_${itemKey}`, 'description')}
               </p>
               <span className="mt-5 text-sm font-semibold text-accent-orange">
-                {t('navReadMore')}
+                {solutionText('nav', 'navReadMore')}
               </span>
             </a>
           ))}
@@ -154,16 +169,14 @@ export default async function SolutionsPage({ params }: Props) {
                   {String(index + 1).padStart(2, '0')}
                 </p>
                 <h2 className="heading-2 mt-2 text-foreground">
-                  {t(`sections.${itemKey}.title`)}
+                  {solutionText(`section_${itemKey}`, 'title')}
                 </h2>
               </div>
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
               {sectionColumns.map(({ labelKey, listKey, className }) => {
-                const items = t.raw(
-                  `sections.${itemKey}.${listKey}`
-                ) as string[];
+                const items = solutionList(`section_${itemKey}`, listKey);
 
                 return (
                   <div
@@ -171,7 +184,7 @@ export default async function SolutionsPage({ params }: Props) {
                     className={`rounded-xl border p-5 ${className}`}
                   >
                     <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-                      {t(labelKey)}
+                      {solutionText('labels', labelKey)}
                     </h3>
                     <ul className="mt-4 space-y-3 text-sm leading-relaxed text-foreground/80">
                       {items.map((item) => (
@@ -190,10 +203,14 @@ export default async function SolutionsPage({ params }: Props) {
       </div>
 
       <section className="mt-12 rounded-2xl border border-accent-orange/30 bg-accent-orange/10 p-6 sm:p-8">
-        <h2 className="heading-3 text-foreground">{t('finalCtaTitle')}</h2>
-        <p className="mt-3 max-w-3xl text-foreground/80">{t('finalCtaText')}</p>
+        <h2 className="heading-3 text-foreground">
+          {solutionText('final_cta', 'finalCtaTitle')}
+        </h2>
+        <p className="mt-3 max-w-3xl text-foreground/80">
+          {solutionText('final_cta', 'finalCtaText')}
+        </p>
         <Link href="/contact" className="btn-primary mt-6 inline-block">
-          {t('finalCtaContact')}
+          {solutionText('final_cta', 'finalCtaContact')}
         </Link>
       </section>
     </div>

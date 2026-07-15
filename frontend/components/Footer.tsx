@@ -2,8 +2,8 @@
 
 import { Link } from '@/i18n/navigation';
 import { decisionSystemLayers, supportNavLinks } from '@/lib/ia';
-import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import type { LabelMap } from '@/lib/common-labels';
 
 const socialLinkIcons = {
   linkedin: (
@@ -22,12 +22,34 @@ type FooterProps = {
   email?: string;
   linkedinUrl?: string | null;
   youtubeUrl?: string | null;
+  footerLabels?: LabelMap;
+  navLabels?: LabelMap;
+  homeLabels?: LabelMap;
+  brandLabels?: LabelMap;
+  platformLabels?: LabelMap;
+  languageLabels?: LabelMap;
 };
 
-export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
-  const t = useTranslations('footer');
-  const tc = useTranslations('common');
-  const th = useTranslations('home');
+export function Footer({
+  email,
+  linkedinUrl,
+  youtubeUrl,
+  footerLabels,
+  navLabels,
+  homeLabels,
+  brandLabels,
+  platformLabels,
+  languageLabels,
+}: FooterProps) {
+  const footerText = (key: string) => footerLabels?.[key] ?? '';
+  const navText = (key: string) => navLabels?.[key] ?? '';
+  const homeText = (key: string) =>
+    homeLabels?.[key] ?? navLabels?.contact ?? '';
+  const brandText = (key: string) => brandLabels?.[key] ?? 'Oleg Suvorov';
+  const platformText = (key: string) =>
+    platformLabels?.[key] ?? footerText(key);
+  const languageText = (key: string) =>
+    languageLabels?.[key] ?? footerText('languages');
 
   const socialLinks = [
     linkedinUrl && { href: linkedinUrl, key: 'linkedin' as const },
@@ -43,16 +65,18 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-lg font-semibold text-accent-orange">
-              Oleg Suvorov
+              {brandText('name')}
             </p>
-            <p className="mt-1 text-sm text-foreground/80">{t('tagline')}</p>
+            <p className="mt-1 text-sm text-foreground/80">
+              {footerText('tagline')}
+            </p>
           </div>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
             {email && (
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {t('contact')}
+                  {footerText('contact')}
                 </p>
                 <a href={`mailto:${email}`} className={linkClass}>
                   {email}
@@ -68,7 +92,7 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={linkClass}
-                    aria-label={t(key)}
+                    aria-label={platformText(key)}
                   >
                     {socialLinkIcons[key]}
                   </a>
@@ -77,40 +101,40 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
             )}
             <div className="flex flex-col gap-2">
               <p className="text-sm font-medium text-foreground">
-                {t('languages')}
+                {footerText('languages')}
               </p>
-              <LanguageSwitcher />
+              <LanguageSwitcher ariaLabel={languageText('switcherAriaLabel')} />
             </div>
           </div>
         </div>
 
         <div className="mt-8 border-t border-border pt-8">
           <p className="text-center text-sm font-medium text-foreground">
-            {t('ctaHint')}
+            {footerText('ctaHint')}
           </p>
           <div className="mt-4 flex justify-center">
             <Link
               href="/contact"
               className="btn-secondary inline-block px-8 py-3"
             >
-              {th('heroCtaContact')}
+              {homeText('heroCtaContact')}
             </Link>
           </div>
         </div>
 
         <nav
           className="mt-8 grid gap-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4"
-          aria-label={t('navigationAriaLabel')}
+          aria-label={footerText('navigationAriaLabel')}
         >
           {decisionSystemLayers.map((group) => (
             <div key={group.id}>
               <p className="text-sm font-medium text-foreground">
-                {t(group.titleKey)}
+                {footerText(group.titleKey)}
               </p>
               <div className="mt-3 flex flex-col gap-2">
                 {group.links.map(({ href, key }) => (
                   <Link key={href} href={href} className={linkClass}>
-                    {tc(key)}
+                    {navText(key)}
                   </Link>
                 ))}
               </div>
@@ -119,12 +143,12 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
 
           <div>
             <p className="text-sm font-medium text-foreground">
-              {t('supportTitle')}
+              {footerText('supportTitle')}
             </p>
             <div className="mt-3 flex flex-col gap-2">
               {supportNavLinks.map(({ href, key }) => (
                 <Link key={href} href={href} className={linkClass}>
-                  {tc(key)}
+                  {navText(key)}
                 </Link>
               ))}
             </div>
@@ -132,7 +156,8 @@ export function Footer({ email, linkedinUrl, youtubeUrl }: FooterProps) {
         </nav>
 
         <p className="mt-8 text-center text-xs text-foreground/50">
-          © {new Date().getFullYear()} Oleg Suvorov. {t('rights')}
+          © {new Date().getFullYear()} {brandText('name')}.{' '}
+          {footerText('rights')}
         </p>
       </div>
     </footer>

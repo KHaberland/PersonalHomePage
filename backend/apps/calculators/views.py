@@ -21,6 +21,11 @@ class CalculatorListView(generics.ListAPIView):
     queryset = Calculator.objects.all()
     serializer_class = CalculatorSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["lang"] = self.request.query_params.get("lang", "en")
+        return context
+
 
 class HeatInputCalculateView(APIView):
     """POST /api/calculate/heat-input - Calculate heat input."""

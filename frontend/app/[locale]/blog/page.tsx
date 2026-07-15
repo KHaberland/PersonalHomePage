@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { getCategories, getPosts, getTags } from '@/lib/api';
 import type { Category, Lang, PostListItem } from '@/lib/api-types';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 function getCategoryName(category: Category, lang: Lang): string {
@@ -44,6 +44,16 @@ function buildBlogListHref(filters: {
   return s ? `/blog?${s}` : '/blog';
 }
 
+function formatPageOf(
+  template: string,
+  current: number,
+  total: number
+): string {
+  return template
+    .replace('{current}', String(current))
+    .replace('{total}', String(total));
+}
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
   return createPageMetadata({
@@ -70,23 +80,25 @@ export default async function BlogPage({ params, searchParams }: Props) {
     ? resolvedSearchParams.tag_slug[0]
     : resolvedSearchParams.tag_slug;
 
-  const [t, tCommon, categories, tags, postsResponse] = await Promise.all([
-    getTranslations('blog'),
-    getTranslations('common'),
-    getCategories().catch(() => []),
-    getTags().catch(() => []),
-    getPosts(lang, {
-      category_slug: categorySlug ?? undefined,
-      tag_slug: tagSlug ?? undefined,
-      page,
-    }).catch(() => ({
-      results: [] as PostListItem[],
-      count: 0,
-      next: null,
-      previous: null,
-    })),
-  ]);
+  const [categories, tags, postsResponse, content, commonContent] =
+    await Promise.all([
+      getCategories().catch(() => []),
+      getTags(lang).catch(() => []),
+      getPosts(lang, {
+        category_slug: categorySlug ?? undefined,
+        tag_slug: tagSlug ?? undefined,
+        page,
+      }).catch(() => ({
+        results: [] as PostListItem[],
+        count: 0,
+        next: null,
+        previous: null,
+      })),
+      getCmsPage('blog', locale),
+      getCmsPage('common', locale),
+    ]);
 
+  const blogText = (key: string) => content.ui?.[key] || '';
   const posts = postsResponse.results;
   const totalCount = postsResponse.count;
   const hasNext = !!postsResponse.next;
@@ -97,21 +109,21 @@ export default async function BlogPage({ params, searchParams }: Props) {
 
   return (
     <div className="container-wide section">
-      <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
-      <p className="mb-3 text-foreground/80">{t('description')}</p>
+      <h1 className="heading-1 mb-4 text-accent-orange">{blogText('title')}</h1>
+      <p className="mb-3 text-foreground/80">{blogText('description')}</p>
       <p className="mb-8 text-sm text-foreground/70">
-        {t('knowledgeCrossLink')}{' '}
+        {blogText('knowledgeCrossLink')}{' '}
         <Link
           href="/knowledge"
           className="link-accent font-medium hover:underline"
         >
-          {tCommon('knowledgeNav')}
+          {commonContent.nav?.knowledgeNav || ''}
         </Link>
       </p>
 
       {/* Фильтр по категориям */}
       <p className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground/50">
-        {t('filterByCategory')}
+        {blogText('filterByCategory')}
       </p>
       <div className="mb-6 flex flex-wrap gap-2">
         <Link
@@ -122,7 +134,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
               : 'card text-foreground/80 hover:border-accent-orange'
           }`}
         >
-          {t('allCategories')}
+          {blogText('allCategories')}
         </Link>
         {categories.map((cat) => (
           <Link
@@ -146,7 +158,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
       {tags.length > 0 ? (
         <>
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground/50">
-            {t('filterByTag')}
+            {blogText('filterByTag')}
           </p>
           <div className="mb-8 flex flex-wrap gap-2">
             <Link
@@ -159,7 +171,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                   : 'card text-foreground/80 hover:border-accent-orange'
               }`}
             >
-              {t('allTags')}
+              {blogText('allTags')}
             </Link>
             {tags.map((tag) => (
               <Link
@@ -191,7 +203,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                 post={post}
                 locale={locale}
                 lang={lang}
-                readMoreLabel={t('readMore')}
+                readMoreLabel={blogText('readMore')}
                 getCategoryName={getCategoryName}
                 getImageSrc={getImageSrc}
               />
@@ -202,7 +214,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
           {totalPages > 1 && (
             <nav
               className="mt-12 flex items-center justify-center gap-2"
-              aria-label={t('pagination')}
+              aria-label={blogText('pagination')}
             >
               {hasPrevious && (
                 <Link
@@ -213,11 +225,11 @@ export default async function BlogPage({ params, searchParams }: Props) {
                   })}
                   className="rounded border border-[#30363d] bg-[#161b22] px-4 py-2 text-sm text-[#e6edf3] hover:border-[#f97316]"
                 >
-                  ← {t('previous')}
+                  ← {blogText('previous')}
                 </Link>
               )}
               <span className="px-4 py-2 text-sm text-foreground/70">
-                {t('pageOf', { current: pageNum, total: totalPages })}
+                {formatPageOf(content.ui?.pageOf || '', pageNum, totalPages)}
               </span>
               {hasNext && (
                 <Link
@@ -228,7 +240,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                   })}
                   className="card px-4 py-2 text-sm text-foreground hover:border-accent-orange"
                 >
-                  {t('next')} →
+                  {blogText('next')} →
                 </Link>
               )}
             </nav>
@@ -236,7 +248,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
         </>
       ) : (
         <div className="card px-6 py-12 text-center text-foreground/60">
-          {t('noArticles')}
+          {blogText('noArticles')}
         </div>
       )}
     </div>

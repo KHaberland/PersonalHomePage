@@ -13,6 +13,7 @@ from .models import (
     HomeBusinessOutcomesIntro,
     HomeTechnicalSkillCard,
     HomeTechnicalSkillsIntro,
+    SEOMetadata,
     SiteTextBlock,
 )
 from .serializers import (
@@ -22,6 +23,7 @@ from .serializers import (
     ExperienceSerializer,
     HomeBusinessOutcomeCardSerializer,
     HomeTechnicalSkillCardSerializer,
+    SEOMetadataSerializer,
     _localized_text,
 )
 
@@ -112,6 +114,25 @@ class PageContentView(APIView):
         if localized_text.strip():
             return localized_text
         return en_text
+
+
+class SEOMetadataView(generics.RetrieveAPIView):
+    """GET /api/content/seo/{page}/ — localized SEO metadata."""
+
+    serializer_class = SEOMetadataSerializer
+    allowed_languages = {"en", "ru", "lv"}
+
+    def get_object(self):
+        lang = self.request.query_params.get("lang", "en")
+        if lang not in self.allowed_languages:
+            lang = "en"
+
+        obj = SEOMetadata.objects.filter(
+            page=self.kwargs["page"], language=lang
+        ).first()
+        if obj is None:
+            raise Http404("SEO metadata not found")
+        return obj
 
 
 class HomeTechnicalSkillsView(APIView):

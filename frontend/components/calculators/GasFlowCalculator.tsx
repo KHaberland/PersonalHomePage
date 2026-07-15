@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { calculateGasFlow } from '@/lib/api';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import type { CalculatorProps } from '@/components/calculators';
 
-export function GasFlowCalculator() {
-  const t = useTranslations('calculators');
+export function GasFlowCalculator({ texts }: CalculatorProps) {
+  const text = (key: string) => texts?.[key] ?? '';
   const [flowRate, setFlowRate] = useState('');
   const [weldingTime, setWeldingTime] = useState('');
   const [cylinderVolume, setCylinderVolume] = useState('');
@@ -25,7 +25,7 @@ export function GasFlowCalculator() {
     const wt = parseFloat(weldingTime);
     const cv = parseFloat(cylinderVolume);
     if (isNaN(fr) || isNaN(wt) || isNaN(cv) || fr <= 0) {
-      setError(`${t('errorInvalid')} ${t('errorFlowPositive')}`);
+      setError(`${text('errorInvalid')} ${text('errorFlowPositive')}`);
       return;
     }
     setLoading(true);
@@ -38,20 +38,20 @@ export function GasFlowCalculator() {
       setResult(res);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t('errorCalculationFailed')
+        err instanceof Error ? err.message : text('errorCalculationFailed')
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const h1 = t('gasFlow.hints.flowRate');
-  const h2 = t('gasFlow.hints.weldingTime');
-  const h3 = t('gasFlow.hints.cylinderVolume');
+  const h1 = text('gasFlow.hints.flowRate');
+  const h2 = text('gasFlow.hints.weldingTime');
+  const h3 = text('gasFlow.hints.cylinderVolume');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <CalculatorField label={t('gasFlow.flowRate')} hint={h1}>
+      <CalculatorField label={text('gasFlow.flowRate')} hint={h1}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -66,7 +66,7 @@ export function GasFlowCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('gasFlow.weldingTime')} hint={h2}>
+      <CalculatorField label={text('gasFlow.weldingTime')} hint={h2}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -81,7 +81,7 @@ export function GasFlowCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('gasFlow.cylinderVolume')} hint={h3}>
+      <CalculatorField label={text('gasFlow.cylinderVolume')} hint={h3}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -101,16 +101,17 @@ export function GasFlowCalculator() {
         disabled={loading}
         className="btn-primary disabled:opacity-50"
       >
-        {loading ? t('calculating') : t('calculate')}
+        {loading ? text('calculating') : text('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
         <div className="card space-y-2 p-4">
           <p className="text-accent-orange">
-            {t('gasFlow.consumption')}: {result.consumption_l} L
+            {text('gasFlow.consumption')}: {result.consumption_l} L
           </p>
           <p className="text-accent-orange">
-            {t('gasFlow.cylinderDuration')}: {result.cylinder_duration_min} min
+            {text('gasFlow.cylinderDuration')}: {result.cylinder_duration_min}{' '}
+            min
           </p>
         </div>
       )}

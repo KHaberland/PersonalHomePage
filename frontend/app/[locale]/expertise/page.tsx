@@ -1,5 +1,4 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { CompetencyCard } from '@/components/CompetencyCard';
 import { Link } from '@/i18n/navigation';
 import {
@@ -10,6 +9,7 @@ import {
   IconCompetencyMigMag,
   IconCompetencyTig,
 } from '@/components/icons';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
 const expertiseItems = [
@@ -74,42 +74,48 @@ export async function generateMetadata({ params }: Props) {
 export default async function ExpertisePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('home');
+  const content = await getCmsPage('expertise', locale);
+  const expertiseText = (section: string, key: string) =>
+    content[section]?.[key] || '';
 
   return (
     <div className="container-wide section">
       <div className="max-w-4xl">
         <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-          {t('expertiseDecisionEyebrow')}
+          {expertiseText('hero', 'expertiseDecisionEyebrow')}
         </p>
         <h1 className="heading-1 text-accent-orange">
-          {t('competenciesTitle')}
+          {expertiseText('hero', 'competenciesTitle')}
         </h1>
         <p className="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/85">
-          {t('expertisePageIntro')}
+          {expertiseText('hero', 'expertisePageIntro')}
         </p>
       </div>
 
       <ul className="mt-12 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {expertiseItems.map(
-          ({ Icon, anchorId, groupKey, titleKey, descKey }) => (
+        {expertiseItems.map(({ Icon, anchorId }) => {
+          const competencyBlock = `competency_${anchorId
+            .replace('expertise-', '')
+            .replaceAll('-', '_')}`;
+
+          return (
             <li key={anchorId} id={anchorId} className="scroll-mt-24">
               <div className="flex h-full flex-col gap-3">
                 <p className="text-xs font-semibold uppercase tracking-wide text-accent-blue">
-                  {t(groupKey)}
+                  {expertiseText(competencyBlock, 'group')}
                 </p>
                 <CompetencyCard
                   variant="technical"
-                  title={t(titleKey)}
-                  description={t(descKey)}
+                  title={expertiseText(competencyBlock, 'title')}
+                  description={expertiseText(competencyBlock, 'description')}
                   icon={
                     <Icon className="h-6 w-6" aria-hidden title={undefined} />
                   }
                 />
               </div>
             </li>
-          )
-        )}
+          );
+        })}
       </ul>
 
       <section className="mt-12 grid gap-4 md:grid-cols-2">
@@ -118,13 +124,13 @@ export default async function ExpertisePage({ params }: Props) {
           className="card block p-6 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)]"
         >
           <h2 className="heading-3 text-foreground">
-            {t('expertiseSolutionsCtaTitle')}
+            {expertiseText('cta_solutions', 'expertiseSolutionsCtaTitle')}
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-foreground/80">
-            {t('expertiseSolutionsCtaText')}
+            {expertiseText('cta_solutions', 'expertiseSolutionsCtaText')}
           </p>
           <span className="mt-4 inline-flex text-sm font-semibold text-accent-orange">
-            {t('expertiseSolutionsCta')} →
+            {expertiseText('cta_solutions', 'expertiseSolutionsCta')} →
           </span>
         </Link>
         <Link
@@ -132,13 +138,13 @@ export default async function ExpertisePage({ params }: Props) {
           className="card block p-6 transition-colors hover:border-accent-orange/60 hover:bg-[var(--surface-elevated)]"
         >
           <h2 className="heading-3 text-foreground">
-            {t('expertiseExperienceCtaTitle')}
+            {expertiseText('cta_experience', 'expertiseExperienceCtaTitle')}
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-foreground/80">
-            {t('expertiseExperienceCtaText')}
+            {expertiseText('cta_experience', 'expertiseExperienceCtaText')}
           </p>
           <span className="mt-4 inline-flex text-sm font-semibold text-accent-orange">
-            {t('expertiseExperienceCta')} →
+            {expertiseText('cta_experience', 'expertiseExperienceCta')} →
           </span>
         </Link>
       </section>

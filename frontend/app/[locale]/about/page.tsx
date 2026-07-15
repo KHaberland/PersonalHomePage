@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { DiplomaCertificates } from '@/components/DiplomaCertificates';
 import { getAbout, getContact } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 import { sanitizeAboutHtml } from '@/lib/sanitize-html';
 import { createAboutJsonLd } from '@/lib/seo';
@@ -54,7 +55,8 @@ const diplomas: ReadonlyArray<{
 ];
 
 const defaultPhoto = '/images/photos/small/author01_small.jpg';
-const defaultLinkedinUrl = 'https://linkedin.com/in/olegsuvorov';
+const defaultLinkedinUrl =
+  'https://www.linkedin.com/in/oleg-suvorov-125639216/';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -75,6 +77,10 @@ function htmlHasVisibleText(html: string): boolean {
   );
 }
 
+function formatTemplate(template: string, values: Record<string, string>) {
+  return template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? '');
+}
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
   return createPageMetadata({
@@ -90,11 +96,17 @@ export default async function AboutPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, about, contact] = await Promise.all([
+  const [t, about, contact, content, commonContent] = await Promise.all([
     getTranslations('about'),
     getAbout(lang).catch(() => null),
     getContact().catch(() => null),
+    getCmsPage('about', locale),
+    getCmsPage('common', locale),
   ]);
+  const aboutUiText = (key: string) => content.ui?.[key] || '';
+  const profileRecordText = (key: string) =>
+    content.profile_record?.[key] || '';
+  const personName = commonContent.brand?.name || 'Oleg Suvorov';
 
   const photo = about?.photo ?? defaultPhoto;
   const bio = sanitizeAboutHtml(about?.bio ?? String(t.raw('fallbackBio')));
@@ -106,7 +118,7 @@ export default async function AboutPage({ params }: Props) {
   );
 
   const diplomaItems = diplomas.map((d) => {
-    const title = t(d.labelKey);
+    const title = aboutUiText(d.labelKey);
     const folder = d.mediaFolder ?? 'diplomas';
     const docPath =
       folder === 'diplomas'
@@ -118,29 +130,40 @@ export default async function AboutPage({ params }: Props) {
       id: d.labelKey,
       pdfUrl: docPath,
       title,
-      summary: t(d.summaryKey),
-      previewAlt: t('diplomaPreviewAlt', { title }),
+      summary: aboutUiText(d.summaryKey),
+      previewAlt: formatTemplate(aboutUiText('diplomaPreviewAlt'), { title }),
       previewSrc,
     };
   });
-  const profileProofs = t.raw('profileProofs') as string[];
+  const cmsProfileProofs = [
+    'profileProofs_1',
+    'profileProofs_2',
+    'profileProofs_3',
+  ]
+    .map((key) => content.ui?.[key])
+    .filter(Boolean);
+  const profileProofs = cmsProfileProofs;
   const cvUrl = process.env.NEXT_PUBLIC_CV_URL?.trim();
   const linkedinUrl = contact?.linkedin_url ?? defaultLinkedinUrl;
   const sameAs = [linkedinUrl, contact?.youtube_url].filter(
     Boolean
   ) as string[];
+  const showProfileRecord = Boolean(
+    profileRecordText('title') || profileRecordText('footerUpdated')
+  );
   const jsonLd = createAboutJsonLd({
     locale,
-    description: t('profileSummaryLead'),
+    description: aboutUiText('profileSummaryLead'),
     image: photo,
     sameAs,
+    personName,
   });
 
   const diplomaLabels = {
-    openInModal: t('diplomaOpenInModal'),
-    openNewTab: t('diplomaOpenNewTab'),
-    closeModal: t('diplomaCloseModal'),
-    pdfViewerTitle: t('diplomaPdfViewerTitle'),
+    openInModal: aboutUiText('diplomaOpenInModal'),
+    openNewTab: aboutUiText('diplomaOpenNewTab'),
+    closeModal: aboutUiText('diplomaCloseModal'),
+    pdfViewerTitle: aboutUiText('diplomaPdfViewerTitle'),
   };
 
   return (
@@ -149,18 +172,20 @@ export default async function AboutPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <h1 className="heading-2 mb-6 text-accent-orange">{t('title')}</h1>
+      <h1 className="heading-2 mb-6 text-accent-orange">
+        {aboutUiText('title')}
+      </h1>
 
       <section className="card mb-10 grid gap-6 p-6 md:grid-cols-[1.5fr_1fr] md:p-8">
         <div>
           <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-accent-orange">
-            {t('profileSummaryEyebrow')}
+            {aboutUiText('profileSummaryEyebrow')}
           </p>
           <h2 className="heading-3 mb-3 text-foreground">
-            {t('profileSummaryTitle')}
+            {aboutUiText('profileSummaryTitle')}
           </h2>
           <p className="max-w-3xl text-foreground/80">
-            {t('profileSummaryLead')}
+            {aboutUiText('profileSummaryLead')}
           </p>
         </div>
 
@@ -181,7 +206,7 @@ export default async function AboutPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="btn-primary"
               >
-                {t('linkedinCta')}
+                {aboutUiText('linkedinCta')}
               </a>
             ) : null}
             {cvUrl ? (
@@ -191,7 +216,7 @@ export default async function AboutPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="btn-secondary"
               >
-                {t('cvCta')}
+                {aboutUiText('cvCta')}
               </a>
             ) : null}
           </div>
@@ -226,7 +251,7 @@ export default async function AboutPage({ params }: Props) {
           {htmlHasVisibleText(education) ? (
             <section>
               <h2 className="about-block-title heading-3 mb-3 text-foreground">
-                {t('education')}
+                {aboutUiText('education')}
               </h2>
               <div
                 className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
@@ -239,7 +264,7 @@ export default async function AboutPage({ params }: Props) {
           {htmlHasVisibleText(qualifications) ? (
             <section>
               <h2 className="about-block-title heading-3 mb-3 text-foreground">
-                {t('qualifications')}
+                {aboutUiText('qualifications')}
               </h2>
               <div
                 className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
@@ -252,7 +277,9 @@ export default async function AboutPage({ params }: Props) {
 
       {/* Дипломы и сертификаты */}
       <section className="mt-16">
-        <h2 className="heading-2 mb-6 text-foreground">{t('diplomas')}</h2>
+        <h2 className="heading-2 mb-6 text-foreground">
+          {aboutUiText('diplomas')}
+        </h2>
         <DiplomaCertificates items={diplomaItems} labels={diplomaLabels} />
       </section>
 
@@ -278,6 +305,48 @@ export default async function AboutPage({ params }: Props) {
           </div>
         ))}
       </div>
+
+      {showProfileRecord ? (
+        <section className="card mt-16 p-6 md:p-8">
+          {profileRecordText('title') ? (
+            <h2 className="heading-3 mb-4 text-foreground">
+              {profileRecordText('title')}
+            </h2>
+          ) : null}
+
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/70">
+            {profileRecordText('versionLabel') ||
+            profileRecordText('version') ? (
+              <p>
+                <span className="font-semibold text-foreground">
+                  {profileRecordText('versionLabel')}
+                </span>{' '}
+                {profileRecordText('version')}
+              </p>
+            ) : null}
+            {profileRecordText('lastReviewedLabel') ||
+            profileRecordText('lastReviewed') ? (
+              <p>
+                <span className="font-semibold text-foreground">
+                  {profileRecordText('lastReviewedLabel')}
+                </span>{' '}
+                {profileRecordText('lastReviewed')}
+              </p>
+            ) : null}
+          </div>
+
+          {profileRecordText('description') ? (
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/80">
+              {profileRecordText('description')}
+            </p>
+          ) : null}
+          {profileRecordText('footerUpdated') ? (
+            <p className="mt-5 text-xs font-medium uppercase tracking-wide text-foreground/50">
+              {profileRecordText('footerUpdated')}
+            </p>
+          ) : null}
+        </section>
+      ) : null}
     </div>
   );
 }

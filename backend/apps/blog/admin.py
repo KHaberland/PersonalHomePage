@@ -2,7 +2,21 @@ from django.contrib import admin
 from django.db import models
 from django_ckeditor_5.widgets import CKEditor5Widget
 
-from .models import Author, Category, Post, PostImage, Tag
+from .models import (
+    Author,
+    AuthorTranslation,
+    Category,
+    Post,
+    PostImage,
+    PostImageTranslation,
+    Tag,
+    TagTranslation,
+)
+
+
+class AuthorTranslationInline(admin.TabularInline):
+    model = AuthorTranslation
+    extra = 1
 
 
 class PostImageInline(admin.TabularInline):
@@ -10,10 +24,21 @@ class PostImageInline(admin.TabularInline):
     extra = 1
 
 
+class PostImageTranslationInline(admin.TabularInline):
+    model = PostImageTranslation
+    extra = 1
+
+
+class TagTranslationInline(admin.TabularInline):
+    model = TagTranslation
+    extra = 1
+
+
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ["name", "photo"]
-    search_fields = ["name"]
+    search_fields = ["name", "translations__name", "translations__bio"]
+    inlines = [AuthorTranslationInline]
     formfield_overrides = {
         models.TextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
@@ -30,8 +55,9 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ["name", "slug"]
-    search_fields = ["name"]
+    search_fields = ["name", "translations__name"]
     prepopulated_fields = {"slug": ("name",)}
+    inlines = [TagTranslationInline]
 
 
 @admin.register(Post)
@@ -72,3 +98,10 @@ class PostAdmin(admin.ModelAdmin):
         ("Русский", {"fields": ("title_ru", "content_ru", "excerpt_ru")}),
         ("Latviešu", {"fields": ("title_lv", "content_lv", "excerpt_lv")}),
     )
+
+
+@admin.register(PostImage)
+class PostImageAdmin(admin.ModelAdmin):
+    list_display = ["post", "caption", "created_at"]
+    search_fields = ["post__slug", "caption", "translations__caption"]
+    inlines = [PostImageTranslationInline]

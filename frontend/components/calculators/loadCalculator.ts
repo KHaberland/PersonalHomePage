@@ -1,10 +1,10 @@
 import type { ComponentType } from 'react';
-import type { CalculatorSlug } from './index';
+import type { CalculatorProps, CalculatorSlug } from './index';
 
 /** Единый реестр: новый калькулятор — одна строка здесь, без дублирования разметки страницы. */
 const loaders: Record<
   CalculatorSlug,
-  () => Promise<{ default: ComponentType<object> }>
+  () => Promise<{ default: ComponentType<CalculatorProps> }>
 > = {
   'heat-input': () =>
     import('./HeatInputCalculator').then((m) => ({
@@ -34,7 +34,7 @@ const loaders: Record<
 
 export async function loadCalculator(
   slug: CalculatorSlug
-): Promise<ComponentType<object> | null> {
+): Promise<ComponentType<CalculatorProps> | null> {
   const load = loaders[slug];
   if (!load) return null;
   const mod = await load();

@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { calculateHeatInput } from '@/lib/api';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import type { CalculatorProps } from '@/components/calculators';
 
-export function HeatInputCalculator() {
-  const t = useTranslations('calculators');
+export function HeatInputCalculator({ texts }: CalculatorProps) {
+  const text = (key: string) => texts?.[key] ?? '';
   const [voltage, setVoltage] = useState('');
   const [current, setCurrent] = useState('');
   const [travelSpeed, setTravelSpeed] = useState('');
@@ -24,7 +24,7 @@ export function HeatInputCalculator() {
     const c = parseFloat(current);
     const s = parseFloat(travelSpeed);
     if (isNaN(v) || isNaN(c) || isNaN(s) || s <= 0) {
-      setError(`${t('errorInvalid')} ${t('errorSpeedPositive')}`);
+      setError(`${text('errorInvalid')} ${text('errorSpeedPositive')}`);
       return;
     }
     setLoading(true);
@@ -37,20 +37,20 @@ export function HeatInputCalculator() {
       setResult(res);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t('errorCalculationFailed')
+        err instanceof Error ? err.message : text('errorCalculationFailed')
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const hv = t('heatInput.hints.voltage');
-  const hc = t('heatInput.hints.current');
-  const hs = t('heatInput.hints.travelSpeed');
+  const hv = text('heatInput.hints.voltage');
+  const hc = text('heatInput.hints.current');
+  const hs = text('heatInput.hints.travelSpeed');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <CalculatorField label={t('heatInput.voltage')} hint={hv}>
+      <CalculatorField label={text('heatInput.voltage')} hint={hv}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -65,7 +65,7 @@ export function HeatInputCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('heatInput.current')} hint={hc}>
+      <CalculatorField label={text('heatInput.current')} hint={hc}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -80,7 +80,7 @@ export function HeatInputCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('heatInput.travelSpeed')} hint={hs}>
+      <CalculatorField label={text('heatInput.travelSpeed')} hint={hs}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -100,13 +100,13 @@ export function HeatInputCalculator() {
         disabled={loading}
         className="btn-primary disabled:opacity-50"
       >
-        {loading ? t('calculating') : t('calculate')}
+        {loading ? text('calculating') : text('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
         <div className="card p-4">
           <p className="text-lg font-semibold text-accent-orange">
-            {t('heatInput.result')}: {result.heat_input_kj_mm} kJ/mm
+            {text('heatInput.result')}: {result.heat_input_kj_mm} kJ/mm
           </p>
         </div>
       )}

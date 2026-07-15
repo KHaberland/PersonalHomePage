@@ -20,7 +20,10 @@ class PostListView(generics.ListAPIView):
         return (
             Post.objects.filter(status=Post.Status.PUBLISHED)
             .select_related("author", "category")
-            .prefetch_related("tags")
+            .prefetch_related(
+                "author__translations",
+                "tags__translations",
+            )
         )
 
     def get_serializer_context(self):
@@ -40,7 +43,11 @@ class PostDetailView(generics.RetrieveAPIView):
         return (
             Post.objects.filter(status=Post.Status.PUBLISHED)
             .select_related("author", "category")
-            .prefetch_related("tags", "images")
+            .prefetch_related(
+                "author__translations",
+                "tags__translations",
+                "images__translations",
+            )
         )
 
     def get_serializer_context(self):
@@ -59,5 +66,12 @@ class CategoryListView(generics.ListAPIView):
 class TagListView(generics.ListAPIView):
     """GET /api/tags - List all tags."""
 
-    queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+    def get_queryset(self):
+        return Tag.objects.prefetch_related("translations").order_by("slug")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["lang"] = self.request.query_params.get("lang", "en")
+        return context

@@ -5,7 +5,8 @@ import { getMessages } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { Layout } from '@/components/Layout';
-import { getContact } from '@/lib/api';
+import { getContact, getPageContent } from '@/lib/api';
+import { buildCommonUiLabels } from '@/lib/common-labels';
 
 type Props = {
   children: React.ReactNode;
@@ -23,14 +24,18 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   setRequestLocale(locale);
-  const [messages, contact] = await Promise.all([
+  const [messages, contact, commonContent] = await Promise.all([
     getMessages(),
     getContact().catch(() => null),
+    getPageContent('common', locale).catch(() => null),
   ]);
+  const labels = buildCommonUiLabels(messages, commonContent);
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <Layout contact={contact}>{children}</Layout>
+      <Layout contact={contact} labels={labels}>
+        {children}
+      </Layout>
     </NextIntlClientProvider>
   );
 }

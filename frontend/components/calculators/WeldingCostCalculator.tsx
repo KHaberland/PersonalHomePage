@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { calculateWeldingCost } from '@/lib/api';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import type { CalculatorProps } from '@/components/calculators';
 
-export function WeldingCostCalculator() {
-  const t = useTranslations('calculators');
+export function WeldingCostCalculator({ texts }: CalculatorProps) {
+  const text = (key: string) => texts?.[key] ?? '';
   const [wirePrice, setWirePrice] = useState('');
   const [gasPrice, setGasPrice] = useState('');
   const [cylinderVolume, setCylinderVolume] = useState('');
@@ -33,7 +33,7 @@ export function WeldingCostCalculator() {
     const dr = parseFloat(depositionRate);
     const wt = parseFloat(weldingTime);
     if ([wp, gp, cv, dr, wt].some(isNaN) || cv <= 0) {
-      setError(`${t('errorInvalid')} ${t('errorCylinderVolume')}`);
+      setError(`${text('errorInvalid')} ${text('errorCylinderVolume')}`);
       return;
     }
     setLoading(true);
@@ -48,22 +48,22 @@ export function WeldingCostCalculator() {
       setResult(res);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t('errorCalculationFailed')
+        err instanceof Error ? err.message : text('errorCalculationFailed')
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const ha = t('weldingCost.hints.wirePrice');
-  const hb = t('weldingCost.hints.gasPrice');
-  const hc = t('weldingCost.hints.cylinderVolume');
-  const hd = t('weldingCost.hints.depositionRate');
-  const he = t('weldingCost.hints.weldingTime');
+  const ha = text('weldingCost.hints.wirePrice');
+  const hb = text('weldingCost.hints.gasPrice');
+  const hc = text('weldingCost.hints.cylinderVolume');
+  const hd = text('weldingCost.hints.depositionRate');
+  const he = text('weldingCost.hints.weldingTime');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <CalculatorField label={t('weldingCost.wirePrice')} hint={ha}>
+      <CalculatorField label={text('weldingCost.wirePrice')} hint={ha}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -78,7 +78,7 @@ export function WeldingCostCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('weldingCost.gasPrice')} hint={hb}>
+      <CalculatorField label={text('weldingCost.gasPrice')} hint={hb}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -93,7 +93,7 @@ export function WeldingCostCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('weldingCost.cylinderVolume')} hint={hc}>
+      <CalculatorField label={text('weldingCost.cylinderVolume')} hint={hc}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -108,7 +108,7 @@ export function WeldingCostCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('weldingCost.depositionRate')} hint={hd}>
+      <CalculatorField label={text('weldingCost.depositionRate')} hint={hd}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -123,7 +123,7 @@ export function WeldingCostCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('weldingCost.weldingTime')} hint={he}>
+      <CalculatorField label={text('weldingCost.weldingTime')} hint={he}>
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -143,28 +143,29 @@ export function WeldingCostCalculator() {
         disabled={loading}
         className="btn-primary disabled:opacity-50"
       >
-        {loading ? t('calculating') : t('calculate')}
+        {loading ? text('calculating') : text('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
         <div className="card space-y-2 p-4">
           <p className="text-foreground">
-            {t('weldingCost.wireConsumption')}: {result.wire_consumption_kg} kg
+            {text('weldingCost.wireConsumption')}: {result.wire_consumption_kg}{' '}
+            kg
           </p>
           <p className="text-foreground">
-            {t('weldingCost.gasConsumption')}: {result.gas_consumption_l} L
+            {text('weldingCost.gasConsumption')}: {result.gas_consumption_l} L
           </p>
           <p className="text-foreground">
-            {t('weldingCost.cylindersUsed')}: {result.cylinders_used}
+            {text('weldingCost.cylindersUsed')}: {result.cylinders_used}
           </p>
           <p className="text-foreground">
-            {t('weldingCost.wireCost')}: {result.wire_cost}
+            {text('weldingCost.wireCost')}: {result.wire_cost}
           </p>
           <p className="text-foreground">
-            {t('weldingCost.gasCost')}: {result.gas_cost}
+            {text('weldingCost.gasCost')}: {result.gas_cost}
           </p>
           <p className="text-lg font-semibold text-accent-orange">
-            {t('weldingCost.totalCost')}: {result.total_cost}
+            {text('weldingCost.totalCost')}: {result.total_cost}
           </p>
         </div>
       )}

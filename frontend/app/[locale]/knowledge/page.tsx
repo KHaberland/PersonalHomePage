@@ -1,19 +1,19 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getTranslations } from 'next-intl/server';
 import { getCategories, getPosts } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
+import { getCmsPage } from '@/lib/cms-content';
 import { createPageMetadata } from '@/lib/metadata';
 
-/** Разделы базы знаний: slug категории → ключ перевода */
-const KNOWLEDGE_SECTIONS: { slug: string; translationKey: string }[] = [
-  { slug: 'welding-technology', translationKey: 'migMagWelding' },
-  { slug: 'welding-equipment', translationKey: 'tigWelding' },
-  { slug: 'shielding-gases', translationKey: 'shieldingGases' },
-  { slug: 'gas-cutting', translationKey: 'gasCutting' },
-  { slug: 'welding-metallurgy', translationKey: 'weldingMetallurgy' },
-  { slug: 'welding-defects', translationKey: 'weldingDefects' },
+/** Разделы базы знаний: заголовки берутся из Category по slug. */
+const KNOWLEDGE_SECTIONS: { slug: string }[] = [
+  { slug: 'welding-technology' },
+  { slug: 'welding-equipment' },
+  { slug: 'shielding-gases' },
+  { slug: 'gas-cutting' },
+  { slug: 'welding-metallurgy' },
+  { slug: 'welding-defects' },
 ];
 
 function getImageSrc(url: string | null): string {
@@ -57,8 +57,7 @@ export default async function KnowledgePage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [t, categories, postsByCategory] = await Promise.all([
-    getTranslations('knowledge'),
+  const [categories, postsByCategory, content] = await Promise.all([
     getCategories().catch(() => []),
     Promise.all(
       KNOWLEDGE_SECTIONS.map(({ slug }) =>
@@ -68,26 +67,32 @@ export default async function KnowledgePage({ params }: Props) {
         }))
       )
     ),
+    getCmsPage('knowledge', locale),
   ]);
 
+  const knowledgeText = (key: string) => content.ui?.[key] || '';
   const categoryMap = new Map(categories.map((c) => [c.slug, c]));
 
   return (
     <div className="container-wide section">
       <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-blue">
-        {t('eyebrow')}
+        {knowledgeText('eyebrow')}
       </p>
-      <h1 className="heading-1 mb-4 text-accent-orange">{t('title')}</h1>
-      <p className="mb-3 max-w-3xl text-foreground/80">{t('description')}</p>
+      <h1 className="heading-1 mb-4 text-accent-orange">
+        {knowledgeText('title')}
+      </h1>
+      <p className="mb-3 max-w-3xl text-foreground/80">
+        {knowledgeText('description')}
+      </p>
       <p className="mb-12 max-w-3xl text-sm text-foreground/70">
-        {t('schemaNote')}
+        {knowledgeText('schemaNote')}
       </p>
 
       <div className="space-y-16">
-        {KNOWLEDGE_SECTIONS.map(({ slug, translationKey }, idx) => {
+        {KNOWLEDGE_SECTIONS.map(({ slug }, idx) => {
           const posts = postsByCategory[idx]?.results ?? [];
           const category = categoryMap.get(slug);
-          const sectionTitle = t(translationKey);
+          const sectionTitle = category ? getCategoryName(category, lang) : '';
 
           return (
             <section
@@ -143,7 +148,7 @@ export default async function KnowledgePage({ params }: Props) {
                           )}
                         </p>
                         <span className="mt-3 inline-block text-sm font-medium text-accent-orange group-hover:underline">
-                          {t('readMore')}
+                          {knowledgeText('readMore')}
                         </span>
                       </div>
                     </Link>
@@ -151,7 +156,7 @@ export default async function KnowledgePage({ params }: Props) {
                 </div>
               ) : (
                 <p className="card px-4 py-6 text-foreground/60">
-                  {t('noArticles')}
+                  {knowledgeText('noArticles')}
                 </p>
               )}
             </section>
@@ -161,30 +166,34 @@ export default async function KnowledgePage({ params }: Props) {
 
       <section className="mt-16 border-t border-border pt-8">
         <h2 className="heading-2 mb-4 text-accent-orange">
-          {t('systemLinksTitle')}
+          {knowledgeText('systemLinksTitle')}
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
           <Link href="/solutions" className="card block p-6">
             <h3 className="heading-3 text-foreground">
-              {t('solutionCtaTitle')}
+              {knowledgeText('solutionCtaTitle')}
             </h3>
             <p className="mt-2 text-sm text-foreground/75">
-              {t('solutionCtaText')}
+              {knowledgeText('solutionCtaText')}
             </p>
             <span className="link-accent mt-4 inline-block text-sm">
-              {t('solutionCta')} →
+              {knowledgeText('solutionCta')} →
             </span>
           </Link>
           <Link href="/blog" className="card block p-6">
-            <h3 className="heading-3 text-foreground">{t('blogLinkTitle')}</h3>
+            <h3 className="heading-3 text-foreground">
+              {knowledgeText('blogLinkTitle')}
+            </h3>
             <p className="mt-2 text-sm text-foreground/75">
-              {t('blogLinkText')}
+              {knowledgeText('blogLinkText')}
             </p>
           </Link>
           <Link href="/book" className="card block p-6">
-            <h3 className="heading-3 text-foreground">{t('bookLinkTitle')}</h3>
+            <h3 className="heading-3 text-foreground">
+              {knowledgeText('bookLinkTitle')}
+            </h3>
             <p className="mt-2 text-sm text-foreground/75">
-              {t('bookLinkText')}
+              {knowledgeText('bookLinkText')}
             </p>
           </Link>
         </div>

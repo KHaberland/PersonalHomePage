@@ -1,6 +1,12 @@
 from django.db import models
 
 
+class LanguageChoices(models.TextChoices):
+    EN = "en", "English"
+    RU = "ru", "Русский"
+    LV = "lv", "Latviešu"
+
+
 class Author(models.Model):
     """Author of blog posts."""
 
@@ -15,6 +21,35 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class AuthorTranslation(models.Model):
+    """Localized author profile fields."""
+
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, related_name="translations"
+    )
+    language = models.CharField(max_length=5, choices=LanguageChoices.choices)
+    name = models.CharField(max_length=255)
+    bio = models.TextField(blank=True)
+
+    class Meta:
+        db_table = "blog_author_translations"
+        verbose_name = "Author Translation"
+        verbose_name_plural = "Author Translations"
+        ordering = ["author", "language"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["author", "language"],
+                name="unique_author_translation_language",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["author", "language"]),
+        ]
+
+    def __str__(self):
+        return f"{self.author} ({self.language})"
 
 
 class Category(models.Model):
@@ -47,6 +82,32 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TagTranslation(models.Model):
+    """Localized tag name."""
+
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name="translations")
+    language = models.CharField(max_length=5, choices=LanguageChoices.choices)
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = "blog_tag_translations"
+        verbose_name = "Tag Translation"
+        verbose_name_plural = "Tag Translations"
+        ordering = ["tag", "language"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["tag", "language"],
+                name="unique_tag_translation_language",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["tag", "language"]),
+        ]
+
+    def __str__(self):
+        return f"{self.tag.slug} ({self.language})"
 
 
 class Post(models.Model):
@@ -111,3 +172,31 @@ class PostImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.post.slug}"
+
+
+class PostImageTranslation(models.Model):
+    """Localized image caption for blog post images."""
+
+    image = models.ForeignKey(
+        PostImage, on_delete=models.CASCADE, related_name="translations"
+    )
+    language = models.CharField(max_length=5, choices=LanguageChoices.choices)
+    caption = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        db_table = "blog_post_image_translations"
+        verbose_name = "Post Image Translation"
+        verbose_name_plural = "Post Image Translations"
+        ordering = ["image", "language"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["image", "language"],
+                name="unique_post_image_translation_language",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["image", "language"]),
+        ]
+
+    def __str__(self):
+        return f"{self.image} ({self.language})"

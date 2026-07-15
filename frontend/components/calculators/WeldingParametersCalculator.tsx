@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { calculateWeldingParameters } from '@/lib/api';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import type { CalculatorProps } from '@/components/calculators';
 
-export function WeldingParametersCalculator() {
-  const t = useTranslations('calculators');
+export function WeldingParametersCalculator({ texts }: CalculatorProps) {
+  const text = (key: string, fallback?: string) =>
+    texts?.[key] ?? fallback ?? '';
   const [plateThickness, setPlateThickness] = useState('');
   const [jointType, setJointType] = useState('butt');
   const [wireDiameter, setWireDiameter] = useState('1.2');
@@ -25,7 +26,7 @@ export function WeldingParametersCalculator() {
     const pt = parseFloat(plateThickness);
     const wd = parseFloat(wireDiameter);
     if (isNaN(pt) || pt <= 0 || isNaN(wd) || wd <= 0) {
-      setError(`${t('errorInvalid')} ${t('errorPlateThickness')}`);
+      setError(`${text('errorInvalid')} ${text('errorPlateThickness')}`);
       return;
     }
     setLoading(true);
@@ -38,20 +39,23 @@ export function WeldingParametersCalculator() {
       setResult(res);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t('errorCalculationFailed')
+        err instanceof Error ? err.message : text('errorCalculationFailed')
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const h1 = t('weldingParameters.hints.plateThickness');
-  const h2 = t('weldingParameters.hints.jointType');
-  const h3 = t('weldingParameters.hints.wireDiameter');
+  const h1 = text('weldingParameters.hints.plateThickness');
+  const h2 = text('weldingParameters.hints.jointType');
+  const h3 = text('weldingParameters.hints.wireDiameter');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <CalculatorField label={t('weldingParameters.plateThickness')} hint={h1}>
+      <CalculatorField
+        label={text('weldingParameters.plateThickness')}
+        hint={h1}
+      >
         {({ inputId, hintId }) => (
           <input
             id={inputId}
@@ -66,7 +70,7 @@ export function WeldingParametersCalculator() {
           />
         )}
       </CalculatorField>
-      <CalculatorField label={t('weldingParameters.jointType')} hint={h2}>
+      <CalculatorField label={text('weldingParameters.jointType')} hint={h2}>
         {({ inputId, hintId }) => (
           <select
             id={inputId}
@@ -76,14 +80,22 @@ export function WeldingParametersCalculator() {
             aria-describedby={hintId}
             title={h2}
           >
-            <option value="butt">Butt</option>
-            <option value="fillet">Fillet</option>
-            <option value="lap">Lap</option>
-            <option value="corner">Corner</option>
+            <option value="butt">
+              {text('weldingParameters.options.butt', 'Butt')}
+            </option>
+            <option value="fillet">
+              {text('weldingParameters.options.fillet', 'Fillet')}
+            </option>
+            <option value="lap">
+              {text('weldingParameters.options.lap', 'Lap')}
+            </option>
+            <option value="corner">
+              {text('weldingParameters.options.corner', 'Corner')}
+            </option>
           </select>
         )}
       </CalculatorField>
-      <CalculatorField label={t('weldingParameters.wireDiameter')} hint={h3}>
+      <CalculatorField label={text('weldingParameters.wireDiameter')} hint={h3}>
         {({ inputId, hintId }) => (
           <select
             id={inputId}
@@ -105,20 +117,20 @@ export function WeldingParametersCalculator() {
         disabled={loading}
         className="btn-primary disabled:opacity-50"
       >
-        {loading ? t('calculating') : t('calculate')}
+        {loading ? text('calculating') : text('calculate')}
       </button>
       {error && <p className="text-red-400">{error}</p>}
       {result && (
         <div className="card space-y-2 p-4">
           <p className="text-accent-orange">
-            {t('weldingParameters.current')}: {result.current_a} A
+            {text('weldingParameters.current')}: {result.current_a} A
           </p>
           <p className="text-accent-orange">
-            {t('weldingParameters.voltage')}: {result.voltage_v} V
+            {text('weldingParameters.voltage')}: {result.voltage_v} V
           </p>
           <p className="text-accent-orange">
-            {t('weldingParameters.travelSpeed')}: {result.travel_speed_mm_min}{' '}
-            mm/min
+            {text('weldingParameters.travelSpeed')}:{' '}
+            {result.travel_speed_mm_min} mm/min
           </p>
         </div>
       )}

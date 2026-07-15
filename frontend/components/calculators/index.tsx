@@ -9,6 +9,12 @@ export const CALCULATOR_SLUGS = [
 
 export type CalculatorSlug = (typeof CALCULATOR_SLUGS)[number];
 
+export type CalculatorTextMap = Record<string, string>;
+
+export type CalculatorProps = {
+  texts?: CalculatorTextMap;
+};
+
 export function isCalculatorSlug(slug: string): slug is CalculatorSlug {
   return (CALCULATOR_SLUGS as readonly string[]).includes(slug);
 }

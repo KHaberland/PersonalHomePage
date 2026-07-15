@@ -3,16 +3,30 @@
 import { useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { primaryNavLinks } from '@/lib/ia';
-import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import type { LabelMap } from '@/lib/common-labels';
 
 const navLinkClass =
   'block py-2 text-sm text-foreground/80 transition-colors hover:text-accent-orange md:inline-block md:py-0';
 
-export function Header() {
-  const t = useTranslations('common');
-  const th = useTranslations('header');
+type HeaderProps = {
+  headerLabels?: LabelMap;
+  navLabels?: LabelMap;
+  brandLabels?: LabelMap;
+  languageLabels?: LabelMap;
+};
+
+export function Header({
+  headerLabels,
+  navLabels,
+  brandLabels,
+  languageLabels,
+}: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navText = (key: string) => navLabels?.[key] ?? '';
+  const headerText = (key: string) => headerLabels?.[key] ?? '';
+  const brandText = (key: string) => brandLabels?.[key] ?? 'Oleg Suvorov';
+  const languageText = (key: string) => languageLabels?.[key] ?? 'Language';
 
   const closeMobile = () => {
     setMobileMenuOpen(false);
@@ -26,10 +40,10 @@ export function Header() {
             href="/"
             className="block text-xl font-bold text-accent-orange transition-colors hover:text-accent-orange/90"
           >
-            Oleg Suvorov
+            {brandText('name')}
           </Link>
           <p className="hidden text-xs font-medium uppercase tracking-wide text-foreground/55 sm:block">
-            {th('systemLabel')}
+            {headerText('systemLabel')}
           </p>
         </div>
 
@@ -37,21 +51,23 @@ export function Header() {
           <div className="flex min-w-0 flex-wrap items-center gap-6">
             {primaryNavLinks.map((item) => (
               <Link key={item.href} href={item.href} className={navLinkClass}>
-                {t(item.key)}
+                {navText(item.key)}
               </Link>
             ))}
           </div>
-          <LanguageSwitcher />
+          <LanguageSwitcher ariaLabel={languageText('switcherAriaLabel')} />
         </div>
 
         <div className="ml-auto flex items-center gap-3 md:hidden">
-          <LanguageSwitcher />
+          <LanguageSwitcher ariaLabel={languageText('switcherAriaLabel')} />
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="rounded p-2 text-foreground/80 hover:bg-surface hover:text-accent-orange"
             aria-expanded={mobileMenuOpen}
-            aria-label={mobileMenuOpen ? th('menuClose') : th('menuOpen')}
+            aria-label={
+              mobileMenuOpen ? headerText('menuClose') : headerText('menuOpen')
+            }
           >
             {mobileMenuOpen ? (
               <svg
@@ -96,11 +112,11 @@ export function Header() {
                 onClick={closeMobile}
                 className={navLinkClass}
               >
-                {t(item.key)}
+                {navText(item.key)}
               </Link>
             ))}
             <p className="mt-3 border-t border-border pt-3 text-xs font-medium uppercase tracking-wide text-foreground/55">
-              {th('systemFlow')}
+              {headerText('systemFlow')}
             </p>
           </div>
         </div>
