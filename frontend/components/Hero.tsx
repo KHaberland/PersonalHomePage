@@ -94,17 +94,17 @@ export function Hero({ text }: HeroProps) {
         </p>
         <h1
           id="hero-heading"
-          className="heading-1 hero-title-line1 max-w-4xl text-white drop-shadow-lg leading-tight sm:leading-snug"
+          className="heading-1 hero-title-line1 mx-auto w-full max-w-4xl text-white drop-shadow-lg leading-tight sm:leading-snug"
         >
           {text.titleLine1}
         </h1>
-        <p className="hero-title-line2 mt-6 max-w-2xl text-foreground/90 drop-shadow-md leading-tight sm:leading-snug">
+        <p className="hero-title-line2 mx-auto mt-6 w-full max-w-2xl text-foreground/90 drop-shadow-md leading-tight sm:leading-snug">
           {text.titleLine2}
         </p>
-        <p className="mt-4 max-w-3xl text-sm font-medium tracking-wide text-white drop-shadow-md sm:text-base leading-tight sm:leading-snug">
+        <p className="mx-auto mt-4 w-full max-w-3xl text-sm font-medium tracking-wide text-white drop-shadow-md sm:text-base leading-tight sm:leading-snug">
           {text.titleLineHighlight}
         </p>
-        <p className="hero-title-line3 hero-title-accent mt-3 font-semibold drop-shadow-md">
+        <p className="hero-title-line3 hero-title-accent mx-auto mt-3 w-full max-w-3xl font-semibold drop-shadow-md">
           {text.titleLine3}
         </p>
         {/* Декор: линии и точка — нативный CSS, без SVG */}

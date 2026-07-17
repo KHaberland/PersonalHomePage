@@ -260,11 +260,14 @@ body {
 /* Hero: третья строка — на 3pt меньше второй */
 .hero-title-line3 {
   font-size: calc(1.125rem - 2pt);
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
 @media (min-width: 640px) {
   .hero-title-line3 {
     font-size: calc(1.25rem - 2pt);
+    line-height: 1.55;
   }
 }
 
