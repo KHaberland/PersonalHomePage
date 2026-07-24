@@ -164,7 +164,7 @@ export default async function KnowledgePage({ params }: Props) {
           {knowledgeText('systemLinksTitle')}
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
-          <Link href="/solutions" className="card block p-6">
+          <Link href="/solutions" className="card card-interactive block p-6">
             <h3 className="heading-3 text-foreground">
               {knowledgeText('solutionCtaTitle')}
             </h3>
@@ -175,7 +175,7 @@ export default async function KnowledgePage({ params }: Props) {
               {knowledgeText('solutionCta')} →
             </span>
           </Link>
-          <Link href="/blog" className="card block p-6">
+          <Link href="/blog" className="card card-interactive block p-6">
             <h3 className="heading-3 text-foreground">
               {knowledgeText('blogLinkTitle')}
             </h3>
@@ -183,7 +183,7 @@ export default async function KnowledgePage({ params }: Props) {
               {knowledgeText('blogLinkText')}
             </p>
           </Link>
-          <Link href="/book" className="card block p-6">
+          <Link href="/book" className="card card-interactive block p-6">
             <h3 className="heading-3 text-foreground">
               {knowledgeText('bookLinkTitle')}
             </h3>

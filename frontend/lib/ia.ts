@@ -7,6 +7,7 @@ export type NavKey =
   | 'expertise'
   | 'home'
   | 'knowledgeNav'
+  | 'privacyNav'
   | 'solutions'
   | 'toolsNav';
 
@@ -60,4 +61,5 @@ export const supportNavLinks = [
   { href: '/', key: 'home' },
   { href: '/about', key: 'about' },
   { href: '/contact', key: 'contact' },
+  { href: '/privacy', key: 'privacyNav' },
 ] as const satisfies readonly NavLink[];

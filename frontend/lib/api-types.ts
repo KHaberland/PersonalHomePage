@@ -224,3 +224,57 @@ export interface WeldingParametersResponse {
   voltage_v: number;
   travel_speed_mm_min: number;
 }
+
+// Leads
+export interface LeadTrackingPayload {
+  locale: Lang;
+  page_path?: string;
+  referrer?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  website?: string;
+}
+
+export interface LeadSubscribePayload extends LeadTrackingPayload {
+  email: string;
+  name?: string;
+  article_slug?: string;
+  article_title?: string;
+}
+
+export interface LeadArticleQuestionPayload extends LeadTrackingPayload {
+  name: string;
+  email: string;
+  question: string;
+  article_slug: string;
+  article_title: string;
+  subscribe_opt_in?: boolean;
+}
+
+export type ContactRequestType =
+  'defects' | 'process' | 'training' | 'cooperation' | 'commercial' | 'other';
+
+export interface ArticleFaqItem {
+  question: string;
+  answer: string;
+  answered_at: string | null;
+}
+
+export interface ArticleFaqResponse {
+  ok: boolean;
+  items: ArticleFaqItem[];
+}
+
+export interface LeadContactInquiryPayload extends LeadTrackingPayload {
+  name: string;
+  email: string;
+  request_type: ContactRequestType;
+  message: string;
+}
+
+export interface LeadApiResponse {
+  ok: boolean;
+  message?: string;
+  errors?: Record<string, string[]>;
+}

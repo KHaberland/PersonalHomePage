@@ -2,9 +2,17 @@ import Image from 'next/image';
 import { Link as IntlLink } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { BlogArticleFaqBlock } from '@/components/blog/BlogArticleFaqBlock';
+import { BlogArticleQuestionBlock } from '@/components/blog/BlogArticleQuestionBlock';
+import { BlogNewsletterBlock } from '@/components/blog/BlogNewsletterBlock';
 import { Section } from '@/components/Section';
-import { getPost, getPosts } from '@/lib/api';
-import type { Category, Lang, PostListItem } from '@/lib/api-types';
+import { getArticleFaq, getPost, getPosts } from '@/lib/api';
+import type {
+  Category,
+  Lang,
+  PageContent,
+  PostListItem,
+} from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
 import { createArticleMetadata } from '@/lib/metadata';
 import { getBaseUrl, getCanonicalUrl } from '@/lib/seo';
@@ -30,6 +38,14 @@ function langFromLocale(locale: string): Lang {
   return locale === 'en' || locale === 'ru' || locale === 'lv'
     ? (locale as Lang)
     : 'en';
+}
+
+function cmsBlockText(
+  content: PageContent,
+  block: string,
+  key: string
+): string {
+  return content[block]?.[key] || '';
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -59,10 +75,11 @@ export default async function BlogPostPage({ params }: Props) {
   setRequestLocale(locale);
   const lang = langFromLocale(locale);
 
-  const [post, content, commonContent] = await Promise.all([
+  const [post, content, commonContent, faqItems] = await Promise.all([
     getPost(slug, lang).catch(() => null),
     getCmsPage('blog', locale),
     getCmsPage('common', locale),
+    getArticleFaq(slug, lang).catch(() => []),
   ]);
 
   if (!post) {
@@ -226,6 +243,62 @@ export default async function BlogPostPage({ params }: Props) {
             </span>
           ))}
         </div>
+      )}
+
+      {cmsBlockText(content, 'article_faq', 'title') && faqItems.length > 0 && (
+        <BlogArticleFaqBlock
+          title={cmsBlockText(content, 'article_faq', 'title')}
+          items={faqItems}
+        />
+      )}
+
+      {cmsBlockText(content, 'newsletter', 'title') && (
+        <BlogNewsletterBlock
+          locale={locale}
+          articleSlug={post.slug}
+          articleTitle={post.title}
+          labels={{
+            title: cmsBlockText(content, 'newsletter', 'title'),
+            lead: cmsBlockText(content, 'newsletter', 'lead'),
+            emailLabel: cmsBlockText(content, 'newsletter', 'emailLabel'),
+            nameLabel: cmsBlockText(content, 'newsletter', 'nameLabel'),
+            submit: cmsBlockText(content, 'newsletter', 'submit'),
+            success: cmsBlockText(content, 'newsletter', 'success'),
+            privacyNote: cmsBlockText(content, 'newsletter', 'privacyNote'),
+            privacyLinkLabel: commonContent.nav?.privacyNav || '',
+          }}
+        />
+      )}
+
+      {cmsBlockText(content, 'article_question', 'title') && (
+        <BlogArticleQuestionBlock
+          locale={locale}
+          articleSlug={post.slug}
+          articleTitle={post.title}
+          labels={{
+            title: cmsBlockText(content, 'article_question', 'title'),
+            nameLabel: cmsBlockText(content, 'article_question', 'nameLabel'),
+            emailLabel: cmsBlockText(content, 'article_question', 'emailLabel'),
+            questionLabel: cmsBlockText(
+              content,
+              'article_question',
+              'questionLabel'
+            ),
+            subscribeLabel: cmsBlockText(
+              content,
+              'article_question',
+              'subscribeLabel'
+            ),
+            submit: cmsBlockText(content, 'article_question', 'submit'),
+            success: cmsBlockText(content, 'article_question', 'success'),
+            privacyNote: cmsBlockText(
+              content,
+              'article_question',
+              'privacyNote'
+            ),
+            privacyLinkLabel: commonContent.nav?.privacyNav || '',
+          }}
+        />
       )}
 
       {/* Похожие статьи */}

@@ -48,12 +48,17 @@ export default async function ContactPage({ params }: Props) {
     requestTypeDefects: contactText('request_types', 'requestTypeDefects'),
     requestTypeProcess: contactText('request_types', 'requestTypeProcess'),
     requestTypeTraining: contactText('request_types', 'requestTypeTraining'),
+    requestTypeCooperation: contactText(
+      'request_types',
+      'requestTypeCooperation'
+    ),
+    requestTypeCommercial: contactText(
+      'request_types',
+      'requestTypeCommercial'
+    ),
     formMessage: contactText('form', 'formMessage'),
     formHint: contactText('form', 'formHint'),
-    formSubjectPrefix: contactText('form', 'formSubjectPrefix'),
-    formBodyName: contactText('form', 'formBodyName'),
-    formBodyEmail: contactText('form', 'formBodyEmail'),
-    formBodyRequestType: contactText('form', 'formBodyRequestType'),
+    formSuccess: contactText('form', 'formSuccess'),
     requestConsultation: contactText('form', 'requestConsultation'),
   };
 
@@ -70,9 +75,9 @@ export default async function ContactPage({ params }: Props) {
         {contactText('hero', 'description')}
       </p>
 
-      {contact?.email && (
+      {formLabels.formTitle && (
         <div className="mb-12">
-          <ContactForm contactEmail={contact.email} labels={formLabels} />
+          <ContactForm locale={locale} labels={formLabels} />
         </div>
       )}
 
@@ -80,7 +85,7 @@ export default async function ContactPage({ params }: Props) {
         {contact?.email && (
           <a
             href={`mailto:${contact.email}`}
-            className="card flex items-center gap-4 p-6"
+            className="card card-interactive flex items-center gap-4 p-6"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent-orange/20 text-accent-orange">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -101,7 +106,7 @@ export default async function ContactPage({ params }: Props) {
             href={contact.linkedin_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="card flex items-center gap-4 p-6"
+            className="card card-interactive flex items-center gap-4 p-6"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent-orange/20 text-accent-orange">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -128,7 +133,7 @@ export default async function ContactPage({ params }: Props) {
             href={contact.youtube_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="card flex items-center gap-4 p-6"
+            className="card card-interactive flex items-center gap-4 p-6"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent-orange/20 text-accent-orange">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

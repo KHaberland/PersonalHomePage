@@ -177,7 +177,7 @@ export default async function AboutPage({ params }: Props) {
         {aboutUiText('title')}
       </h1>
 
-      <section className="card mb-10 grid gap-6 p-6 md:grid-cols-[1.5fr_1fr] md:p-8">
+      <section className="card card-passive card-passive-accent mb-10 grid gap-6 p-6 md:grid-cols-[1.5fr_1fr] md:p-8">
         <div>
           <p className="eyebrow mb-2">{aboutUiText('profileSummaryEyebrow')}</p>
           <h2 className="heading-3 mb-3 text-foreground">
@@ -222,7 +222,7 @@ export default async function AboutPage({ params }: Props) {
 
       <div className="grid w-full items-start gap-8 md:grid-cols-2 md:gap-12">
         {/* Фотография — те же пропорции ширины, что блок «Обо мне» на главной */}
-        <div className="relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] overflow-hidden rounded-lg border border-border md:mx-0">
+        <div className="about-photo-glow-wrap relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] overflow-hidden rounded-lg border border-border md:mx-0">
           <Image
             src={photo}
             alt={t('photoAlt')}
@@ -304,7 +304,7 @@ export default async function AboutPage({ params }: Props) {
       </div>
 
       {showProfileRecord ? (
-        <section className="card mt-16 p-6 md:p-8">
+        <section className="card card-passive card-passive-accent mt-16 p-6 md:p-8">
           {profileRecordText('title') ? (
             <h2 className="heading-3 mb-4 text-foreground">
               {profileRecordText('title')}

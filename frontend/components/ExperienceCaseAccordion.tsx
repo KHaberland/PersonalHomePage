@@ -41,7 +41,7 @@ export function ExperienceCaseAccordion({ items, labels }: Props) {
         return (
           <li key={item.id}>
             <div
-              className={`card overflow-hidden ${isOpen ? 'card-expanded' : ''}`}
+              className={`card card-passive overflow-hidden ${isOpen ? 'card-expanded' : ''}`}
             >
               <div className="flex flex-col gap-2 p-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
                 <div className="min-w-0 flex-1">

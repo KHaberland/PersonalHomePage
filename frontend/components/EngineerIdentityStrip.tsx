@@ -7,7 +7,7 @@ const identityPhoto = {
 
 function IdentityPhoto({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-border/80 bg-background/40 shadow-sm">
+    <div className="relative aspect-[4/5] w-full overflow-hidden">
       <Image
         src={src}
         alt={alt}
@@ -49,7 +49,7 @@ export function EngineerIdentityStrip({
           className="grid gap-4 p-4 md:grid-cols-[minmax(0,1fr)_minmax(16rem,28rem)] md:items-stretch"
           aria-label={ariaLabel}
         >
-          <div className="card order-2 flex min-h-0 flex-col p-5 md:order-1">
+          <div className="card card-passive order-2 flex min-h-0 flex-col p-5 md:order-1">
             <h2
               id="home-about-teaser-heading"
               className="heading-3 max-w-3xl text-foreground"
@@ -81,7 +81,7 @@ export function EngineerIdentityStrip({
             </div>
           </div>
 
-          <div className="card order-1 min-h-0 p-3 md:order-2">
+          <div className="about-photo-glow-wrap order-1 min-h-0 overflow-hidden rounded-lg border border-border md:order-2">
             <IdentityPhoto {...identityPhoto} alt={photoAlt} />
           </div>
         </div>

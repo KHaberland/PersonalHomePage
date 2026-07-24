@@ -53,6 +53,7 @@ const sectionColumns = [
     labelKey: 'engineeringAnalysis',
     listKey: 'analysisItems',
     className: 'border-accent-blue/25 bg-accent-blue/10',
+    tone: 'blue',
   },
   {
     labelKey: 'solution',
@@ -174,18 +175,27 @@ export default async function SolutionsPage({ params }: Props) {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-              {sectionColumns.map(({ labelKey, listKey, className }) => {
+              {sectionColumns.map((column) => {
+                const { labelKey, listKey, className } = column;
+                const isBlue = 'tone' in column && column.tone === 'blue';
                 const items = solutionList(`section_${itemKey}`, listKey);
 
                 return (
-                  <div key={listKey} className={`card-nested ${className}`}>
+                  <div
+                    key={listKey}
+                    className={`card-nested card-passive ${isBlue ? 'card-passive--blue' : ''} ${className}`}
+                  >
                     <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
                       {solutionText('labels', labelKey)}
                     </h3>
-                    <ul className="mt-4 space-y-3 text-sm leading-relaxed text-foreground/80">
+                    <ul
+                      className={`list-row-hover mt-4 space-y-3 text-sm leading-relaxed text-foreground/80 ${isBlue ? 'list-row-hover--blue' : ''}`}
+                    >
                       {items.map((item) => (
                         <li key={item} className="flex gap-2">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-orange" />
+                          <span
+                            className={`list-row-bullet mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${isBlue ? 'bg-accent-blue' : 'bg-accent-orange'}`}
+                          />
                           <span>{item}</span>
                         </li>
                       ))}

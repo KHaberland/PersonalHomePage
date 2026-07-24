@@ -32,14 +32,20 @@ repos:
       - id: flake8
         files: ^backend/
 
-  # JavaScript/TypeScript: Prettier (локальный npx)
+  # Локальные хуки
   - repo: local
     hooks:
+      - id: block-env-commit
+        name: block .env from commit
+        entry: python scripts/pre_commit_block_env.py
+        language: system
+        pass_filenames: true
+        always_run: false
       - id: prettier
         name: prettier
         entry: npx prettier --write
         language: system
         files: ^frontend/
         # .prettierignore — не формат Prettier; плюс бинарные/медиа
-        exclude: (?i)(\.prettierignore$|\.(jpe?g|png|gif|webp|mp4|webm|mov|ico|woff2?|ttf|eot|pdf)$)
+        exclude: (?i)(\.prettierignore$|\.(jpe?g|png|gif|webp|svg|mp4|webm|mov|ico|woff2?|ttf|eot|pdf)$)
         types: [text]

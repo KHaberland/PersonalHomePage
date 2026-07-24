@@ -21,7 +21,11 @@
     "blogTitle": "Technical Blog | Publications",
     "blogDescription": "Chronological welding publications, updates, and author commentary. Topic-based reference material remains in the knowledge base.",
     "contactTitle": "Contact | Oleg Suvorov",
-    "contactDescription": "Contact welding engineer Oleg Suvorov. Email, LinkedIn, YouTube."
+    "contactDescription": "Contact welding engineer Oleg Suvorov. Email, LinkedIn, YouTube.",
+    "privacyTitle": "Privacy Policy | Oleg Suvorov",
+    "privacyDescription": "How we process personal data for contact forms and the blog newsletter, including Brevo as email provider.",
+    "cookiePolicyTitle": "Cookie Policy | Oleg Suvorov",
+    "cookiePolicyDescription": "How this website uses cookies, what categories we use, and how to change your preferences."
   },
   "home": {
     "heroCtaContact": "Contact",

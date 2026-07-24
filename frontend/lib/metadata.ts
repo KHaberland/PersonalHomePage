@@ -38,6 +38,8 @@ const seoPageByTitleKey: Record<string, string> = {
   knowledgeTitle: 'knowledge',
   blogTitle: 'blog',
   contactTitle: 'contact',
+  privacyTitle: 'privacy',
+  cookiePolicyTitle: 'cookiePolicy',
 };
 
 function normalizeLang(locale: string): SupportedLang {

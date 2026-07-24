@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "apps.pages",
     "apps.calculators",
     "apps.media",
+    "apps.leads",
 ]
 
 MIDDLEWARE = [
@@ -228,7 +229,19 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000"
 )
 CORS_ALLOW_CREDENTIALS = True
 
+
 # REST Framework
+def _is_testing() -> bool:
+    import sys
+
+    return any(arg in sys.argv for arg in ("test", "pytest"))
+
+
+LEADS_RATE_LIMIT = os.getenv(
+    "LEADS_RATE_LIMIT",
+    "1000/hour" if _is_testing() else "10/hour",
+)
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -238,3 +251,19 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
 }
+
+# Brevo newsletter (optional until production)
+BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
+BREVO_LIST_ID_BLOG = os.getenv("BREVO_LIST_ID_BLOG", "")
+BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "")
+BREVO_SENDER_NAME = os.getenv("BREVO_SENDER_NAME", "")
+BREVO_DOI_TEMPLATE_ID = os.getenv("BREVO_DOI_TEMPLATE_ID", "")
+BREVO_DOI_REDIRECT_URL = os.getenv("BREVO_DOI_REDIRECT_URL", "")
+BREVO_NOTIFY_EMAIL = os.getenv("BREVO_NOTIFY_EMAIL", "")
+BREVO_TEMPLATE_QUESTION_NOTIFY = os.getenv("BREVO_TEMPLATE_QUESTION_NOTIFY", "")
+BREVO_TEMPLATE_INQUIRY_NOTIFY = os.getenv("BREVO_TEMPLATE_INQUIRY_NOTIFY", "")
+BREVO_WEBHOOK_SECRET = os.getenv("BREVO_WEBHOOK_SECRET", "")
+BREVO_TEMPLATE_NEWSLETTER_ARTICLE = os.getenv("BREVO_TEMPLATE_NEWSLETTER_ARTICLE", "")
+# Optional: ru:12,en:34,lv:56 — Brevo segment IDs per locale
+BREVO_NEWSLETTER_LOCALE_SEGMENTS = os.getenv("BREVO_NEWSLETTER_LOCALE_SEGMENTS", "")
+BREVO_AUTO_SEND_ON_PUBLISH = os.getenv("BREVO_AUTO_SEND_ON_PUBLISH", "False")

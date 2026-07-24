@@ -105,7 +105,7 @@ export default async function ExperiencePage({ params }: Props) {
                 <div className="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-accent-orange shadow-[0_0_0_4px_var(--background)] ring-2 ring-accent-orange/30">
                   <span className="text-sm font-bold text-white">{i + 1}</span>
                 </div>
-                <div className="card p-5 sm:p-6">
+                <div className="card card-passive card-passive-accent p-5 sm:p-6">
                   <p className="mb-3 inline-flex rounded-full border border-accent-orange/40 bg-background/70 px-3 py-1 font-mono text-xs tabular-nums text-accent-orange">
                     {yearLabel}
                   </p>

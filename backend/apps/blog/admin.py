@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.db import models
 from django_ckeditor_5.widgets import CKEditor5Widget
 
@@ -12,6 +12,7 @@ from .models import (
     Tag,
     TagTranslation,
 )
+from apps.leads.services.newsletter import BrevoError, send_post_newsletter
 
 
 class AuthorTranslationInline(admin.TabularInline):
@@ -76,6 +77,7 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [PostImageInline]
     date_hierarchy = "published_at"
     list_editable = ["status"]
+    actions = ["send_newsletter_action"]
     formfield_overrides = {
         models.TextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
@@ -98,6 +100,49 @@ class PostAdmin(admin.ModelAdmin):
         ("Русский", {"fields": ("title_ru", "content_ru", "excerpt_ru")}),
         ("Latviešu", {"fields": ("title_lv", "content_lv", "excerpt_lv")}),
     )
+
+    @admin.action(description="Send newsletter (Brevo)")
+    def send_newsletter_action(self, request, queryset):
+        sent_total = 0
+        for post in queryset:
+            if post.status != Post.Status.PUBLISHED:
+                self.message_user(
+                    request,
+                    f"Skipped {post.slug}: not published",
+                    level=messages.WARNING,
+                )
+                continue
+            try:
+                results = send_post_newsletter(post)
+            except (BrevoError, ValueError) as exc:
+                self.message_user(
+                    request,
+                    f"Failed {post.slug}: {exc}",
+                    level=messages.ERROR,
+                )
+                continue
+
+            sent = [item for item in results if item.get("status") == "sent"]
+            sent_total += len(sent)
+            if sent:
+                self.message_user(
+                    request,
+                    f"{post.slug}: sent {', '.join(item['locale'] for item in sent)}",
+                    level=messages.SUCCESS,
+                )
+            else:
+                self.message_user(
+                    request,
+                    f"{post.slug}: nothing sent (already sent or no locale content)",
+                    level=messages.WARNING,
+                )
+
+        if sent_total:
+            self.message_user(
+                request,
+                f"Newsletter campaigns sent: {sent_total}",
+                level=messages.SUCCESS,
+            )
 
 
 @admin.register(PostImage)

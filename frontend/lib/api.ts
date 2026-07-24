@@ -28,6 +28,12 @@ import type {
   WeldingCostResponse,
   WeldingParametersRequest,
   WeldingParametersResponse,
+  LeadApiResponse,
+  LeadArticleQuestionPayload,
+  LeadContactInquiryPayload,
+  LeadSubscribePayload,
+  ArticleFaqItem,
+  ArticleFaqResponse,
 } from './api-types';
 import type { ShieldingGasCatalog } from './shielding-gas/types';
 
@@ -70,10 +76,16 @@ async function fetchApi<T>(
     } catch {
       data = undefined;
     }
+    const payload = data as {
+      error?: string;
+      detail?: string;
+      errors?: Record<string, string[]>;
+    };
+    const fieldError = payload.errors
+      ? Object.values(payload.errors).flat()[0]
+      : undefined;
     const errorMessage =
-      (data as { error?: string })?.error ||
-      (data as { detail?: string })?.detail ||
-      response.statusText;
+      payload.error || fieldError || payload.detail || response.statusText;
     throw new ApiError(errorMessage, response.status, data);
   }
 
@@ -269,4 +281,44 @@ export async function calculateWeldingParameters(
     method: 'POST',
     body: JSON.stringify(data),
   });
+}
+
+// Leads
+export async function subscribeToNewsletter(
+  data: LeadSubscribePayload
+): Promise<LeadApiResponse> {
+  return fetchApi<LeadApiResponse>('/leads/subscribe/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function submitArticleQuestion(
+  data: LeadArticleQuestionPayload
+): Promise<LeadApiResponse> {
+  return fetchApi<LeadApiResponse>('/leads/article-question/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function submitContactInquiry(
+  data: LeadContactInquiryPayload
+): Promise<LeadApiResponse> {
+  return fetchApi<LeadApiResponse>('/leads/inquiries/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function getArticleFaq(
+  articleSlug: string,
+  lang: Lang
+): Promise<ArticleFaqItem[]> {
+  const params = new URLSearchParams({
+    article_slug: articleSlug,
+    lang,
+  });
+  const response = await fetchApi<ArticleFaqResponse>(`/leads/faq/?${params}`);
+  return response.items ?? [];
 }

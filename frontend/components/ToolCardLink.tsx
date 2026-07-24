@@ -1,4 +1,15 @@
+import type { ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
+import { IconShieldingGasCalculator } from '@/components/icons';
+
+const TOOL_ICONS: Partial<Record<string, ReactNode>> = {
+  'shielding-gas': (
+    <IconShieldingGasCalculator
+      className="h-6 w-6 text-accent-orange"
+      title="Shielding Gas Selection Calculator"
+    />
+  ),
+};
 
 export type ToolCardItem = {
   id: number | string;
@@ -23,6 +34,7 @@ export function ToolCardLink({
   density = 'comfortable',
 }: ToolCardLinkProps) {
   const isCompact = density === 'compact';
+  const icon = TOOL_ICONS[tool.slug];
 
   return (
     <Link
@@ -31,6 +43,14 @@ export function ToolCardLink({
         isCompact ? 'card card-compact block' : 'card card-comfortable block'
       }
     >
+      {icon ? (
+        <div
+          className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent-orange/10"
+          aria-hidden={true}
+        >
+          {icon}
+        </div>
+      ) : null}
       {isCompact ? (
         <>
           <h3 className="heading-3 text-foreground">{tool.name}</h3>

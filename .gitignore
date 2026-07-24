@@ -16,8 +16,9 @@ lib/
 lib64/
 !frontend/lib/
 frontend/lib/*
-!frontend/lib/*.ts
+!frontend/lib/**/
 !frontend/lib/**/*.ts
+!frontend/lib/**/*.tsx
 parts/
 sdist/
 var/

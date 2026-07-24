@@ -131,7 +131,7 @@ export function DiplomaCertificates({ items, labels }: Props) {
         {items.map((item) => (
           <article
             key={item.id}
-            className="card flex min-w-0 flex-col overflow-hidden p-0 transition-[border-color,box-shadow]"
+            className="card card-passive flex min-w-0 flex-col overflow-hidden p-0"
           >
             <div className="relative aspect-[4/3] w-full min-h-0 overflow-hidden border-b border-border">
               <CertificatePreview

@@ -1,7 +1,13 @@
 'use client';
 
 import { type FormEvent, useState } from 'react';
+import {
+  getLeadTrackingFields,
+  LEAD_HONEYPOT_FIELD,
+} from '@/components/blog/lead-form-utils';
 import { CalculatorField } from '@/components/calculators/CalculatorField';
+import { ApiError, submitContactInquiry } from '@/lib/api';
+import type { ContactRequestType, Lang } from '@/lib/api-types';
 
 export type ContactFormLabels = {
   formTitle: string;
@@ -12,33 +18,64 @@ export type ContactFormLabels = {
   requestTypeDefects: string;
   requestTypeProcess: string;
   requestTypeTraining: string;
+  requestTypeCooperation?: string;
+  requestTypeCommercial?: string;
   formMessage: string;
   formHint: string;
-  formSubjectPrefix: string;
-  formBodyName: string;
-  formBodyEmail: string;
-  formBodyRequestType: string;
+  formSuccess: string;
   requestConsultation: string;
 };
 
 type Props = {
-  contactEmail: string;
+  locale: string;
   labels: ContactFormLabels;
 };
 
-export function ContactForm({ contactEmail, labels }: Props) {
+export function ContactForm({ locale, labels }: Props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [requestType, setRequestType] = useState('');
+  const [requestType, setRequestType] = useState<ContactRequestType | ''>('');
   const [message, setMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const subject = encodeURIComponent(labels.formSubjectPrefix);
-    const body = encodeURIComponent(
-      `${labels.formBodyName}: ${name}\n${labels.formBodyEmail}: ${email}\n${labels.formBodyRequestType}: ${requestType}\n\n${message}`
+    if (!requestType) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await submitContactInquiry({
+        name: name.trim(),
+        email: email.trim(),
+        request_type: requestType,
+        message: message.trim(),
+        locale: locale as Lang,
+        ...getLeadTrackingFields(honeypot),
+      });
+      setSuccessMessage(response.message || labels.formSuccess);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Error');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="card space-y-4 p-6">
+        <h2 className="heading-3 text-foreground">{labels.formTitle}</h2>
+        <p className="text-sm text-foreground/80" role="status">
+          {successMessage}
+        </p>
+      </div>
     );
-    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
   }
 
   return (
@@ -56,6 +93,7 @@ export function ContactForm({ contactEmail, labels }: Props) {
             className="input-industrial w-full"
             autoComplete="name"
             aria-describedby={hintId}
+            disabled={submitting}
           />
         )}
       </CalculatorField>
@@ -71,6 +109,7 @@ export function ContactForm({ contactEmail, labels }: Props) {
             className="input-industrial w-full"
             autoComplete="email"
             aria-describedby={hintId}
+            disabled={submitting}
           />
         )}
       </CalculatorField>
@@ -81,20 +120,25 @@ export function ContactForm({ contactEmail, labels }: Props) {
             name="requestType"
             required
             value={requestType}
-            onChange={(e) => setRequestType(e.target.value)}
+            onChange={(e) =>
+              setRequestType(e.target.value as ContactRequestType | '')
+            }
             className="input-industrial w-full"
             aria-describedby={hintId}
+            disabled={submitting}
           >
             <option value="">{labels.formRequestTypePlaceholder}</option>
-            <option value={labels.requestTypeDefects}>
-              {labels.requestTypeDefects}
-            </option>
-            <option value={labels.requestTypeProcess}>
-              {labels.requestTypeProcess}
-            </option>
-            <option value={labels.requestTypeTraining}>
-              {labels.requestTypeTraining}
-            </option>
+            <option value="defects">{labels.requestTypeDefects}</option>
+            <option value="process">{labels.requestTypeProcess}</option>
+            <option value="training">{labels.requestTypeTraining}</option>
+            {labels.requestTypeCooperation && (
+              <option value="cooperation">
+                {labels.requestTypeCooperation}
+              </option>
+            )}
+            {labels.requestTypeCommercial && (
+              <option value="commercial">{labels.requestTypeCommercial}</option>
+            )}
           </select>
         )}
       </CalculatorField>
@@ -109,12 +153,38 @@ export function ContactForm({ contactEmail, labels }: Props) {
             onChange={(e) => setMessage(e.target.value)}
             className="input-industrial w-full resize-y"
             aria-describedby={hintId}
+            disabled={submitting}
           />
         )}
       </CalculatorField>
-      <p className="caption">{labels.formHint}</p>
-      <button type="submit" className="btn-primary w-full sm:w-auto">
-        {labels.requestConsultation}
+
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="contact-website">Website</label>
+        <input
+          id="contact-website"
+          name={LEAD_HONEYPOT_FIELD}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
+
+      {labels.formHint && <p className="caption">{labels.formHint}</p>}
+
+      {error && (
+        <p className="text-sm text-red-400" role="alert">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        className="btn-primary w-full sm:w-auto"
+        disabled={submitting}
+      >
+        {submitting ? '…' : labels.requestConsultation}
       </button>
     </form>
   );

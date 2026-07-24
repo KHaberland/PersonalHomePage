@@ -21,6 +21,18 @@ Copy-Item .env.example .env
 # Отредактируйте .env и заполните значения
 ```
 
+**Важно:** файл `.env` содержит секреты и **не попадает в git** (см. `.gitignore`).
+В репозиторий коммитится только шаблон `.env.example`. Pre-commit hook
+`block-env-commit` дополнительно блокирует случайный коммит env-файлов.
+
+Проверка перед коммитом:
+
+```powershell
+git status
+git diff --cached --name-only
+# .env в списке быть не должен
+```
+
 ### Docker (PostgreSQL)
 
 ```powershell

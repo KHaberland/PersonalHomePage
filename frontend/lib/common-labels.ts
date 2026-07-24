@@ -1,4 +1,8 @@
 import type { PageContent } from './api-types';
+import {
+  DEFAULT_COOKIE_CONSENT_LABELS,
+  type CookieConsentLabels,
+} from './cookie-consent';
 
 export type LabelMap = Record<string, string>;
 
@@ -11,6 +15,7 @@ export type CommonUiLabels = {
   brand: LabelMap;
   platforms: LabelMap;
   language: LabelMap;
+  cookieConsent: CookieConsentLabels;
 };
 
 type FallbackMessages = {
@@ -40,6 +45,14 @@ function mergeLabels(fallback: unknown, cms?: LabelMap): LabelMap {
   };
 }
 
+function mergeCookieConsentLabels(cms?: LabelMap): CookieConsentLabels {
+  const merged = {
+    ...DEFAULT_COOKIE_CONSENT_LABELS,
+    ...(cms ?? {}),
+  };
+  return merged as CookieConsentLabels;
+}
+
 export function buildCommonUiLabels(
   messages: FallbackMessages,
   cmsContent?: PageContent | null
@@ -53,5 +66,6 @@ export function buildCommonUiLabels(
     brand: mergeLabels(undefined, cmsContent?.brand),
     platforms: mergeLabels(messages.footer, cmsContent?.platforms),
     language: mergeLabels(messages.footer, cmsContent?.language),
+    cookieConsent: mergeCookieConsentLabels(cmsContent?.cookie_consent),
   };
 }

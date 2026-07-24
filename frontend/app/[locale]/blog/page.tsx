@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import { BlogNewsletterBlock } from '@/components/blog/BlogNewsletterBlock';
+import { BlogNewsletterConfirmedBanner } from '@/components/blog/BlogNewsletterConfirmedBanner';
 import { Section } from '@/components/Section';
 import { getCategories, getPosts, getTags } from '@/lib/api';
 import type { Category, Lang, PostListItem } from '@/lib/api-types';
@@ -107,9 +109,30 @@ export default async function BlogPage({ params, searchParams }: Props) {
   const pageNum = parseInt(page, 10) || 1;
   const pageSize = 10;
   const totalPages = Math.ceil(totalCount / pageSize);
+  const newsletterParam = Array.isArray(resolvedSearchParams.newsletter)
+    ? resolvedSearchParams.newsletter[0]
+    : resolvedSearchParams.newsletter;
+  const showNewsletterConfirmed = newsletterParam === 'confirmed';
+  const newsletterConfirmedBanner = blogText('newsletterConfirmedBanner');
+  const newsletterTitle = content.newsletter?.title || '';
+  const newsletterLabels = newsletterTitle
+    ? {
+        title: newsletterTitle,
+        lead: content.newsletter?.lead || '',
+        emailLabel: content.newsletter?.emailLabel || '',
+        nameLabel: '',
+        submit: content.newsletter?.submit || '',
+        success: content.newsletter?.success || '',
+        privacyNote: content.newsletter?.privacyNote || '',
+        privacyLinkLabel: commonContent.nav?.privacyNav || '',
+      }
+    : null;
 
   return (
     <Section bordered={false} scrollMargin={false}>
+      {showNewsletterConfirmed && newsletterConfirmedBanner && (
+        <BlogNewsletterConfirmedBanner message={newsletterConfirmedBanner} />
+      )}
       <h1 className="heading-1 mb-4 text-accent-orange">{blogText('title')}</h1>
       <p className="lead mb-3">{blogText('description')}</p>
       <p className="caption mb-8">
@@ -251,6 +274,16 @@ export default async function BlogPage({ params, searchParams }: Props) {
         <div className="card px-6 py-12 text-center text-muted">
           {blogText('noArticles')}
         </div>
+      )}
+
+      {newsletterLabels && (
+        <BlogNewsletterBlock
+          locale={locale}
+          articleSlug=""
+          articleTitle=""
+          variant="compact"
+          labels={newsletterLabels}
+        />
       )}
     </Section>
   );

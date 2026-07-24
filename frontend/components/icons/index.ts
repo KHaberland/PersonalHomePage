@@ -1,3 +1,4 @@
+export { IconShieldingGasCalculator } from './calculators';
 export {
   IconCompetencyCutting,
   IconCompetencyGas,

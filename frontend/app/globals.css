@@ -370,8 +370,12 @@ body {
  * - .card-highlight-soft — panel с более светлым surface
  * - .card-cta / .card-cta-blue — акцентные CTA-блоки
  * - .card-subtle / .card-accent — info-панели без hover
- * - .card-nested — вложенная колонка внутри highlight-секции
- * - .card-stat — компактный badge/stat
+ * - .card-passive — некликабельная карточка (мягкий hover, без lift)
+ * - .card-passive--blue — passive hover с синим акцентом
+ * - .card-passive-accent — левая оранжевая полоска при hover (timeline, about)
+ * - .card-nested — вложенная колонка внутри highlight-секции (+ .card-passive)
+ * - .card-stat — компактный badge/stat (+ .card-passive на главной)
+ * - .list-row-hover — hover строк списка внутри passive-карточек
  * - .card-expanded — открытое состояние accordion
  */
 .card {
@@ -494,6 +498,31 @@ body {
   padding: 1.25rem;
 }
 
+.card-passive {
+  cursor: default;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.card-passive:hover,
+.card.card-passive:hover {
+  transform: none;
+  border-color: color-mix(in srgb, var(--accent-orange) 50%, transparent);
+  background: color-mix(in srgb, var(--surface-elevated) 40%, transparent);
+  box-shadow: none;
+}
+
+.card.card-passive.card-passive-accent:hover {
+  box-shadow: inset 3px 0 0 var(--accent-orange);
+}
+
+.card-passive--blue:hover {
+  border-color: color-mix(in srgb, var(--accent-blue) 50%, transparent);
+  background: color-mix(in srgb, var(--accent-blue) 8%, var(--surface));
+}
+
 .card-nested {
   border-radius: 0.75rem;
   border: 1px solid var(--border);
@@ -511,16 +540,36 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: color-mix(in srgb, var(--foreground) 80%, transparent);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s;
 }
 
-.card-stat:hover {
-  border-color: var(--accent-orange);
-  box-shadow: 0 0 0 1px var(--accent-orange-glow);
-  transform: translateY(-0.25rem);
+.card-stat.card-passive:hover {
+  border-color: color-mix(in srgb, var(--accent-orange) 50%, transparent);
+  background: color-mix(in srgb, var(--accent-orange) 5%, transparent);
+  box-shadow: none;
+  transform: none;
+}
+
+.list-row-hover > li {
+  border-radius: 0.375rem;
+  margin: 0 -0.375rem;
+  padding: 0.125rem 0.375rem;
+  transition: background-color 0.15s;
+}
+
+.list-row-hover > li:hover {
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+.list-row-bullet {
+  transition: background-color 0.15s;
+}
+
+.list-row-hover > li:hover .list-row-bullet {
+  background: var(--accent-orange);
+}
+
+.list-row-hover--blue > li:hover .list-row-bullet {
+  background: var(--accent-blue);
 }
 
 .card-expanded {
@@ -679,8 +728,8 @@ body {
 }
 
 /*
- * Главная — «Обо мне»: лёгкое свечение вокруг фото.
- * Вместо пяти размытых теней — две компактные, меньше композитных слоёв и нагрузки на GPU.
+ * Портрет: статичное свечение (главная EngineerIdentityStrip, /about).
+ * Без hover — фото не интерактивно.
  */
 .about-photo-glow-wrap {
   isolation: isolate;

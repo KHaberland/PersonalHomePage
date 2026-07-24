@@ -147,7 +147,7 @@ export default async function HomePage({ params }: Props) {
             ({ titleKey, descriptionKey, links }, index) => (
               <li
                 key={titleKey}
-                className="card flex h-full flex-col gap-4 p-5"
+                className="card card-passive flex h-full flex-col gap-4 p-5"
               >
                 <p className="eyebrow-blue-sm">
                   {String(index + 1).padStart(2, '0')}
@@ -223,7 +223,7 @@ export default async function HomePage({ params }: Props) {
         </h2>
         <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {proofItems.map((key) => (
-            <li key={key} className="card-stat">
+            <li key={key} className="card-stat card-passive">
               {homeText('proof', key)}
             </li>
           ))}
