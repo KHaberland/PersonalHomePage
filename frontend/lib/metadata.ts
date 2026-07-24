@@ -40,6 +40,7 @@ const seoPageByTitleKey: Record<string, string> = {
   contactTitle: 'contact',
   privacyTitle: 'privacy',
   cookiePolicyTitle: 'cookiePolicy',
+  termsTitle: 'terms',
 };
 
 function normalizeLang(locale: string): SupportedLang {

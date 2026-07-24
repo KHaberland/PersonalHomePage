@@ -25,7 +25,9 @@
     "privacyTitle": "Privacy Policy | Oleg Suvorov",
     "privacyDescription": "How we process personal data for contact forms and the blog newsletter, including Brevo as email provider.",
     "cookiePolicyTitle": "Cookie Policy | Oleg Suvorov",
-    "cookiePolicyDescription": "How this website uses cookies, what categories we use, and how to change your preferences."
+    "cookiePolicyDescription": "How this website uses cookies, what categories we use, and how to change your preferences.",
+    "termsTitle": "Terms of Use | Oleg Suvorov",
+    "termsDescription": "Terms of use for this website: informational content, liability limits, and intellectual property."
   },
   "home": {
     "heroCtaContact": "Contact",

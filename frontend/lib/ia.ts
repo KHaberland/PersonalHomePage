@@ -3,12 +3,14 @@ export type NavKey =
   | 'blog'
   | 'book'
   | 'contact'
+  | 'cookiePolicyNav'
   | 'experience'
   | 'expertise'
   | 'home'
   | 'knowledgeNav'
   | 'privacyNav'
   | 'solutions'
+  | 'termsNav'
   | 'toolsNav';
 
 export type NavLink = {
@@ -61,5 +63,10 @@ export const supportNavLinks = [
   { href: '/', key: 'home' },
   { href: '/about', key: 'about' },
   { href: '/contact', key: 'contact' },
+] as const satisfies readonly NavLink[];
+
+export const legalNavLinks = [
   { href: '/privacy', key: 'privacyNav' },
+  { href: '/cookie-policy', key: 'cookiePolicyNav' },
+  { href: '/terms', key: 'termsNav' },
 ] as const satisfies readonly NavLink[];

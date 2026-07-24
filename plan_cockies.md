@@ -259,12 +259,12 @@ Sitemap: добавить `/cookie-policy`, `/terms`.
 
 | # | Задача |
 |---|--------|
-| B1 | Страница `/terms` + CMS `legal/terms` |
-| B2 | CMS migration **0043**: terms + дополнение `legal/privacy` (Art. 6, права GDPR, cookies/consent) |
-| B3 | Углубить Cookie Policy (таблица, срок 12 мес., как изменить настройки) |
-| B4 | Footer: Privacy · Cookie Policy · Terms · **Cookie settings** (открывает modal через `openPreferences`) |
-| B5 | Redirect `/privacy-policy` → `/privacy` (locale-aware) |
-| B6 | Sitemap `/terms`; metadata keys |
+| B1 | Страница `/terms` + CMS `legal/terms` | ✅ |
+| B2 | CMS migration **0044**: дополнение `legal/privacy` (Art. 6, права GDPR, cookies/consent) | ✅ |
+| B3 | Углубить Cookie Policy (таблица, срок 12 мес., как изменить настройки) | ✅ |
+| B4 | Footer: Privacy · Cookie Policy · Terms · **Cookie settings** (открывает modal через `openPreferences`) | ✅ |
+| B5 | Redirect `/privacy-policy` → `/privacy` (locale-aware) | ✅ |
+| B6 | Sitemap `/terms`; metadata keys | ✅ (сделано в B1) |
 
 **Privacy — дополнить существующий CMS**, не переписывать Brevo-секцию:
 - legal basis (consent / legitimate interest / contract — по факту форм)
@@ -327,7 +327,8 @@ if (consent.analytics && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
 | Migration | Scope | Phase |
 |-----------|-------|-------|
 | `0042_cookie_consent_ui_and_cookie_policy.py` | `common/cookie_consent/*`, nav keys, `legal/cookie_policy` (минимальный body) | A |
-| `0043_legal_terms_and_privacy_gdpr.py` | `legal/terms`, дополнение `legal/privacy`, расширение cookie_policy body | B |
+| `0043_legal_terms_site_text_blocks.py` | `legal/terms` (+ `common/nav/termsNav`) | B1 ✅ |
+| `0044_legal_privacy_gdpr_and_cookie_policy.py` | дополнение `legal/privacy`, расширение cookie_policy body | B2–B3 ✅ |
 
 Не объединять A+B в одну миграцию: разные PR и разные «крупные секции» (cms-migration.mdc).
 

@@ -1,7 +1,9 @@
 'use client';
 
+import { Fragment } from 'react';
 import { Link } from '@/i18n/navigation';
-import { decisionSystemLayers, supportNavLinks } from '@/lib/ia';
+import { CookieSettingsButton } from '@/components/cookie-consent/CookieSettingsButton';
+import { decisionSystemLayers, legalNavLinks, supportNavLinks } from '@/lib/ia';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import type { LabelMap } from '@/lib/common-labels';
 
@@ -155,7 +157,20 @@ export function Footer({
           </div>
         </nav>
 
-        <p className="mt-8 text-center text-xs text-foreground/50">
+        <p className="caption mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center">
+          {legalNavLinks.map(({ href, key }, index) => (
+            <Fragment key={href}>
+              {index > 0 && <span aria-hidden="true">·</span>}
+              <Link href={href} className="link-accent hover:underline">
+                {navText(key)}
+              </Link>
+            </Fragment>
+          ))}
+          <span aria-hidden="true">·</span>
+          <CookieSettingsButton />
+        </p>
+
+        <p className="mt-4 text-center text-xs text-foreground/50">
           © {new Date().getFullYear()} {brandText('name')}.{' '}
           {footerText('rights')}
         </p>
