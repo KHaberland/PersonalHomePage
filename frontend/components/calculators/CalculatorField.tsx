@@ -1,9 +1,9 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 
 type Props = {
-  label: string;
+  label: ReactNode;
   hint?: string;
   children: (ids: { inputId: string; hintId?: string }) => React.ReactNode;
 };

@@ -1,14 +1,17 @@
 import Image from 'next/image';
+import type { ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import {
   ExperienceCaseAccordion,
   type ExperienceCaseItem,
 } from '@/components/ExperienceCaseAccordion';
+import { CmsModelText } from '@/components/cms/CmsModelText';
 import { Section } from '@/components/Section';
 import { getExperience } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
+import { cmsText } from '@/lib/cms-page-text';
 import { htmlToPlainText } from '@/lib/html-to-plain-text';
 import { createPageMetadata } from '@/lib/metadata';
 
@@ -38,21 +41,24 @@ export async function generateMetadata({ params }: Props) {
   });
 }
 
-function buildCaseItems(text: (key: string) => string): ExperienceCaseItem[] {
+function buildCaseItems(
+  caseCms: (key: string) => ReactNode,
+  caseText: (key: string) => string
+): ExperienceCaseItem[] {
   const ids = ['case1', 'case2', 'case3'] as const;
   return ids.map((id) => {
-    const href = text(`${id}MoreHref`).trim();
-    const label = text(`${id}MoreLabel`).trim();
+    const href = caseText(`${id}MoreHref`).trim();
+    const label = caseText(`${id}MoreLabel`).trim();
     return {
       id: `${id}-slot`,
-      title: text(`${id}Title`),
-      summary: text(`${id}Summary`),
-      context: text(`${id}Context`),
-      problem: text(`${id}Problem`),
-      engineeringAction: text(`${id}EngineeringAction`),
-      result: text(`${id}Result`),
+      title: caseCms(`${id}Title`),
+      summary: caseCms(`${id}Summary`),
+      context: caseCms(`${id}Context`),
+      problem: caseCms(`${id}Problem`),
+      engineeringAction: caseCms(`${id}EngineeringAction`),
+      result: caseCms(`${id}Result`),
       moreHref: href || undefined,
-      moreLabel: href && label ? label : undefined,
+      moreLabel: href && label ? caseCms(`${id}MoreLabel`) : undefined,
     };
   });
 }
@@ -68,25 +74,29 @@ export default async function ExperiencePage({ params }: Props) {
   ]);
   const experienceText = (key: string) => content.ui?.[key] || '';
   const caseText = (key: string) => content.cases?.[key] || '';
+  const experienceCms = (key: string) =>
+    cmsText('experience', 'ui', key, experienceText(key));
+  const caseCms = (key: string) =>
+    cmsText('experience', 'cases', key, caseText(key));
 
-  const caseItems = buildCaseItems(caseText);
+  const caseItems = buildCaseItems(caseCms, caseText);
   const caseLabels = {
-    toggleShow: experienceText('caseToggleShow'),
-    toggleHide: experienceText('caseToggleHide'),
-    context: experienceText('caseContextLabel'),
-    problem: experienceText('caseProblemLabel'),
-    engineeringAction: experienceText('caseEngineeringActionLabel'),
-    result: experienceText('caseResultLabel'),
+    toggleShow: experienceCms('caseToggleShow'),
+    toggleHide: experienceCms('caseToggleHide'),
+    context: experienceCms('caseContextLabel'),
+    problem: experienceCms('caseProblemLabel'),
+    engineeringAction: experienceCms('caseEngineeringActionLabel'),
+    result: experienceCms('caseResultLabel'),
   };
 
   return (
     <Section container="narrow" bordered={false} scrollMargin={false}>
       <section className="card-highlight mb-12">
-        <p className="eyebrow-blue mb-3">{experienceText('layerEyebrow')}</p>
+        <p className="eyebrow-blue mb-3">{experienceCms('layerEyebrow')}</p>
         <h1 className="heading-1 text-accent-orange">
-          {experienceText('title')}
+          {experienceCms('title')}
         </h1>
-        <p className="lead mt-6 max-w-3xl">{experienceText('lead')}</p>
+        <p className="lead mt-6 max-w-3xl">{experienceCms('lead')}</p>
       </section>
 
       <div className="card-highlight relative overflow-hidden">
@@ -105,7 +115,12 @@ export default async function ExperiencePage({ params }: Props) {
                 <div className="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-accent-orange shadow-[0_0_0_4px_var(--background)] ring-2 ring-accent-orange/30">
                   <span className="text-sm font-bold text-white">{i + 1}</span>
                 </div>
-                <div className="card card-passive card-passive-accent p-5 sm:p-6">
+                <CmsModelText
+                  model="experience"
+                  field="title"
+                  objectId={exp.id}
+                  className="card card-passive card-passive-accent p-5 sm:p-6"
+                >
                   <p className="mb-3 inline-flex rounded-full border border-accent-orange/40 bg-background/70 px-3 py-1 font-mono text-xs tabular-nums text-accent-orange">
                     {yearLabel}
                   </p>
@@ -118,7 +133,7 @@ export default async function ExperiencePage({ params }: Props) {
                       {htmlToPlainText(exp.description)}
                     </p>
                   ) : null}
-                </div>
+                </CmsModelText>
               </article>
             );
           })}
@@ -127,36 +142,36 @@ export default async function ExperiencePage({ params }: Props) {
 
       <section className="mt-16 scroll-mt-24 space-y-4" id="cases">
         <h2 className="heading-2 text-foreground">
-          {experienceText('casesTitle')}
+          {experienceCms('casesTitle')}
         </h2>
         <p className="max-w-3xl leading-relaxed text-foreground/80">
-          {experienceText('casesIntro')}
+          {experienceCms('casesIntro')}
         </p>
         <ExperienceCaseAccordion items={caseItems} labels={caseLabels} />
       </section>
 
       <section className="card-cta-blue mt-16">
         <p className="eyebrow-blue">
-          {experienceText('relatedPatternsEyebrow')}
+          {experienceCms('relatedPatternsEyebrow')}
         </p>
         <h2 className="heading-3 mt-2 text-foreground">
-          {experienceText('relatedPatternsTitle')}
+          {experienceCms('relatedPatternsTitle')}
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/80">
-          {experienceText('relatedPatternsText')}
+          {experienceCms('relatedPatternsText')}
         </p>
         <Link
           href="/solutions"
           className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange underline-offset-4 hover:underline"
         >
-          {experienceText('relatedPatternsCta')}
+          {experienceCms('relatedPatternsCta')}
           <span aria-hidden>→</span>
         </Link>
       </section>
 
       <section className="mt-16">
         <h2 className="heading-2 mb-6 text-foreground">
-          {experienceText('photosTitle')}
+          {experienceCms('photosTitle')}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {experiencePhotos.map((name) => (

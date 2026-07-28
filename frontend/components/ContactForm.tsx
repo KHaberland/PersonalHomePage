@@ -1,6 +1,6 @@
 'use client';
 
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, type ReactNode, useState } from 'react';
 import {
   getLeadTrackingFields,
   LEAD_HONEYPOT_FIELD,
@@ -10,20 +10,20 @@ import { ApiError, submitContactInquiry } from '@/lib/api';
 import type { ContactRequestType, Lang } from '@/lib/api-types';
 
 export type ContactFormLabels = {
-  formTitle: string;
-  formName: string;
-  formEmail: string;
-  formRequestType: string;
-  formRequestTypePlaceholder: string;
-  requestTypeDefects: string;
-  requestTypeProcess: string;
-  requestTypeTraining: string;
-  requestTypeCooperation?: string;
-  requestTypeCommercial?: string;
-  formMessage: string;
-  formHint: string;
+  formTitle: ReactNode;
+  formName: ReactNode;
+  formEmail: ReactNode;
+  formRequestType: ReactNode;
+  formRequestTypePlaceholder: ReactNode;
+  requestTypeDefects: ReactNode;
+  requestTypeProcess: ReactNode;
+  requestTypeTraining: ReactNode;
+  requestTypeCooperation?: ReactNode;
+  requestTypeCommercial?: ReactNode;
+  formMessage: ReactNode;
+  formHint: ReactNode;
   formSuccess: string;
-  requestConsultation: string;
+  requestConsultation: ReactNode;
 };
 
 type Props = {

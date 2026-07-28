@@ -13,6 +13,11 @@ urlpatterns = [
         name="page-content",
     ),
     path(
+        "content/admin-link/",
+        views.CmsAdminLinkView.as_view(),
+        name="cms-admin-link",
+    ),
+    path(
         "content/seo/<slug:page>/",
         views.SEOMetadataView.as_view(),
         name="seo-metadata",

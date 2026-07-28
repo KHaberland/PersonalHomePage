@@ -65,3 +65,16 @@ docker compose up -d db
 black .
 flake8 .
 ```
+
+## Django Admin ↔ Site
+
+Ссылки «На сайте» в **Site text blocks** строятся из `FRONTEND_BASE_URL` и `CMS_PREVIEW_LOCALE` в `.env` (см. корневой `.env.example`).
+
+```powershell
+Copy-Item ..\.env.example .env
+# или скопируйте FRONTEND_BASE_URL и CMS_PREVIEW_LOCALE в backend/.env
+```
+
+Пример превью: `home` / `entry_paths` → `http://localhost:3000/ru/#user-paths`.
+
+Badges Site → Admin настраиваются во **frontend** (`NEXT_PUBLIC_CMS_EDIT=1` в `frontend/.env.local`). Краткая инструкция — в [README.md](../README.md#django-admin--site-навигация-редактора) и [admin_plan.md](../admin_plan.md).

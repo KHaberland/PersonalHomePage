@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.db import models
+from django.utils.html import format_html
 from django_ckeditor_5.widgets import CKEditor5Widget
 
+from .cms_preview_registry import build_preview_url
 from .models import (
     About,
     AboutMain,
@@ -19,20 +21,53 @@ from .models import (
 
 @admin.register(SiteTextBlock)
 class SiteTextBlockAdmin(admin.ModelAdmin):
-    list_display = ["page", "block", "key", "updated_at"]
+    list_display = [
+        "page",
+        "block",
+        "key",
+        "text_ru_preview",
+        "preview_link",
+        "updated_at",
+    ]
     list_filter = ["page", "block"]
     search_fields = ["page", "block", "key", "text_en", "text_ru", "text_lv"]
-    readonly_fields = ["updated_at"]
+    readonly_fields = ["updated_at", "preview_on_site"]
     ordering = ["page", "block", "key"]
     formfield_overrides = {
         models.TextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     fieldsets = (
-        (None, {"fields": ("page", "block", "key", "updated_at")}),
+        (None, {"fields": ("page", "block", "key", "preview_on_site", "updated_at")}),
         ("English", {"fields": ("text_en",)}),
         ("Русский", {"fields": ("text_ru",)}),
         ("Latviešu", {"fields": ("text_lv",)}),
     )
+
+    @admin.display(description="RU")
+    def text_ru_preview(self, obj):
+        text = (obj.text_ru or "").strip()
+        if not text:
+            return "—"
+        if len(text) <= 60:
+            return text
+        return f"{text[:60]}…"
+
+    @admin.display(description="На сайте")
+    def preview_link(self, obj):
+        return self._format_preview_link(obj)
+
+    @admin.display(description="На сайте")
+    def preview_on_site(self, obj):
+        return self._format_preview_link(obj)
+
+    def _format_preview_link(self, obj):
+        url = build_preview_url(obj.page, obj.block)
+        if not url:
+            return "—"
+        return format_html(
+            '<a href="{}" target="_blank" rel="noopener noreferrer">На сайте ↗</a>',
+            url,
+        )
 
 
 @admin.register(SEOMetadata)

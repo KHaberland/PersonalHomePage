@@ -1,29 +1,30 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useId, useState } from 'react';
 import { Link } from '@/i18n/navigation';
 
 export type ExperienceCaseItem = {
   id: string;
-  title: string;
-  summary: string;
-  context: string;
-  problem: string;
-  engineeringAction: string;
-  result: string;
+  title: ReactNode;
+  summary: ReactNode;
+  context: ReactNode;
+  problem: ReactNode;
+  engineeringAction: ReactNode;
+  result: ReactNode;
   moreHref?: string;
-  moreLabel?: string;
+  moreLabel?: ReactNode;
 };
 
 type Props = {
   items: ExperienceCaseItem[];
   labels: {
-    toggleShow: string;
-    toggleHide: string;
-    context: string;
-    problem: string;
-    engineeringAction: string;
-    result: string;
+    toggleShow: ReactNode;
+    toggleHide: ReactNode;
+    context: ReactNode;
+    problem: ReactNode;
+    engineeringAction: ReactNode;
+    result: ReactNode;
   };
 };
 

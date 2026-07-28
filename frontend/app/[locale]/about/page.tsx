@@ -2,10 +2,12 @@ import Image from 'next/image';
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { DiplomaCertificates } from '@/components/DiplomaCertificates';
+import { CmsModelText } from '@/components/cms/CmsModelText';
 import { Section } from '@/components/Section';
 import { getAbout, getContact } from '@/lib/api';
 import type { Lang } from '@/lib/api-types';
 import { getCmsPage } from '@/lib/cms-content';
+import { cmsText } from '@/lib/cms-page-text';
 import { createPageMetadata } from '@/lib/metadata';
 import { sanitizeAboutHtml } from '@/lib/sanitize-html';
 import { createAboutJsonLd } from '@/lib/seo';
@@ -107,6 +109,10 @@ export default async function AboutPage({ params }: Props) {
   const aboutUiText = (key: string) => content.ui?.[key] || '';
   const profileRecordText = (key: string) =>
     content.profile_record?.[key] || '';
+  const aboutCms = (key: string) =>
+    cmsText('about', 'ui', key, aboutUiText(key));
+  const profileCms = (key: string) =>
+    cmsText('about', 'profile_record', key, profileRecordText(key));
   const personName = commonContent.brand?.name || 'Oleg Suvorov';
 
   const photo = about?.photo ?? defaultPhoto;
@@ -136,14 +142,11 @@ export default async function AboutPage({ params }: Props) {
       previewSrc,
     };
   });
-  const cmsProfileProofs = [
+  const cmsProfileProofKeys = [
     'profileProofs_1',
     'profileProofs_2',
     'profileProofs_3',
-  ]
-    .map((key) => content.ui?.[key])
-    .filter(Boolean);
-  const profileProofs = cmsProfileProofs;
+  ] as const;
   const cvUrl = process.env.NEXT_PUBLIC_CV_URL?.trim();
   const linkedinUrl = contact?.linkedin_url ?? defaultLinkedinUrl;
   const sameAs = [linkedinUrl, contact?.youtube_url].filter(
@@ -173,27 +176,32 @@ export default async function AboutPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <h1 className="heading-1 mb-6 text-accent-orange">
-        {aboutUiText('title')}
-      </h1>
+      <h1 className="heading-1 mb-6 text-accent-orange">{aboutCms('title')}</h1>
 
       <section className="card card-passive card-passive-accent mb-10 grid gap-6 p-6 md:grid-cols-[1.5fr_1fr] md:p-8">
         <div>
-          <p className="eyebrow mb-2">{aboutUiText('profileSummaryEyebrow')}</p>
+          <p className="eyebrow mb-2">{aboutCms('profileSummaryEyebrow')}</p>
           <h2 className="heading-3 mb-3 text-foreground">
-            {aboutUiText('profileSummaryTitle')}
+            {aboutCms('profileSummaryTitle')}
           </h2>
-          <p className="lead max-w-3xl">{aboutUiText('profileSummaryLead')}</p>
+          <p className="lead max-w-3xl">{aboutCms('profileSummaryLead')}</p>
         </div>
 
         <div className="space-y-4">
           <ul className="space-y-2 text-sm text-foreground/80">
-            {profileProofs.map((proof) => (
-              <li key={proof} className="flex gap-2">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-orange" />
-                <span>{proof}</span>
-              </li>
-            ))}
+            {cmsProfileProofKeys.map((key) => {
+              const proof = aboutUiText(key);
+              if (!proof) {
+                return null;
+              }
+
+              return (
+                <li key={key} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-orange" />
+                  <span>{aboutCms(key)}</span>
+                </li>
+              );
+            })}
           </ul>
           <div className="flex flex-wrap gap-3">
             {linkedinUrl ? (
@@ -203,7 +211,7 @@ export default async function AboutPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="btn-primary"
               >
-                {aboutUiText('linkedinCta')}
+                {aboutCms('linkedinCta')}
               </a>
             ) : null}
             {cvUrl ? (
@@ -213,7 +221,7 @@ export default async function AboutPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="btn-secondary"
               >
-                {aboutUiText('cvCta')}
+                {aboutCms('cvCta')}
               </a>
             ) : null}
           </div>
@@ -237,36 +245,40 @@ export default async function AboutPage({ params }: Props) {
         <div className="w-full min-w-0 space-y-6">
           {htmlHasVisibleText(bio) ? (
             <section>
-              <div
-                className="about-content about-bio-narrative text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
-                dangerouslySetInnerHTML={{ __html: bio }}
-              />
+              <CmsModelText model="about" field="bio">
+                <div
+                  className="about-content about-bio-narrative text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                  dangerouslySetInnerHTML={{ __html: bio }}
+                />
+              </CmsModelText>
             </section>
           ) : null}
 
-          {/* Образование */}
           {htmlHasVisibleText(education) ? (
             <section>
               <h2 className="about-block-title heading-3 mb-3 text-foreground">
-                {aboutUiText('education')}
+                {aboutCms('education')}
               </h2>
-              <div
-                className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
-                dangerouslySetInnerHTML={{ __html: education }}
-              />
+              <CmsModelText model="about" field="education">
+                <div
+                  className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                  dangerouslySetInnerHTML={{ __html: education }}
+                />
+              </CmsModelText>
             </section>
           ) : null}
 
-          {/* Профессиональные квалификации */}
           {htmlHasVisibleText(qualifications) ? (
             <section>
               <h2 className="about-block-title heading-3 mb-3 text-foreground">
-                {aboutUiText('qualifications')}
+                {aboutCms('qualifications')}
               </h2>
-              <div
-                className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
-                dangerouslySetInnerHTML={{ __html: qualifications }}
-              />
+              <CmsModelText model="about" field="qualifications">
+                <div
+                  className="about-content text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
+                  dangerouslySetInnerHTML={{ __html: qualifications }}
+                />
+              </CmsModelText>
             </section>
           ) : null}
         </div>
@@ -275,7 +287,7 @@ export default async function AboutPage({ params }: Props) {
       {/* Дипломы и сертификаты */}
       <section className="mt-16">
         <h2 className="heading-2 mb-6 text-foreground">
-          {aboutUiText('diplomas')}
+          {aboutCms('diplomas')}
         </h2>
         <DiplomaCertificates items={diplomaItems} labels={diplomaLabels} />
       </section>
@@ -307,7 +319,7 @@ export default async function AboutPage({ params }: Props) {
         <section className="card card-passive card-passive-accent mt-16 p-6 md:p-8">
           {profileRecordText('title') ? (
             <h2 className="heading-3 mb-4 text-foreground">
-              {profileRecordText('title')}
+              {profileCms('title')}
             </h2>
           ) : null}
 
@@ -316,30 +328,30 @@ export default async function AboutPage({ params }: Props) {
             profileRecordText('version') ? (
               <p>
                 <span className="font-semibold text-foreground">
-                  {profileRecordText('versionLabel')}
+                  {profileCms('versionLabel')}
                 </span>{' '}
-                {profileRecordText('version')}
+                {profileCms('version')}
               </p>
             ) : null}
             {profileRecordText('lastReviewedLabel') ||
             profileRecordText('lastReviewed') ? (
               <p>
                 <span className="font-semibold text-foreground">
-                  {profileRecordText('lastReviewedLabel')}
+                  {profileCms('lastReviewedLabel')}
                 </span>{' '}
-                {profileRecordText('lastReviewed')}
+                {profileCms('lastReviewed')}
               </p>
             ) : null}
           </div>
 
           {profileRecordText('description') ? (
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/80">
-              {profileRecordText('description')}
+              {profileCms('description')}
             </p>
           ) : null}
           {profileRecordText('footerUpdated') ? (
             <p className="caption mt-5 font-medium uppercase tracking-wide">
-              {profileRecordText('footerUpdated')}
+              {profileCms('footerUpdated')}
             </p>
           ) : null}
         </section>

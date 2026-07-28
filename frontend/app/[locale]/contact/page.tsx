@@ -4,10 +4,13 @@ import type { ContactFormLabels } from '@/components/ContactForm';
 import { Section } from '@/components/Section';
 import { getContact } from '@/lib/api';
 import { getCmsPage } from '@/lib/cms-content';
+import { cmsText } from '@/lib/cms-page-text';
 import { createPageMetadata } from '@/lib/metadata';
 
 const DEFAULT_MAP_EMBED =
   'https://www.openstreetmap.org/export/embed.html?bbox=23.95%2C56.82%2C24.35%2C57.05&layer=mapnik&marker=24.1052%2C56.9496';
+
+const CMS_PAGE = 'contact';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -34,32 +37,32 @@ export default async function ContactPage({ params }: Props) {
 
   const contactText = (section: string, key: string) =>
     content[section]?.[key] || '';
-  const contactLabel = (section: string, key: string, fallback: string) =>
-    contactText(section, key) || fallback;
+  const contactCms = (block: string, key: string) =>
+    cmsText(CMS_PAGE, block, key, contactText(block, key));
+  const contactLabel = (block: string, key: string, fallback: string) =>
+    cmsText(CMS_PAGE, block, key, contactText(block, key) || fallback);
+
   const formLabels: ContactFormLabels = {
-    formTitle: contactText('form', 'formTitle'),
-    formName: contactText('form', 'formName'),
-    formEmail: contactText('form', 'formEmail'),
-    formRequestType: contactText('form', 'formRequestType'),
-    formRequestTypePlaceholder: contactText(
+    formTitle: contactCms('form', 'formTitle'),
+    formName: contactCms('form', 'formName'),
+    formEmail: contactCms('form', 'formEmail'),
+    formRequestType: contactCms('form', 'formRequestType'),
+    formRequestTypePlaceholder: contactCms(
       'form',
       'formRequestTypePlaceholder'
     ),
-    requestTypeDefects: contactText('request_types', 'requestTypeDefects'),
-    requestTypeProcess: contactText('request_types', 'requestTypeProcess'),
-    requestTypeTraining: contactText('request_types', 'requestTypeTraining'),
-    requestTypeCooperation: contactText(
+    requestTypeDefects: contactCms('request_types', 'requestTypeDefects'),
+    requestTypeProcess: contactCms('request_types', 'requestTypeProcess'),
+    requestTypeTraining: contactCms('request_types', 'requestTypeTraining'),
+    requestTypeCooperation: contactCms(
       'request_types',
       'requestTypeCooperation'
     ),
-    requestTypeCommercial: contactText(
-      'request_types',
-      'requestTypeCommercial'
-    ),
-    formMessage: contactText('form', 'formMessage'),
-    formHint: contactText('form', 'formHint'),
+    requestTypeCommercial: contactCms('request_types', 'requestTypeCommercial'),
+    formMessage: contactCms('form', 'formMessage'),
+    formHint: contactCms('form', 'formHint'),
     formSuccess: contactText('form', 'formSuccess'),
-    requestConsultation: contactText('form', 'requestConsultation'),
+    requestConsultation: contactCms('form', 'requestConsultation'),
   };
 
   const mapSrc =
@@ -68,14 +71,14 @@ export default async function ContactPage({ params }: Props) {
   return (
     <Section container="narrow" bordered={false} scrollMargin={false}>
       <h1 className="heading-1 mb-4 text-accent-orange">
-        {contactText('hero', 'title')}
+        {contactCms('hero', 'title')}
       </h1>
 
       <p className="lead mb-12 max-w-2xl">
-        {contactText('hero', 'description')}
+        {contactCms('hero', 'description')}
       </p>
 
-      {formLabels.formTitle && (
+      {contactText('form', 'formTitle') && (
         <div className="mb-12">
           <ContactForm locale={locale} labels={formLabels} />
         </div>
@@ -94,7 +97,7 @@ export default async function ContactPage({ params }: Props) {
             </span>
             <div>
               <p className="font-medium text-foreground">
-                {contactText('contact_methods', 'email')}
+                {contactCms('contact_methods', 'email')}
               </p>
               <p className="text-accent-orange">{contact.email}</p>
             </div>
@@ -122,7 +125,7 @@ export default async function ContactPage({ params }: Props) {
                 )}
               </p>
               <p className="text-sm text-foreground/80">
-                {contactText('contact_methods', 'linkedin')}
+                {contactCms('contact_methods', 'linkedin')}
               </p>
             </div>
           </a>
@@ -145,7 +148,7 @@ export default async function ContactPage({ params }: Props) {
                 {contactLabel('contact_methods', 'youtubePlatform', 'YouTube')}
               </p>
               <p className="text-sm text-foreground/80">
-                {contactText('contact_methods', 'youtube')}
+                {contactCms('contact_methods', 'youtube')}
               </p>
             </div>
           </a>
@@ -154,16 +157,16 @@ export default async function ContactPage({ params }: Props) {
 
       {!contact && (
         <p className="mt-8 text-foreground/80">
-          {contactText('empty', 'noContact')}
+          {contactCms('empty', 'noContact')}
         </p>
       )}
 
       <section className="mt-16" aria-labelledby="contact-map-heading">
         <h2 id="contact-map-heading" className="heading-2 mb-2 text-foreground">
-          {contactText('map', 'mapTitle')}
+          {contactCms('map', 'mapTitle')}
         </h2>
         <p className="mb-4 max-w-2xl text-sm text-foreground/80">
-          {contactText('map', 'mapDescription')}
+          {contactCms('map', 'mapDescription')}
         </p>
         <div className="overflow-hidden rounded-lg border border-border">
           <iframe

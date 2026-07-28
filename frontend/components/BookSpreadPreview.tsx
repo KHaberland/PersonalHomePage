@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
+
 type Props = {
-  title: string;
-  caption: string;
+  title: ReactNode;
+  caption: ReactNode;
 };
 
 /** Декоративный разворот книги (без реальных сканов страниц) — ощущение объёма и содержания */

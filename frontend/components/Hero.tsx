@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { Link } from '@/i18n/navigation';
+
+import { CmsText } from '@/components/cms/CmsText';
 
 const HERO_VIDEO_URL =
   process.env.NEXT_PUBLIC_HERO_VIDEO_URL || '/Video/welding-bg.MP4';
@@ -42,6 +44,33 @@ type HeroProps = {
   text: HeroText;
 };
 
+const CMS_PAGE = 'home';
+const CMS_BLOCK = 'hero';
+
+const HERO_CMS_KEYS: Record<keyof HeroText, string> = {
+  videoDescription: 'heroVideoDescription',
+  titleLine1: 'heroTitleLine1',
+  titleLine2: 'heroTitleLine2',
+  titleLineHighlight: 'heroTitleLineHighlight',
+  titleLine3: 'heroTitleLine3',
+  ctaSolutions: 'heroCtaSolutions',
+  ctaTools: 'heroCtaTools',
+};
+
+function HeroCms({
+  field,
+  children,
+}: {
+  field: keyof HeroText;
+  children: ReactNode;
+}) {
+  return (
+    <CmsText page={CMS_PAGE} block={CMS_BLOCK} cmsKey={HERO_CMS_KEYS[field]}>
+      {children}
+    </CmsText>
+  );
+}
+
 export function Hero({ text }: HeroProps) {
   const [videoFailed, setVideoFailed] = useState(false);
   const overlayLg = getHeroOverlayOpacity();
@@ -55,7 +84,8 @@ export function Hero({ text }: HeroProps) {
 
   return (
     <section
-      className="relative min-h-[75vh] overflow-hidden sm:min-h-[80vh]"
+      id="hero"
+      className="scroll-mt-24 relative min-h-[75vh] overflow-hidden sm:min-h-[80vh]"
       aria-labelledby="hero-heading"
     >
       {/* Градиент всегда снизу: видео при успешной загрузке перекрывает; при ошибке — остаётся фон */}
@@ -90,22 +120,24 @@ export function Hero({ text }: HeroProps) {
       {/* Контент — крупные заголовки, сварочные акценты */}
       <div className="relative z-10 flex min-h-[75vh] flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[80vh] sm:px-6">
         <p id="hero-video-desc" className="sr-only">
-          {text.videoDescription}
+          <HeroCms field="videoDescription">{text.videoDescription}</HeroCms>
         </p>
         <h1
           id="hero-heading"
           className="heading-1 hero-title-line1 mx-auto w-full max-w-4xl text-white drop-shadow-lg leading-tight sm:leading-snug"
         >
-          {text.titleLine1}
+          <HeroCms field="titleLine1">{text.titleLine1}</HeroCms>
         </h1>
         <p className="hero-title-line2 mx-auto mt-6 w-full max-w-2xl text-foreground/90 drop-shadow-md leading-tight sm:leading-snug">
-          {text.titleLine2}
+          <HeroCms field="titleLine2">{text.titleLine2}</HeroCms>
         </p>
         <p className="mx-auto mt-4 w-full max-w-3xl text-sm font-medium tracking-wide text-white drop-shadow-md sm:text-base leading-tight sm:leading-snug">
-          {text.titleLineHighlight}
+          <HeroCms field="titleLineHighlight">
+            {text.titleLineHighlight}
+          </HeroCms>
         </p>
         <p className="hero-title-line3 hero-title-accent mx-auto mt-3 w-full max-w-3xl font-semibold drop-shadow-md">
-          {text.titleLine3}
+          <HeroCms field="titleLine3">{text.titleLine3}</HeroCms>
         </p>
         {/* Декор: линии и точка — нативный CSS, без SVG */}
         <div className="mt-8 flex items-center gap-4" aria-hidden>
@@ -115,10 +147,10 @@ export function Hero({ text }: HeroProps) {
         </div>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
           <Link href="/solutions" className="btn-primary btn-lg">
-            {text.ctaSolutions}
+            <HeroCms field="ctaSolutions">{text.ctaSolutions}</HeroCms>
           </Link>
           <Link href="/tools" className="btn-secondary btn-lg">
-            {text.ctaTools}
+            <HeroCms field="ctaTools">{text.ctaTools}</HeroCms>
           </Link>
         </div>
       </div>

@@ -10,6 +10,19 @@ type ConsentListener = (consent: CookieConsentRecord | null) => void;
 
 const listeners = new Set<ConsentListener>();
 
+/** Stable snapshot for useSyncExternalStore — same reference until storage changes. */
+let cachedRaw: string | null | undefined;
+let cachedConsent: CookieConsentRecord | null | undefined;
+
+function setConsentCache(
+  raw: string | null,
+  consent: CookieConsentRecord | null
+): CookieConsentRecord | null {
+  cachedRaw = raw;
+  cachedConsent = consent;
+  return consent;
+}
+
 function canUseLocalStorage(): boolean {
   return (
     typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
@@ -115,8 +128,20 @@ export function getConsent(
   nowMs: number = Date.now()
 ): CookieConsentRecord | null {
   const raw = readRaw();
+
+  if (cachedRaw !== undefined && raw === cachedRaw) {
+    if (cachedConsent == null) {
+      return null;
+    }
+    if (isExpired(cachedConsent, nowMs)) {
+      clearRaw();
+      return setConsentCache(null, null);
+    }
+    return cachedConsent;
+  }
+
   if (raw === null) {
-    return null;
+    return setConsentCache(null, null);
   }
 
   let parsed: unknown;
@@ -124,17 +149,17 @@ export function getConsent(
     parsed = JSON.parse(raw) as unknown;
   } catch {
     clearRaw();
-    return null;
+    return setConsentCache(null, null);
   }
 
   const record = parseConsentRecord(parsed, nowMs);
   if (!record) {
     // Expired or version bump → drop stale data so the banner shows again.
     clearRaw();
-    return null;
+    return setConsentCache(null, null);
   }
 
-  return record;
+  return setConsentCache(raw, record);
 }
 
 /**
@@ -154,6 +179,7 @@ export function saveConsent(
   };
 
   writeRaw(record);
+  setConsentCache(readRaw(), record);
   notifyListeners(record);
   return record;
 }

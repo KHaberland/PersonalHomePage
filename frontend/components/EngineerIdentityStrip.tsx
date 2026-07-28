@@ -1,9 +1,29 @@
+import type { ReactNode } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+
+import { CmsText } from '@/components/cms/CmsText';
+
+const CMS_PAGE = 'home';
+const CMS_BLOCK = 'about_teaser';
 
 const identityPhoto = {
   src: '/images/photos/author.jpg',
 } as const;
+
+function AboutTeaserCms({
+  cmsKey,
+  children,
+}: {
+  cmsKey: string;
+  children: ReactNode;
+}) {
+  return (
+    <CmsText page={CMS_PAGE} block={CMS_BLOCK} cmsKey={cmsKey}>
+      {children}
+    </CmsText>
+  );
+}
 
 function IdentityPhoto({ src, alt }: { src: string; alt: string }) {
   return (
@@ -20,12 +40,17 @@ function IdentityPhoto({ src, alt }: { src: string; alt: string }) {
   );
 }
 
+type CmsTextField = {
+  key: string;
+  text: string;
+};
+
 type EngineerIdentityStripProps = {
   ariaLabel: string;
   photoAlt: string;
   title: string;
-  lead: string[];
-  bullets: string[];
+  lead: CmsTextField[];
+  bullets: CmsTextField[];
   aboutCta: string;
   experienceCta: string;
 };
@@ -41,7 +66,8 @@ export function EngineerIdentityStrip({
 }: EngineerIdentityStripProps) {
   return (
     <section
-      className="w-full bg-background py-2 sm:py-3"
+      id="problem-value"
+      className="scroll-mt-24 w-full bg-background py-2 sm:py-3"
       aria-labelledby="home-about-teaser-heading"
     >
       <div className="container-wide">
@@ -54,29 +80,37 @@ export function EngineerIdentityStrip({
               id="home-about-teaser-heading"
               className="heading-3 max-w-3xl text-foreground"
             >
-              {title}
+              <AboutTeaserCms cmsKey="aboutTeaserTitle">{title}</AboutTeaserCms>
             </h2>
             <div className="mt-4 max-w-3xl space-y-3 text-sm leading-relaxed text-foreground/80">
-              {lead.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+              {lead.map(({ key, text }) => (
+                <p key={key}>
+                  <AboutTeaserCms cmsKey={key}>{text}</AboutTeaserCms>
+                </p>
               ))}
             </div>
 
             <ul className="mt-5 grid list-none gap-2 text-sm text-foreground/80 sm:grid-cols-2">
-              {bullets.map((bullet) => (
-                <li key={bullet} className="flex gap-2">
+              {bullets.map(({ key, text }) => (
+                <li key={key} className="flex gap-2">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-blue" />
-                  <span>{bullet}</span>
+                  <span>
+                    <AboutTeaserCms cmsKey={key}>{text}</AboutTeaserCms>
+                  </span>
                 </li>
               ))}
             </ul>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/about" className="btn-secondary">
-                {aboutCta}
+                <AboutTeaserCms cmsKey="aboutTeaserAboutCta">
+                  {aboutCta}
+                </AboutTeaserCms>
               </Link>
               <Link href="/experience" className="btn-pill">
-                {experienceCta}
+                <AboutTeaserCms cmsKey="aboutTeaserExperienceCta">
+                  {experienceCta}
+                </AboutTeaserCms>
               </Link>
             </div>
           </div>

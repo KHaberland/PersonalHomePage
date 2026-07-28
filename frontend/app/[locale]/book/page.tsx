@@ -1,10 +1,12 @@
 import Image from 'next/image';
 import { BookSpreadPreview } from '@/components/BookSpreadPreview';
+import { CmsModelText } from '@/components/cms/CmsModelText';
 import { Section } from '@/components/Section';
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getBook, getContact } from '@/lib/api';
 import { getCmsPage } from '@/lib/cms-content';
+import { cmsText } from '@/lib/cms-page-text';
 import { createPageMetadata } from '@/lib/metadata';
 
 const localizedBookCovers = {
@@ -12,6 +14,8 @@ const localizedBookCovers = {
   ru: '/images/book/MIG_MAG_welding_ru.jpg',
   lv: '/images/book/MIG_MAG_metinasana.jpg',
 } as const;
+
+const CMS_PAGE = 'book';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -44,8 +48,8 @@ export default async function BookPage({ params }: Props) {
   const content = await getCmsPage('book', locale);
   const bookText = (section: string, key: string) =>
     content[section]?.[key] || '';
-  const bookUiText = (section: string, key: string) =>
-    content[section]?.[key] || '';
+  const bookCms = (section: string, key: string) =>
+    cmsText(CMS_PAGE, section, key, bookText(section, key));
 
   const title = book?.title ?? '';
   const description = book?.description || '';
@@ -56,21 +60,22 @@ export default async function BookPage({ params }: Props) {
   const mailtoBook =
     contact?.email != null
       ? `mailto:${contact.email}?subject=${encodeURIComponent(
-          bookUiText('cta', 'emailSubjectBook')
+          bookText('cta', 'emailSubjectBook')
         )}`
       : null;
 
   return (
     <Section container="narrow" bordered={false} scrollMargin={false}>
-      <h1 className="heading-1 mb-8 text-accent-orange">{title}</h1>
+      <CmsModelText model="book" field="title">
+        <h1 className="heading-1 mb-8 text-accent-orange">{title}</h1>
+      </CmsModelText>
 
       <div className="flex flex-col gap-12 md:flex-row md:items-start md:gap-16">
-        {/* Обложка */}
         <div className="shrink-0">
           <div className="relative aspect-[2/3] w-56 overflow-hidden rounded-lg border border-border shadow-xl">
             <Image
               src={coverImage}
-              alt={bookUiText('cover', 'coverAlt')}
+              alt={bookText('cover', 'coverAlt')}
               fill
               className="object-cover"
               sizes="224px"
@@ -79,35 +84,38 @@ export default async function BookPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Описание и CTA */}
         <div className="flex-1 space-y-6">
           <div>
             <p className="text-lg font-medium text-accent-orange">
-              {bookText('hero', 'subtitle')}
+              {bookCms('hero', 'subtitle')}
             </p>
-            <p className="mt-1 text-sm text-foreground/60">{year}</p>
+            <CmsModelText model="book" field="year">
+              <p className="mt-1 text-sm text-foreground/60">{year}</p>
+            </CmsModelText>
           </div>
 
-          <div
-            className="lead [&_p]:mt-2 [&_p:first-child]:mt-0"
-            dangerouslySetInnerHTML={{ __html: description }}
-          />
+          <CmsModelText model="book" field="description">
+            <div
+              className="lead [&_p]:mt-2 [&_p:first-child]:mt-0"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          </CmsModelText>
 
           <div className="grid gap-10 border-t border-border pt-8 lg:grid-cols-2 lg:items-start lg:gap-12">
             <BookSpreadPreview
-              title={bookUiText('preview', 'previewTitle')}
-              caption={bookUiText('preview', 'previewCaption')}
+              title={bookCms('preview', 'previewTitle')}
+              caption={bookCms('preview', 'previewCaption')}
             />
             <figure className="card border-l-4 border-l-accent-orange p-6">
               <h2 className="heading-3 mb-3 text-foreground">
-                {bookText('authority', 'authorityTitle')}
+                {bookCms('authority', 'authorityTitle')}
               </h2>
               <blockquote>
                 <p className="leading-relaxed text-foreground/80">
-                  {bookText('authority', 'authorityQuote')}
+                  {bookCms('authority', 'authorityQuote')}
                 </p>
                 <footer className="caption mt-4">
-                  {bookText('authority', 'authorityAttribution')}
+                  {bookCms('authority', 'authorityAttribution')}
                 </footer>
               </blockquote>
             </figure>
@@ -115,18 +123,18 @@ export default async function BookPage({ params }: Props) {
 
           <div className="space-y-4 border-t border-border pt-6">
             <h2 className="heading-3 text-foreground">
-              {bookText('purchase', 'purchaseTitle')}
+              {bookCms('purchase', 'purchaseTitle')}
             </h2>
             <p className="text-sm text-foreground/80">
-              {bookText('purchase', 'purchaseIntro')}
+              {bookCms('purchase', 'purchaseIntro')}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/contact" className="btn-primary">
-                {bookText('cta', 'cta')}
+                {bookCms('cta', 'cta')}
               </Link>
               {mailtoBook && (
                 <a href={mailtoBook} className="btn-secondary">
-                  {bookText('cta', 'ctaEmail')}
+                  {bookCms('cta', 'ctaEmail')}
                 </a>
               )}
               {purchaseUrl && (
@@ -136,7 +144,7 @@ export default async function BookPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="btn-secondary"
                 >
-                  {bookText('cta', 'buyOnline')}
+                  {bookCms('cta', 'buyOnline')}
                 </a>
               )}
               {downloadUrl && (
@@ -146,7 +154,7 @@ export default async function BookPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="btn-secondary"
                 >
-                  {bookText('cta', 'downloadSample')}
+                  {bookCms('cta', 'downloadSample')}
                 </a>
               )}
             </div>

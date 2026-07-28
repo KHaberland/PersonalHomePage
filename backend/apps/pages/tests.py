@@ -1,7 +1,94 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
+from .cms_preview_registry import build_preview_url, get_preview_route
 from .models import SEOMetadata, SiteTextBlock
+
+
+class CmsPreviewRegistryTests(TestCase):
+    def test_build_preview_url_for_home_hero(self):
+        url = build_preview_url("home", "hero", locale="ru")
+        self.assertEqual(url, "http://localhost:3000/ru/#hero")
+
+    def test_build_preview_url_for_home_about_teaser(self):
+        url = build_preview_url("home", "about_teaser", locale="ru")
+        self.assertEqual(url, "http://localhost:3000/ru/#problem-value")
+
+    def test_build_preview_url_for_home_entry_paths(self):
+        url = build_preview_url("home", "entry_paths", locale="ru")
+        self.assertEqual(url, "http://localhost:3000/ru/#user-paths")
+
+    def test_build_preview_url_for_solutions_section(self):
+        url = build_preview_url(
+            "solutions",
+            "section_defectReduction",
+            locale="ru",
+        )
+        self.assertEqual(
+            url,
+            "http://localhost:3000/ru/solutions#solutions-defect-reduction",
+        )
+
+    def test_unknown_page_returns_none(self):
+        self.assertIsNone(build_preview_url("missing", "hero"))
+
+    def test_unknown_block_falls_back_to_page_path(self):
+        route = get_preview_route("about", "hero")
+        self.assertIsNotNone(route)
+        self.assertEqual(route.path, "/about")
+        self.assertIsNone(route.anchor)
+
+        url = build_preview_url("about", "hero", locale="en")
+        self.assertEqual(url, "http://localhost:3000/en/about")
+
+    def test_build_preview_url_for_experience_cases(self):
+        url = build_preview_url("experience", "cases", locale="ru")
+        self.assertEqual(url, "http://localhost:3000/ru/experience#cases")
+
+
+class CmsAdminLinkViewTests(TestCase):
+    def setUp(self):
+        SiteTextBlock.objects.all().delete()
+
+    @override_settings(DEBUG=True)
+    def test_returns_change_url_when_block_exists(self):
+        block = SiteTextBlock.objects.create(
+            page=SiteTextBlock.Page.HOME,
+            block="hero",
+            key="title",
+            text_en="Title",
+        )
+        response = self.client.get(
+            reverse("cms-admin-link"),
+            {"page": "home", "block": "hero", "key": "title"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            f"/admin/pages/sitetextblock/{block.pk}/change/",
+            response.json()["url"],
+        )
+
+    @override_settings(DEBUG=True)
+    def test_returns_changelist_when_block_missing(self):
+        response = self.client.get(
+            reverse("cms-admin-link"),
+            {"page": "home", "block": "hero", "key": "missing"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        url = response.json()["url"]
+        self.assertIn("/admin/pages/sitetextblock/", url)
+        self.assertIn("page__exact=home", url)
+
+    @override_settings(DEBUG=False)
+    def test_returns_404_when_not_debug(self):
+        response = self.client.get(
+            reverse("cms-admin-link"),
+            {"page": "home", "block": "hero", "key": "title"},
+        )
+
+        self.assertEqual(response.status_code, 404)
 
 
 class PageContentViewTests(TestCase):

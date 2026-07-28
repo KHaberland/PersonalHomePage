@@ -1,4 +1,7 @@
+from django.conf import settings
 from django.http import Http404
+from django.urls import reverse
+from urllib.parse import urlencode
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -114,6 +117,35 @@ class PageContentView(APIView):
         if localized_text.strip():
             return localized_text
         return en_text
+
+
+class CmsAdminLinkView(APIView):
+    """GET /api/content/admin-link/ — dev-only direct admin URL for SiteTextBlock."""
+
+    def get(self, request):
+        if not settings.DEBUG:
+            raise Http404()
+
+        page = request.query_params.get("page")
+        block = request.query_params.get("block")
+        key = request.query_params.get("key")
+
+        if not page or not block or not key:
+            return Response(
+                {"detail": "page, block and key are required"},
+                status=400,
+            )
+
+        obj = SiteTextBlock.objects.filter(page=page, block=block, key=key).first()
+        if obj:
+            url = request.build_absolute_uri(
+                reverse("admin:pages_sitetextblock_change", args=[obj.pk])
+            )
+        else:
+            qs = urlencode({"page__exact": page, "block__exact": block, "q": key})
+            url = request.build_absolute_uri(f"/admin/pages/sitetextblock/?{qs}")
+
+        return Response({"url": url})
 
 
 class SEOMetadataView(generics.RetrieveAPIView):

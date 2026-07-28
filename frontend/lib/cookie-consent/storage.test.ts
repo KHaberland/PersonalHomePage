@@ -146,4 +146,18 @@ describe('cookie-consent storage', () => {
     expect(record.marketing).toBe(false);
     expect(record.necessary).toBe(true);
   });
+
+  it('getConsent returns the same object reference until storage changes', () => {
+    const now = new Date('2026-07-24T12:00:00.000Z');
+    acceptAll(now);
+
+    const first = getConsent(now.getTime());
+    const second = getConsent(now.getTime());
+
+    expect(first).not.toBeNull();
+    expect(second).toBe(first);
+
+    rejectAll(now);
+    expect(getConsent(now.getTime())).not.toBe(first);
+  });
 });
