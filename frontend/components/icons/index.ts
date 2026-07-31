@@ -10,7 +10,10 @@ export {
 export {
   IconServiceConsulting,
   IconServiceEquipment,
+  IconServiceTigTorch,
+  IconServiceGasSelection,
   IconServiceImplementation,
+  IconServiceOpenBook,
   IconServiceTraining,
 } from './services';
 export {

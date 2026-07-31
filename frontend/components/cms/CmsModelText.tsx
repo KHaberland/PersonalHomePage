@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   buildAdminModelUrl,
@@ -17,20 +17,8 @@ type CmsModelTextProps = {
   className?: string;
 };
 
-function subscribeToHostname() {
-  return () => {};
-}
-
-function getCmsEditSnapshot(): boolean {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-
+function canShowCmsEditBadge(): boolean {
   return isCmsEditEnabled() && isLocalhostHostname(window.location.hostname);
-}
-
-function getCmsEditServerSnapshot(): boolean {
-  return false;
 }
 
 export function CmsModelText({
@@ -40,25 +28,51 @@ export function CmsModelText({
   children,
   className = '',
 }: CmsModelTextProps) {
-  const enabled = useSyncExternalStore(
-    subscribeToHostname,
-    getCmsEditSnapshot,
-    getCmsEditServerSnapshot
-  );
+  const [showBadge, setShowBadge] = useState(false);
 
-  if (!enabled) {
-    return <>{children}</>;
-  }
+  useEffect(() => {
+    setShowBadge(canShowCmsEditBadge());
+  }, []);
 
   const adminUrl = buildAdminModelUrl(model, objectId);
   const label = `${model}:${field}`;
+  const wrapperClass = [
+    className,
+    showBadge && adminUrl ? 'group/cms relative' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
-  if (!adminUrl) {
+  if (wrapperClass) {
+    return (
+      <div className={wrapperClass}>
+        {children}
+        {showBadge && adminUrl ? (
+          <a
+            href={adminUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Редактировать модель в Django Admin"
+            className="ml-1 inline-flex max-w-[12rem] truncate align-middle rounded bg-sky-200/90 px-1 py-0.5 text-[10px] font-mono leading-none text-sky-950 opacity-0 transition-opacity group-hover/cms:opacity-100 group-focus-within/cms:opacity-100 print:hidden"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              window.open(adminUrl, '_blank', 'noopener,noreferrer');
+            }}
+          >
+            {label} ✎
+          </a>
+        ) : null}
+      </div>
+    );
+  }
+
+  if (!showBadge || !adminUrl) {
     return <>{children}</>;
   }
 
   return (
-    <div className={`group/cms relative ${className}`.trim()}>
+    <div className="group/cms relative">
       {children}
       <a
         href={adminUrl}

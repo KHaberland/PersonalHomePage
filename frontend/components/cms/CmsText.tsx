@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   buildAdminChangelistUrl,
@@ -18,20 +18,8 @@ type CmsTextProps = {
   className?: string;
 };
 
-function subscribeToHostname() {
-  return () => {};
-}
-
-function getCmsEditSnapshot(): boolean {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-
+function canShowCmsEditBadge(): boolean {
   return isCmsEditEnabled() && isLocalhostHostname(window.location.hostname);
-}
-
-function getCmsEditServerSnapshot(): boolean {
-  return false;
 }
 
 export function CmsText({
@@ -41,13 +29,13 @@ export function CmsText({
   children,
   className = '',
 }: CmsTextProps) {
-  const enabled = useSyncExternalStore(
-    subscribeToHostname,
-    getCmsEditSnapshot,
-    getCmsEditServerSnapshot
-  );
+  const [showBadge, setShowBadge] = useState(false);
 
-  if (!enabled) {
+  useEffect(() => {
+    setShowBadge(canShowCmsEditBadge());
+  }, []);
+
+  if (!showBadge) {
     return <>{children}</>;
   }
 

@@ -2,9 +2,10 @@ import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { Section } from '@/components/Section';
 import {
-  IconCompetencyGas,
-  IconServiceConsulting,
+  IconServiceTigTorch,
+  IconServiceGasSelection,
   IconServiceImplementation,
+  IconServiceOpenBook,
   IconServiceTraining,
 } from '@/components/icons';
 import { getCmsPage } from '@/lib/cms-content';
@@ -15,7 +16,7 @@ const CMS_PAGE = 'solutions';
 
 const solutionItems = [
   {
-    Icon: IconServiceConsulting,
+    Icon: IconServiceTigTorch,
     anchorId: 'solutions-defect-reduction',
     itemKey: 'defectReduction',
   },
@@ -25,7 +26,7 @@ const solutionItems = [
     itemKey: 'processOptimization',
   },
   {
-    Icon: IconCompetencyGas,
+    Icon: IconServiceGasSelection,
     anchorId: 'solutions-gas-selection',
     itemKey: 'gasSelection',
   },
@@ -35,7 +36,7 @@ const solutionItems = [
     itemKey: 'training',
   },
   {
-    Icon: IconServiceImplementation,
+    Icon: IconServiceOpenBook,
     anchorId: 'solutions-wps-support',
     itemKey: 'wpsSupport',
   },
