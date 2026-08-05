@@ -107,6 +107,7 @@ class BookPageImageSerializer(serializers.ModelSerializer):
     """Serializer for illustrative book page images."""
 
     image = serializers.SerializerMethodField()
+    alt = serializers.SerializerMethodField()
 
     class Meta:
         model = BookPageImage
@@ -119,6 +120,16 @@ class BookPageImageSerializer(serializers.ModelSerializer):
         if request:
             return request.build_absolute_uri(obj.image.url)
         return obj.image.url
+
+    def get_alt(self, obj):
+        lang = self.context.get("lang", "en")
+        en_val = (obj.alt_en or "").strip()
+        if lang == "en":
+            return en_val
+        loc_val = (getattr(obj, f"alt_{lang}", "") or "").strip()
+        if loc_val:
+            return loc_val
+        return en_val
 
 
 class BookSerializer(serializers.ModelSerializer):

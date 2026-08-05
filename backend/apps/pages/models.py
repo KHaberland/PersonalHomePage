@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -189,16 +190,21 @@ class Book(models.Model):
 class BookPageImage(models.Model):
     """Illustrative book page / spread for the /book preview block."""
 
+    MAX_IMAGES_PER_BOOK = 12
+    MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
+
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="page_images")
     image = models.ImageField(
         upload_to="book/pages/",
         help_text=(
             "JPG/WebP, ~3:2 or 16:10, width 1600–2000 px recommended. "
-            "Up to ~8–12 images per book."
+            f"Up to {MAX_IMAGES_PER_BOOK} images per book, max 5 MB each."
         ),
     )
     order = models.PositiveIntegerField(default=0)
-    alt = models.CharField(max_length=255, blank=True)
+    alt_en = models.CharField(max_length=255, blank=True)
+    alt_ru = models.CharField(max_length=255, blank=True)
+    alt_lv = models.CharField(max_length=255, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -210,6 +216,24 @@ class BookPageImage(models.Model):
 
     def __str__(self):
         return f"Book page #{self.order} ({self.book_id})"
+
+    def clean(self):
+        super().clean()
+        if self.image:
+            size = getattr(self.image, "size", None)
+            if size and size > self.MAX_IMAGE_BYTES:
+                max_mb = self.MAX_IMAGE_BYTES // (1024 * 1024)
+                raise ValidationError(
+                    {"image": f"Image file too large (max {max_mb} MB)."}
+                )
+        if self.book_id:
+            siblings = BookPageImage.objects.filter(book_id=self.book_id)
+            if self.pk:
+                siblings = siblings.exclude(pk=self.pk)
+            if siblings.count() >= self.MAX_IMAGES_PER_BOOK:
+                raise ValidationError(
+                    f"A book can have at most {self.MAX_IMAGES_PER_BOOK} page images."
+                )
 
 
 class HomeTechnicalSkillsIntro(models.Model):

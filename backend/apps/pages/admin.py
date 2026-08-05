@@ -133,7 +133,7 @@ class ExperienceAdmin(admin.ModelAdmin):
 class BookPageImageInline(admin.TabularInline):
     model = BookPageImage
     extra = 1
-    fields = ("image", "order", "alt", "is_active")
+    fields = ("image", "order", "alt_en", "alt_ru", "alt_lv", "is_active")
     ordering = ("order", "id")
 
 

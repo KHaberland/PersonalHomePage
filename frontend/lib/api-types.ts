@@ -83,12 +83,20 @@ export interface Experience {
   order: number;
 }
 
+export interface BookPageImage {
+  id: number;
+  image: string | null;
+  order: number;
+  alt: string;
+}
+
 export interface Book {
   id: number;
   title: string;
   description: string;
   year: number;
   cover_image: string | null;
+  pages?: BookPageImage[];
   updated_at: string;
 }
 
