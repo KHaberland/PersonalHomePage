@@ -8,6 +8,7 @@ from .models import (
     About,
     AboutMain,
     Book,
+    BookPageImage,
     Contact,
     Experience,
     HomeBusinessOutcomeCard,
@@ -129,10 +130,18 @@ class ExperienceAdmin(admin.ModelAdmin):
     )
 
 
+class BookPageImageInline(admin.TabularInline):
+    model = BookPageImage
+    extra = 1
+    fields = ("image", "order", "alt", "is_active")
+    ordering = ("order", "id")
+
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ["title_en", "year", "updated_at"]
     search_fields = ["title_en", "description_en"]
+    inlines = [BookPageImageInline]
     formfield_overrides = {
         models.TextField: {"widget": CKEditor5Widget(config_name="extends")},
     }

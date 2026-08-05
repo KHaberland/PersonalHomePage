@@ -186,6 +186,32 @@ class Book(models.Model):
         return self.title_en
 
 
+class BookPageImage(models.Model):
+    """Illustrative book page / spread for the /book preview block."""
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="page_images")
+    image = models.ImageField(
+        upload_to="book/pages/",
+        help_text=(
+            "JPG/WebP, ~3:2 or 16:10, width 1600–2000 px recommended. "
+            "Up to ~8–12 images per book."
+        ),
+    )
+    order = models.PositiveIntegerField(default=0)
+    alt = models.CharField(max_length=255, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "pages_book_page_images"
+        ordering = ["order", "id"]
+        verbose_name = "Book page image"
+        verbose_name_plural = "Book page images"
+
+    def __str__(self):
+        return f"Book page #{self.order} ({self.book_id})"
+
+
 class HomeTechnicalSkillsIntro(models.Model):
     """Вводный абзац под заголовком «Технические навыки» на главной — одна запись."""
 
