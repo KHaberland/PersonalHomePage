@@ -5,6 +5,16 @@
 export type Lang = 'en' | 'ru' | 'lv';
 export type PageContent = Record<string, Record<string, string>>;
 
+export type SolutionsEditMap = {
+  sections: Record<
+    string,
+    {
+      sectionId: number;
+      columns: Record<string, number>;
+    }
+  >;
+};
+
 // Blog
 export interface Author {
   id: number;

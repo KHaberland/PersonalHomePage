@@ -42,10 +42,29 @@ describe('cms-edit', () => {
     );
   });
 
+  it('buildAdminModelUrl returns changelist for Solutions CMS models', () => {
+    vi.stubEnv('NEXT_PUBLIC_ADMIN_URL', 'http://localhost:8000');
+    expect(buildAdminModelUrl('solutionsection')).toBe(
+      'http://localhost:8000/admin/pages/solutionsection/'
+    );
+    expect(buildAdminModelUrl('solutioncolumngroup')).toBe(
+      'http://localhost:8000/admin/pages/solutioncolumngroup/'
+    );
+  });
+
   it('buildAdminModelUrl returns change URL when objectId is set', () => {
     vi.stubEnv('NEXT_PUBLIC_ADMIN_URL', 'http://localhost:8000');
     expect(buildAdminModelUrl('experience', 42)).toBe(
       'http://localhost:8000/admin/pages/experience/42/change/'
+    );
+    expect(buildAdminModelUrl('post', 7)).toBe(
+      'http://localhost:8000/admin/blog/post/7/change/'
+    );
+    expect(buildAdminModelUrl('solutionsection', 3)).toBe(
+      'http://localhost:8000/admin/pages/solutionsection/3/change/'
+    );
+    expect(buildAdminModelUrl('solutioncolumngroup', 12)).toBe(
+      'http://localhost:8000/admin/pages/solutioncolumngroup/12/change/'
     );
   });
 

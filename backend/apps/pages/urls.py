@@ -18,6 +18,11 @@ urlpatterns = [
         name="cms-admin-link",
     ),
     path(
+        "content/solutions-edit-map/",
+        views.SolutionsEditMapView.as_view(),
+        name="solutions-edit-map",
+    ),
+    path(
         "content/seo/<slug:page>/",
         views.SEOMetadataView.as_view(),
         name="seo-metadata",
