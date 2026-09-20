@@ -48,10 +48,8 @@ export function CmsModelText({
       <div className={wrapperClass}>
         {children}
         {showBadge && adminUrl ? (
-          <a
-            href={adminUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
             title="Редактировать модель в Django Admin"
             className="ml-1 inline-flex max-w-[12rem] truncate align-middle rounded bg-sky-200/90 px-1 py-0.5 text-[10px] font-mono leading-none text-sky-950 opacity-0 transition-opacity group-hover/cms:opacity-100 group-focus-within/cms:opacity-100 print:hidden"
             onClick={(event) => {
@@ -61,7 +59,7 @@ export function CmsModelText({
             }}
           >
             {label} ✎
-          </a>
+          </button>
         ) : null}
       </div>
     );
@@ -74,10 +72,8 @@ export function CmsModelText({
   return (
     <div className="group/cms relative">
       {children}
-      <a
-        href={adminUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
         title="Редактировать модель в Django Admin"
         className="ml-1 inline-flex max-w-[12rem] truncate align-middle rounded bg-sky-200/90 px-1 py-0.5 text-[10px] font-mono leading-none text-sky-950 opacity-0 transition-opacity group-hover/cms:opacity-100 group-focus-within/cms:opacity-100 print:hidden"
         onClick={(event) => {
@@ -87,7 +83,7 @@ export function CmsModelText({
         }}
       >
         {label} ✎
-      </a>
+      </button>
     </div>
   );
 }
