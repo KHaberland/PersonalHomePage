@@ -55,6 +55,13 @@ export default async function BookPage({ params }: Props) {
   const description = book?.description || '';
   const year = book?.year ?? '';
   const coverImage = localizedBookCovers[lang];
+  const previewImages =
+    book?.pages
+      ?.filter((page) => page.image)
+      .map((page) => ({
+        src: page.image as string,
+        alt: page.alt || String(bookText('preview', 'previewTitle')),
+      })) ?? [];
   const purchaseUrl = process.env.NEXT_PUBLIC_BOOK_PURCHASE_URL?.trim();
   const downloadUrl = process.env.NEXT_PUBLIC_BOOK_DOWNLOAD_URL?.trim();
   const mailtoBook =
@@ -105,6 +112,7 @@ export default async function BookPage({ params }: Props) {
             <BookSpreadPreview
               title={bookCms('preview', 'previewTitle')}
               caption={bookCms('preview', 'previewCaption')}
+              images={previewImages}
             />
             <figure className="card border-l-4 border-l-accent-orange p-6">
               <h2 className="heading-3 mb-3 text-foreground">

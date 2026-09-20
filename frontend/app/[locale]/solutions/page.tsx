@@ -1,6 +1,7 @@
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { Section } from '@/components/Section';
+import { CmsModelText } from '@/components/cms/CmsModelText';
 import {
   IconServiceTigTorch,
   IconServiceGasSelection,
@@ -8,6 +9,7 @@ import {
   IconServiceOpenBook,
   IconServiceTraining,
 } from '@/components/icons';
+import { getSolutionsEditMap } from '@/lib/api';
 import { getCmsPage } from '@/lib/cms-content';
 import { cmsText } from '@/lib/cms-page-text';
 import { createPageMetadata } from '@/lib/metadata';
@@ -88,7 +90,10 @@ export async function generateMetadata({ params }: Props) {
 export default async function SolutionsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const content = await getCmsPage('solutions', locale);
+  const [content, editMap] = await Promise.all([
+    getCmsPage('solutions', locale),
+    getSolutionsEditMap().catch(() => ({ sections: {} })),
+  ]);
   const solutionText = (section: string, key: string) =>
     content[section]?.[key] || '';
   const solutionsCms = (block: string, key: string) =>
@@ -165,6 +170,7 @@ export default async function SolutionsPage({ params }: Props) {
       <div className="mt-14 space-y-8">
         {solutionItems.map(({ anchorId, itemKey }, index) => {
           const sectionBlock = `section_${itemKey}`;
+          const sectionEdit = editMap.sections[itemKey];
 
           return (
             <section
@@ -178,7 +184,13 @@ export default async function SolutionsPage({ params }: Props) {
                     {String(index + 1).padStart(2, '0')}
                   </p>
                   <h2 className="heading-2 mt-2 text-foreground">
-                    {solutionsCms(sectionBlock, 'title')}
+                    <CmsModelText
+                      model="solutionsection"
+                      field="title"
+                      objectId={sectionEdit?.sectionId}
+                    >
+                      {solutionText(sectionBlock, 'title')}
+                    </CmsModelText>
                   </h2>
                 </div>
               </div>
@@ -188,6 +200,7 @@ export default async function SolutionsPage({ params }: Props) {
                   const { labelKey, listKey, className } = column;
                   const isBlue = 'tone' in column && column.tone === 'blue';
                   const items = solutionListEntries(sectionBlock, listKey);
+                  const columnGroupId = sectionEdit?.columns[listKey];
 
                   return (
                     <div
@@ -205,9 +218,13 @@ export default async function SolutionsPage({ params }: Props) {
                             <span
                               className={`list-row-bullet mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${isBlue ? 'bg-accent-blue' : 'bg-accent-orange'}`}
                             />
-                            <span>
-                              {cmsText(CMS_PAGE, sectionBlock, key, value)}
-                            </span>
+                            <CmsModelText
+                              model="solutioncolumngroup"
+                              field="bullets"
+                              objectId={columnGroupId}
+                            >
+                              <span>{value}</span>
+                            </CmsModelText>
                           </li>
                         ))}
                       </ul>

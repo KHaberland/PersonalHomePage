@@ -39,7 +39,22 @@
 | Home | да | да | да | не проверено | CMS primary, JSON legacy fallback |
 | Book | да | да | да | не проверено | CMS primary, JSON legacy fallback |
 | Contact | да | да | да | не проверено | CMS primary, JSON legacy fallback |
-| Solutions | да | да | да | не проверено | CMS primary, JSON legacy fallback |
+| Solutions | да | да | да | да (`/en`, `/ru`, `/lv`) | CMS primary; `section_*` — модели `SolutionSection` / `SolutionColumnGroup` |
+
+### Solutions — источник правды для `section_*`
+
+С **этапа 10 (cutover)** контент карточек решений (`section_defectReduction`, `section_processOptimization`, …) **не редактируется** через `SiteTextBlock`.
+
+| Что | Где править в Django Admin |
+| --- | --- |
+| Заголовок секции (`title`) | **Solutions – секции** (`SolutionSection`) |
+| Абзацы колонки (`problems_1`, `causes_2`, …) | **Solutions – колонки** (`SolutionColumnGroup` + inline `SolutionBullet`) |
+| Hero, validation, nav, labels, final CTA | **Site text blocks** (`page=solutions`, блоки без префикса `section_`) |
+
+API `GET /api/content/page/solutions/?lang=*` по-прежнему отдаёт те же ключи `section_*`; адаптер собирает их из новых моделей ([`build_solution_section_blocks`](backend/apps/pages/views.py)).
+
+Legacy-строки `SiteTextBlock` с `page=solutions` и `block` like `section_%` **скрыты** в changelist admin (данные в БД сохранены для отката). Удаление этих строк — отдельный шаг через 1–2 недели без инцидентов.
+
 | Expertise | да | да | да | не проверено | CMS primary, JSON legacy fallback |
 | SEO | не проверено | не проверено | не проверено | не проверено | отдельный этап |
 | Blog translations | не проверено | не проверено | не проверено | не проверено | отдельный этап |

@@ -4,7 +4,6 @@ import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
 import {
-  buildAdminChangelistUrl,
   isCmsEditEnabled,
   isLocalhostHostname,
   openSiteTextBlockAdmin,
@@ -39,16 +38,13 @@ export function CmsText({
     return <>{children}</>;
   }
 
-  const adminUrl = buildAdminChangelistUrl(page, block, cmsKey);
   const label = `${page}.${block}.${cmsKey}`;
 
   return (
     <span className={`group/cms relative inline ${className}`.trim()}>
       {children}
-      <a
-        href={adminUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
         title="Редактировать в Django Admin"
         className="ml-1 inline-flex max-w-[12rem] truncate align-middle rounded bg-amber-200/90 px-1 py-0.5 text-[10px] font-mono leading-none text-amber-950 opacity-0 transition-opacity group-hover/cms:opacity-100 group-focus-within/cms:opacity-100 print:hidden"
         onClick={(event) => {
@@ -58,7 +54,7 @@ export function CmsText({
         }}
       >
         {label} ✎
-      </a>
+      </button>
     </span>
   );
 }
