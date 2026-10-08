@@ -8,7 +8,7 @@ const CMS_PAGE = 'home';
 const CMS_BLOCK = 'about_teaser';
 
 const identityPhoto = {
-  src: '/images/photos/author.jpg',
+  src: '/images/photos/main_portrait.jpg',
 } as const;
 
 function AboutTeaserCms({
@@ -34,7 +34,7 @@ function IdentityPhoto({ src, alt }: { src: string; alt: string }) {
         fill
         sizes="(max-width: 768px) 100vw, 28rem"
         className="object-cover"
-        style={{ objectPosition: 'center calc(50% + 20px)' }}
+        style={{ objectPosition: '50% calc(50% + 0px)' }}
       />
     </div>
   );

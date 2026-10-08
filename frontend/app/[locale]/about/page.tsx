@@ -57,7 +57,9 @@ const diplomas: ReadonlyArray<{
   },
 ];
 
-const defaultPhoto = '/images/photos/small/author01_small.jpg';
+const defaultPhoto = '/images/photos/small/3N6A5261%201.jpg';
+// Second About photo — same container sizing as the top photo
+const aboutSecondaryPhoto = '/images/photos/small/3N6A5235%201.jpg';
 const defaultLinkedinUrl =
   'https://www.linkedin.com/in/oleg-suvorov-125639216/';
 
@@ -111,6 +113,13 @@ export default async function AboutPage({ params }: Props) {
     content.profile_record?.[key] || '';
   const aboutCms = (key: string) =>
     cmsText('about', 'ui', key, aboutUiText(key));
+  const professionalBackgroundHeading =
+    aboutUiText('professionalBackground') ||
+    (locale === 'ru'
+      ? 'Профессиональный путь'
+      : locale === 'lv'
+        ? 'Profesionālā pieredze'
+        : 'Professional background');
   const profileCms = (key: string) =>
     cmsText('about', 'profile_record', key, profileRecordText(key));
   const personName = commonContent.brand?.name || 'Oleg Suvorov';
@@ -228,23 +237,32 @@ export default async function AboutPage({ params }: Props) {
         </div>
       </section>
 
+      {/* Ряд 1: фото слева, bio справа — как было */}
       <div className="grid w-full items-start gap-8 md:grid-cols-2 md:gap-12">
-        {/* Фотография — те же пропорции ширины, что блок «Обо мне» на главной */}
-        <div className="about-photo-glow-wrap relative mx-auto aspect-[4/5] w-full max-w-[26.88rem] overflow-hidden rounded-lg border border-border md:mx-0">
+        <div className="about-photo-glow-wrap w-full max-w-[28rem] justify-self-start overflow-hidden rounded-lg border border-border">
           <Image
             src={photo}
             alt={t('photoAlt')}
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, 26.88rem"
+            width={1000}
+            height={1500}
+            className="h-auto w-full"
+            sizes="(max-width: 768px) 100vw, 28rem"
             priority
             unoptimized={photo.startsWith('http')}
           />
         </div>
 
-        <div className="w-full min-w-0 space-y-6">
+        <div className="w-full min-w-0">
           {htmlHasVisibleText(bio) ? (
             <section>
+              <h2 className="about-block-title heading-3 mb-3 text-foreground">
+                {cmsText(
+                  'about',
+                  'ui',
+                  'professionalBackground',
+                  professionalBackgroundHeading
+                )}
+              </h2>
               <CmsModelText model="about" field="bio">
                 <div
                   className="about-content about-bio-narrative text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed [&_p:first-child]:mt-0"
@@ -253,7 +271,12 @@ export default async function AboutPage({ params }: Props) {
               </CmsModelText>
             </section>
           ) : null}
+        </div>
+      </div>
 
+      {/* Ряд 2: продолжение текста слева, нижнее фото справа */}
+      <div className="mt-8 grid w-full items-start gap-8 md:mt-12 md:grid-cols-2 md:gap-12">
+        <div className="order-2 w-full min-w-0 space-y-6 md:order-1">
           {htmlHasVisibleText(education) ? (
             <section>
               <h2 className="about-block-title heading-3 mb-3 text-foreground">
@@ -282,6 +305,17 @@ export default async function AboutPage({ params }: Props) {
             </section>
           ) : null}
         </div>
+
+        <div className="about-photo-glow-wrap order-1 w-full max-w-[28rem] justify-self-start overflow-hidden rounded-lg border border-border md:order-2 md:justify-self-end">
+          <Image
+            src={aboutSecondaryPhoto}
+            alt={t('workPhotoAlt')}
+            width={1000}
+            height={1500}
+            className="h-auto w-full"
+            sizes="(max-width: 768px) 100vw, 28rem"
+          />
+        </div>
       </div>
 
       {/* Дипломы и сертификаты */}
@@ -296,9 +330,9 @@ export default async function AboutPage({ params }: Props) {
       <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {[
           'small/FB_IMG_gas.jpg',
-          'small/IMG_20250714_MAG.jpg',
-          'small/mag_weld2.jpg',
-          'small/tig_weld.jpg',
+          'small/3N6A5325v_small.jpg',
+          'small/3N6A5266%201_small.jpg',
+          'small/3N6A5251%201_small.jpg',
         ].map((name) => (
           <div
             key={name}
@@ -318,12 +352,12 @@ export default async function AboutPage({ params }: Props) {
       {showProfileRecord ? (
         <section className="card card-passive card-passive-accent mt-16 p-6 md:p-8">
           {profileRecordText('title') ? (
-            <h2 className="heading-3 mb-4 text-foreground">
+            <h2 className="mb-4 text-sm font-semibold leading-snug text-foreground">
               {profileCms('title')}
             </h2>
           ) : null}
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/60">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-foreground/60">
             {profileRecordText('versionLabel') ||
             profileRecordText('version') ? (
               <p>
@@ -345,12 +379,12 @@ export default async function AboutPage({ params }: Props) {
           </div>
 
           {profileRecordText('description') ? (
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/80">
+            <p className="mt-4 max-w-3xl text-xs leading-relaxed text-foreground/80">
               {profileCms('description')}
             </p>
           ) : null}
           {profileRecordText('footerUpdated') ? (
-            <p className="caption mt-5 font-medium uppercase tracking-wide">
+            <p className="mt-5 text-xs font-medium uppercase tracking-wide text-foreground/60">
               {profileCms('footerUpdated')}
             </p>
           ) : null}

@@ -18,6 +18,9 @@ from .models import (
     HomeTechnicalSkillsIntro,
     SEOMetadata,
     SiteTextBlock,
+    SolutionSection,
+    column_to_list_prefix,
+    section_to_block_name,
 )
 from .serializers import (
     AboutSerializer,
@@ -89,6 +92,56 @@ class ContactView(generics.RetrieveAPIView):
         return obj
 
 
+def _localized_field(obj, lang, field_prefix="text"):
+    """Localized string from *_{en,ru,lv} fields (same fallback as SiteTextBlock)."""
+    en_text = getattr(obj, f"{field_prefix}_en", None) or ""
+    if lang == "en":
+        return en_text
+
+    localized_text = getattr(obj, f"{field_prefix}_{lang}", None) or ""
+    if localized_text.strip():
+        return localized_text
+    return en_text
+
+
+def build_solution_section_blocks(lang):
+    """Build section_* dict blocks from SolutionSection models for API response."""
+    blocks = {}
+    sections = SolutionSection.objects.prefetch_related(
+        "column_groups__bullets"
+    ).order_by("order", "item_key")
+
+    for section in sections:
+        block_name = section_to_block_name(section.item_key)
+        block_content = {"title": _localized_field(section, lang, "title")}
+
+        for group in section.column_groups.all():
+            prefix = column_to_list_prefix(group.column)
+            for bullet in group.bullets.order_by("order"):
+                key = f"{prefix}_{bullet.order}"
+                block_content[key] = _localized_field(bullet, lang, "text")
+
+        blocks[block_name] = block_content
+
+    return blocks
+
+
+def build_solutions_edit_map():
+    """Map section item_key and list prefix to Django Admin object ids."""
+    sections = {}
+    for section in SolutionSection.objects.prefetch_related("column_groups").order_by(
+        "order", "item_key"
+    ):
+        columns = {}
+        for group in section.column_groups.all():
+            columns[column_to_list_prefix(group.column)] = group.pk
+        sections[section.item_key] = {
+            "sectionId": section.pk,
+            "columns": columns,
+        }
+    return {"sections": sections}
+
+
 class PageContentView(APIView):
     """GET /api/content/page/{page}/ — CMS text grouped by page section."""
 
@@ -100,23 +153,25 @@ class PageContentView(APIView):
             lang = "en"
 
         content = {}
-        blocks = SiteTextBlock.objects.filter(page=page).order_by("block", "key")
+        blocks_qs = SiteTextBlock.objects.filter(page=page).order_by("block", "key")
+        if page == "solutions":
+            blocks_qs = blocks_qs.exclude(block__startswith="section_")
 
-        for block in blocks:
+        for block in blocks_qs:
             section = content.setdefault(block.block, {})
-            section[block.key] = self._localized_text(block, lang)
+            section[block.key] = _localized_field(block, lang)
+
+        if page == "solutions":
+            content.update(build_solution_section_blocks(lang))
 
         return Response(content)
 
-    def _localized_text(self, block, lang):
-        en_text = block.text_en or ""
-        if lang == "en":
-            return en_text
 
-        localized_text = getattr(block, f"text_{lang}", "") or ""
-        if localized_text.strip():
-            return localized_text
-        return en_text
+class SolutionsEditMapView(APIView):
+    """GET /api/content/solutions-edit-map/ — ids for CMS dev-edit badges."""
+
+    def get(self, request):
+        return Response(build_solutions_edit_map())
 
 
 class CmsAdminLinkView(APIView):

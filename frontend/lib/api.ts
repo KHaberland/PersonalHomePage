@@ -19,6 +19,7 @@ import type {
   Lang,
   PaginatedResponse,
   PageContent,
+  SolutionsEditMap,
   PostDetail,
   PostListItem,
   SEOMetadata,
@@ -154,6 +155,10 @@ export async function getPageContent(
   return fetchApi<PageContent>(`/content/page/${encodeURIComponent(page)}/`, {
     params: { lang },
   });
+}
+
+export async function getSolutionsEditMap(): Promise<SolutionsEditMap> {
+  return fetchApi<SolutionsEditMap>('/content/solutions-edit-map/');
 }
 
 export async function getSeoMetadata(

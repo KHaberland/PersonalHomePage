@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -186,6 +187,55 @@ class Book(models.Model):
         return self.title_en
 
 
+class BookPageImage(models.Model):
+    """Illustrative book page / spread for the /book preview block."""
+
+    MAX_IMAGES_PER_BOOK = 12
+    MAX_IMAGE_BYTES = 5 * 1024 * 1024  # 5 MB
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="page_images")
+    image = models.ImageField(
+        upload_to="book/pages/",
+        help_text=(
+            "JPG/WebP, ~3:2 or 16:10, width 1600–2000 px recommended. "
+            f"Up to {MAX_IMAGES_PER_BOOK} images per book, max 5 MB each."
+        ),
+    )
+    order = models.PositiveIntegerField(default=0)
+    alt_en = models.CharField(max_length=255, blank=True)
+    alt_ru = models.CharField(max_length=255, blank=True)
+    alt_lv = models.CharField(max_length=255, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "pages_book_page_images"
+        ordering = ["order", "id"]
+        verbose_name = "Book page image"
+        verbose_name_plural = "Book page images"
+
+    def __str__(self):
+        return f"Book page #{self.order} ({self.book_id})"
+
+    def clean(self):
+        super().clean()
+        if self.image:
+            size = getattr(self.image, "size", None)
+            if size and size > self.MAX_IMAGE_BYTES:
+                max_mb = self.MAX_IMAGE_BYTES // (1024 * 1024)
+                raise ValidationError(
+                    {"image": f"Image file too large (max {max_mb} MB)."}
+                )
+        if self.book_id:
+            siblings = BookPageImage.objects.filter(book_id=self.book_id)
+            if self.pk:
+                siblings = siblings.exclude(pk=self.pk)
+            if siblings.count() >= self.MAX_IMAGES_PER_BOOK:
+                raise ValidationError(
+                    f"A book can have at most {self.MAX_IMAGES_PER_BOOK} page images."
+                )
+
+
 class HomeTechnicalSkillsIntro(models.Model):
     """Вводный абзац под заголовком «Технические навыки» на главной — одна запись."""
 
@@ -265,6 +315,119 @@ class HomeTechnicalSkillCard(models.Model):
 
     def __str__(self):
         return f"{self.order}. {self.title_en[:40]}"
+
+
+# --- Solutions page: structured CMS for section columns ---
+
+COLUMN_PROBLEM = "problem"
+COLUMN_CAUSE = "cause"
+COLUMN_ANALYSIS = "analysis"
+COLUMN_SOLUTION = "solution"
+COLUMN_RESULT = "result"
+
+SOLUTION_COLUMN_CHOICES = [
+    (COLUMN_PROBLEM, "Проблема"),
+    (COLUMN_CAUSE, "Причина"),
+    (COLUMN_ANALYSIS, "Инженерный анализ"),
+    (COLUMN_SOLUTION, "Решение"),
+    (COLUMN_RESULT, "Результат"),
+]
+
+COLUMN_TO_LIST_PREFIX = {
+    COLUMN_PROBLEM: "problems",
+    COLUMN_CAUSE: "causes",
+    COLUMN_ANALYSIS: "analysisItems",
+    COLUMN_SOLUTION: "solutionSteps",
+    COLUMN_RESULT: "expectedResults",
+}
+
+
+def column_to_list_prefix(column: str) -> str:
+    """Map column choice to API list key prefix (e.g. problem → problems)."""
+    return COLUMN_TO_LIST_PREFIX[column]
+
+
+def section_to_block_name(item_key: str) -> str:
+    """Map section item_key to SiteTextBlock block (section_defectReduction, …)."""
+    return f"section_{item_key}"
+
+
+class SolutionSection(models.Model):
+    """Solutions page section title (one of five cards)."""
+
+    item_key = models.SlugField(max_length=50, unique=True)
+    title_en = models.CharField(max_length=500, blank=True)
+    title_ru = models.CharField(max_length=500, blank=True)
+    title_lv = models.CharField(max_length=500, blank=True)
+    order = models.PositiveSmallIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_solution_section"
+        verbose_name = "Solutions – секция"
+        verbose_name_plural = "Solutions – секции"
+        ordering = ["order", "item_key"]
+
+    def __str__(self):
+        return self.title_ru or self.title_en or self.item_key
+
+
+class SolutionColumnGroup(models.Model):
+    """One column of bullet paragraphs within a solutions section."""
+
+    section = models.ForeignKey(
+        SolutionSection,
+        on_delete=models.CASCADE,
+        related_name="column_groups",
+    )
+    column = models.CharField(max_length=20, choices=SOLUTION_COLUMN_CHOICES)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "pages_solution_column_group"
+        verbose_name = "Solutions – колонка"
+        verbose_name_plural = "Solutions – колонки"
+        ordering = ["section__order", "column"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["section", "column"],
+                name="unique_solution_section_column",
+            )
+        ]
+
+    def __str__(self):
+        column_label = dict(SOLUTION_COLUMN_CHOICES).get(self.column, self.column)
+        return f"{self.section} → {column_label}"
+
+
+class SolutionBullet(models.Model):
+    """Single paragraph in a solutions column."""
+
+    group = models.ForeignKey(
+        SolutionColumnGroup,
+        on_delete=models.CASCADE,
+        related_name="bullets",
+    )
+    order = models.PositiveSmallIntegerField()
+    text_en = models.TextField(blank=True)
+    text_ru = models.TextField(blank=True)
+    text_lv = models.TextField(blank=True)
+
+    class Meta:
+        db_table = "pages_solution_bullet"
+        verbose_name = "Solutions – абзац"
+        verbose_name_plural = "Solutions – абзацы"
+        ordering = ["group", "order"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["group", "order"],
+                name="unique_solution_bullet_order",
+            )
+        ]
+
+    def __str__(self):
+        preview = (self.text_ru or self.text_en or "")[:40]
+        return f"{self.group} #{self.order}: {preview}"
 
 
 class Contact(models.Model):

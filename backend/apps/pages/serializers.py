@@ -4,6 +4,7 @@ from .models import (
     About,
     AboutMain,
     Book,
+    BookPageImage,
     Contact,
     Experience,
     HomeBusinessOutcomeCard,
@@ -102,15 +103,53 @@ class ExperienceSerializer(serializers.ModelSerializer):
         return self._get_lang_field(obj, "description")
 
 
+class BookPageImageSerializer(serializers.ModelSerializer):
+    """Serializer for illustrative book page images."""
+
+    image = serializers.SerializerMethodField()
+    alt = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BookPageImage
+        fields = ["id", "image", "order", "alt"]
+
+    def get_image(self, obj):
+        if not obj.image:
+            return None
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(obj.image.url)
+        return obj.image.url
+
+    def get_alt(self, obj):
+        lang = self.context.get("lang", "en")
+        en_val = (obj.alt_en or "").strip()
+        if lang == "en":
+            return en_val
+        loc_val = (getattr(obj, f"alt_{lang}", "") or "").strip()
+        if loc_val:
+            return loc_val
+        return en_val
+
+
 class BookSerializer(serializers.ModelSerializer):
     """Serializer for Book with language-specific fields."""
 
     title = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    pages = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
-        fields = ["id", "title", "description", "year", "cover_image", "updated_at"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "year",
+            "cover_image",
+            "pages",
+            "updated_at",
+        ]
 
     def _get_lang_field(self, obj, base_name):
         lang = self.context.get("lang", "en")
@@ -123,6 +162,10 @@ class BookSerializer(serializers.ModelSerializer):
 
     def get_description(self, obj):
         return self._get_lang_field(obj, "description")
+
+    def get_pages(self, obj):
+        qs = obj.page_images.filter(is_active=True).order_by("order", "id")
+        return BookPageImageSerializer(qs, many=True, context=self.context).data
 
 
 class ContactSerializer(serializers.ModelSerializer):

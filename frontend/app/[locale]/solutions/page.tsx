@@ -1,6 +1,7 @@
 import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { Section } from '@/components/Section';
+import { CmsModelText } from '@/components/cms/CmsModelText';
 import {
   IconServiceTigTorch,
   IconServiceGasSelection,
@@ -8,6 +9,7 @@ import {
   IconServiceOpenBook,
   IconServiceTraining,
 } from '@/components/icons';
+import { getSolutionsEditMap } from '@/lib/api';
 import { getCmsPage } from '@/lib/cms-content';
 import { cmsText } from '@/lib/cms-page-text';
 import { createPageMetadata } from '@/lib/metadata';
@@ -88,7 +90,10 @@ export async function generateMetadata({ params }: Props) {
 export default async function SolutionsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const content = await getCmsPage('solutions', locale);
+  const [content, editMap] = await Promise.all([
+    getCmsPage('solutions', locale),
+    getSolutionsEditMap().catch(() => ({ sections: {} })),
+  ]);
   const solutionText = (section: string, key: string) =>
     content[section]?.[key] || '';
   const solutionsCms = (block: string, key: string) =>
@@ -115,37 +120,21 @@ export default async function SolutionsPage({ params }: Props) {
         <p className="lead mt-6 max-w-3xl">{solutionsCms('hero', 'lead')}</p>
       </section>
 
-      <section className="card-cta-blue-compact mt-8">
-        <p className="eyebrow-blue">
-          {solutionsCms('validation', 'validationEyebrow')}
-        </p>
-        <h2 className="heading-3 mt-2 text-foreground">
-          {solutionsCms('validation', 'validationTitle')}
-        </h2>
-        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/80">
-          {solutionsCms('validation', 'validationText')}
-        </p>
-        <Link
-          href="/experience"
-          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange underline-offset-4 hover:underline"
-        >
-          {solutionsCms('validation', 'validationCta')}
-          <span aria-hidden>→</span>
-        </Link>
-      </section>
-
       <nav className="mt-12" aria-label={solutionText('nav', 'navAriaLabel')}>
         <h2 className="heading-2 text-foreground">
           {solutionsCms('nav', 'navTitle')}
         </h2>
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {solutionItems.map(({ Icon, anchorId, itemKey }) => (
+          {solutionItems.map(({ Icon, anchorId, itemKey }, index) => (
             <a
               key={anchorId}
               href={`#${anchorId}`}
               className="card card-nav group flex h-full flex-col p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-orange"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-orange/10 text-accent-orange transition-colors group-hover:bg-accent-orange/20">
+              <p className="eyebrow-blue-sm">
+                {String(index + 1).padStart(2, '0')}
+              </p>
+              <div className="mt-3 flex h-12 w-12 items-center justify-center rounded-lg bg-accent-orange/10 text-accent-orange transition-colors group-hover:bg-accent-orange/20">
                 <Icon className="h-6 w-6" aria-hidden title={undefined} />
               </div>
               <h3 className="heading-3 mt-4 text-foreground">
@@ -165,6 +154,7 @@ export default async function SolutionsPage({ params }: Props) {
       <div className="mt-14 space-y-8">
         {solutionItems.map(({ anchorId, itemKey }, index) => {
           const sectionBlock = `section_${itemKey}`;
+          const sectionEdit = editMap.sections[itemKey];
 
           return (
             <section
@@ -178,7 +168,13 @@ export default async function SolutionsPage({ params }: Props) {
                     {String(index + 1).padStart(2, '0')}
                   </p>
                   <h2 className="heading-2 mt-2 text-foreground">
-                    {solutionsCms(sectionBlock, 'title')}
+                    <CmsModelText
+                      model="solutionsection"
+                      field="title"
+                      objectId={sectionEdit?.sectionId}
+                    >
+                      {solutionText(sectionBlock, 'title')}
+                    </CmsModelText>
                   </h2>
                 </div>
               </div>
@@ -188,11 +184,12 @@ export default async function SolutionsPage({ params }: Props) {
                   const { labelKey, listKey, className } = column;
                   const isBlue = 'tone' in column && column.tone === 'blue';
                   const items = solutionListEntries(sectionBlock, listKey);
+                  const columnGroupId = sectionEdit?.columns[listKey];
 
                   return (
                     <div
                       key={listKey}
-                      className={`card-nested card-passive ${isBlue ? 'card-passive--blue' : ''} ${className}`}
+                      className={`card-nested card-passive min-w-0 break-words ${isBlue ? 'card-passive--blue' : ''} ${className}`}
                     >
                       <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
                         {solutionsCms('labels', labelKey)}
@@ -205,9 +202,13 @@ export default async function SolutionsPage({ params }: Props) {
                             <span
                               className={`list-row-bullet mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${isBlue ? 'bg-accent-blue' : 'bg-accent-orange'}`}
                             />
-                            <span>
-                              {cmsText(CMS_PAGE, sectionBlock, key, value)}
-                            </span>
+                            <CmsModelText
+                              model="solutioncolumngroup"
+                              field="bullets"
+                              objectId={columnGroupId}
+                            >
+                              <span>{value}</span>
+                            </CmsModelText>
                           </li>
                         ))}
                       </ul>
@@ -219,6 +220,25 @@ export default async function SolutionsPage({ params }: Props) {
           );
         })}
       </div>
+
+      <section className="card-cta-blue-compact mt-12">
+        <p className="eyebrow-blue">
+          {solutionsCms('validation', 'validationEyebrow')}
+        </p>
+        <h2 className="heading-3 mt-2 text-foreground">
+          {solutionsCms('validation', 'validationTitle')}
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/80">
+          {solutionsCms('validation', 'validationText')}
+        </p>
+        <Link
+          href="/experience"
+          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange underline-offset-4 hover:underline"
+        >
+          {solutionsCms('validation', 'validationCta')}
+          <span aria-hidden>→</span>
+        </Link>
+      </section>
 
       <section className="card-cta mt-12">
         <h2 className="heading-3 text-foreground">

@@ -73,9 +73,9 @@ body {
   line-height: 1.6;
 }
 
-/* «Обо мне» (страница /about): биография, образование, квалификации — на 2pt меньше body, без жирного */
+/* «Обо мне» (страница /about): биография, образование, квалификации */
 .about-content {
-  font-size: calc(var(--text-body) - 2pt);
+  font-size: calc(12px + 2pt);
   font-weight: 400;
 }
 
@@ -89,13 +89,13 @@ body {
   font-weight: 400;
 }
 
-/* Десктоп: основной текст 14px; контент «Обо мне» — отдельный editorial-режим */
+/* Десктоп: основной текст 14px; контент «Обо мне» — 12px */
 @media (min-width: 1024px) {
   body {
     font-size: var(--text-small); /* 0.875rem = 14px */
   }
   .about-content {
-    font-size: calc(clamp(0.75rem, 0.8vw, 0.875rem) - 2pt);
+    font-size: calc(12px + 2pt);
   }
   .heading-3 {
     font-size: clamp(1.125rem, 2vw, 1.375rem);
@@ -301,8 +301,9 @@ body {
 
 /* Страница /about: кегли задаются здесь; биография с .about-bio-narrative использует те же значения (без отдельного перекрытия). */
 .about-content {
-  --about-lead-font-size: 14px;
-  --about-body-font-size: 12px;
+  --about-lead-font-size: calc(14px + 2pt);
+  /* 1em = размер .about-content, чтобы bio/education не расходились */
+  --about-body-font-size: 1em;
 }
 
 .about-content .home-about-lead {
@@ -327,7 +328,7 @@ body {
   margin-bottom: 0.875rem;
 }
 
-/* Биография: более узкий селектор раньше бил ваши 12px/15px; оставляем те же переменные + голые <p> из редактора */
+/* Биография: те же кегли, что у education/qualifications (наследование от .about-content) */
 .about-content.about-bio-narrative .home-about-p,
 .home-about-copy.about-bio-narrative .home-about-p,
 .about-content.about-bio-narrative p,
