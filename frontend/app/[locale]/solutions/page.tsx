@@ -205,7 +205,7 @@ export default async function SolutionsPage({ params }: Props) {
                   return (
                     <div
                       key={listKey}
-                      className={`card-nested card-passive ${isBlue ? 'card-passive--blue' : ''} ${className}`}
+                      className={`card-nested card-passive min-w-0 break-words ${isBlue ? 'card-passive--blue' : ''} ${className}`}
                     >
                       <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground">
                         {solutionsCms('labels', labelKey)}
