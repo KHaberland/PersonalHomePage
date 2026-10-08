@@ -37,6 +37,15 @@ const userPathItems = [
 
 const decisionSystemItems = [
   {
+    titleKey: 'decisionKnowledgeTitle',
+    descriptionKey: 'decisionKnowledgeDescription',
+    links: [
+      { href: '/knowledge', labelKey: 'decisionLinkKnowledge' },
+      { href: '/blog', labelKey: 'decisionLinkBlog' },
+      { href: '/book', labelKey: 'decisionLinkBook' },
+    ],
+  },
+  {
     titleKey: 'decisionReasoningTitle',
     descriptionKey: 'decisionReasoningDescription',
     links: [
@@ -50,15 +59,6 @@ const decisionSystemItems = [
     links: [
       { href: '/experience', labelKey: 'decisionLinkExperience' },
       { href: '/tools', labelKey: 'decisionLinkTools' },
-    ],
-  },
-  {
-    titleKey: 'decisionKnowledgeTitle',
-    descriptionKey: 'decisionKnowledgeDescription',
-    links: [
-      { href: '/knowledge', labelKey: 'decisionLinkKnowledge' },
-      { href: '/blog', labelKey: 'decisionLinkBlog' },
-      { href: '/book', labelKey: 'decisionLinkBook' },
     ],
   },
 ] as const;
@@ -122,10 +122,6 @@ export default async function HomePage({ params }: Props) {
         photoAlt={aboutTeaserText('aboutTeaserPhotoAlt')}
         title={aboutTeaserText('aboutTeaserTitle')}
         lead={[
-          {
-            key: 'aboutTeaserLead1',
-            text: aboutTeaserText('aboutTeaserLead1'),
-          },
           {
             key: 'aboutTeaserLead2',
             text: aboutTeaserText('aboutTeaserLead2'),
